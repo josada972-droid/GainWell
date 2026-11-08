@@ -14,8 +14,9 @@ Import alias: `@/*` → `src/*`.
 ## Client / server boundary
 
 - Server Components by default. Add `"use client"` only where interactivity requires it (forms, charts, the language switcher).
-- Secrets (`SUPABASE_SERVICE_ROLE_KEY`) are read only in server code. Anything prefixed `NEXT_PUBLIC_` ships in the browser bundle — treat it as public.
-- Authorization is enforced server-side and by Supabase Row Level Security. Hiding UI is never the security boundary.
+- Secrets (`SUPABASE_SECRET_KEY`) are read only in server code. Anything prefixed `NEXT_PUBLIC_` is inlined into the browser bundle at build time — treat it as public. Supabase keys: publishable (`sb_publishable_…`, public) / secret (`sb_secret_…`, server-only); legacy anon/service-role naming is superseded.
+- Authorization is enforced server-side and by Supabase Row Level Security (enable RLS per table and revoke default grants). Hiding UI is never the security boundary.
+- Route-level redirects live in `src/proxy.ts` — Next 16 renamed `middleware.ts` to `proxy.ts` (Node runtime only). The proxy may check the session cookie only; it must never query the database, because it also runs on prefetched routes.
 - All input crossing a trust boundary (forms, route params, API responses) is validated with Zod before use.
 
 ## Business logic rules
@@ -24,12 +25,14 @@ Import alias: `@/*` → `src/*`.
 - Units are explicit: grams and millilitres are never interchangeable; values are keyed per 100 g, per serving, or per custom quantity.
 - Missing data is represented explicitly (`null` + a source note), never silently fabricated.
 - Externally sourced food data keeps its attribution (Open Food Facts, custom user entry).
+- Open Food Facts constraints (verified against official docs, Nov 2026): v3.6 is current but has no search endpoint — structured search exists only in deprecated `/api/v2/search`, and full-text name search does not exist server-side at all. Reads need no API key but a custom `User-Agent` (`AppName/Version (ContactEmail)`); limits are 15 reads/min and 10 searches/min **per IP**, so all server-side calls from one deployment share one budget. Plan: cache products in Postgres and search there (local FTS) instead of hammering the API. Caching OFF data into Postgres creates a derived database under ODbL; images are CC BY-SA 3.0. Staging `world.openfoodfacts.net` needs HTTP Basic auth `off:off`.
 
 ## Internationalization (Stage 1)
 
-- next-intl with `en` default and `fr`; locale in the route (`/[locale]/...`) or middleware.
+- next-intl v4 with `en` default and `fr`; locale via a `[locale]` root segment, `defineRouting` in `src/i18n/routing.ts`, `src/i18n/request.ts` reading the locale with `next/root-params` (built-in from Next 16.3+), and `src/proxy.ts` using `createMiddleware(routing)`.
+- Locale persistence: the proxy sets a `NEXT_LOCALE` session cookie; configurable via `localeCookie`.
 - Every user-facing string comes from message files (`messages/en.json`, `messages/fr.json`) — no hardcoded UI strings.
-- Dates and numbers are localized; metric units by default.
+- Dates and numbers use `useFormatter()` (Server Components: `getTranslations` + manual formatter); metric units by default.
 
 ## Dependency policy
 
@@ -48,4 +51,6 @@ Temporary sample content must be clearly marked (module name, comment, or metada
 
 ## Testing
 
-Each stage ships its tests with it: Vitest for `src/lib` logic, React Testing Library for components, Playwright for user journeys. A feature is not done until its relevant tests pass.
+- Each stage ships its tests with it: Vitest for `src/lib` logic, React Testing Library for components, Playwright for user journeys. A feature is not done until its relevant tests pass.
+- Vitest defaults to `environment: "node"`; component tests need the `jsdom` package. Vitest also collects `*.spec.ts`, which collides with Playwright's test files — the Vitest config must exclude the e2e directory. Tests using next-intl's `createNavigation` need `test.server.deps.inline: ["next-intl"]`.
+- Playwright drives the built app via `webServer` (`npm run start`) and responsive viewports through config `projects` (`devices`), with per-test `page.setViewportSize()` for 320/375 px.
