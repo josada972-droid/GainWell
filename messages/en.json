@@ -1,0 +1,235 @@
+{
+  "brand": {
+    "name": "GainWell",
+    "tagline": "Nutrition for healthy weight gain"
+  },
+  "legal": {
+    "updatedDate": "2026-11-09"
+  },
+  "nav": {
+    "recipes": "Recipes",
+    "guides": "Guides",
+    "about": "About",
+    "howItWorks": "How it works",
+    "menu": "Menu",
+    "closeMenu": "Close menu",
+    "skipToContent": "Skip to content",
+    "homeAria": "GainWell, back to the homepage"
+  },
+  "lang": {
+    "label": "Language",
+    "en": "English",
+    "fr": "Français"
+  },
+  "footer": {
+    "closing": "Eat with a plan, at your own pace.",
+    "navLabel": "Site links",
+    "recipes": "Recipes",
+    "guides": "Guides",
+    "about": "About GainWell",
+    "howItWorks": "How it works",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "sampleNote": "Recipes and guides here are written sample content. Nothing is connected to a verified nutrition database yet.",
+    "builtNote": "GainWell is built by a small team and stays free."
+  },
+  "home": {
+    "title": "Your journey to healthier weight gain starts here.",
+    "lead": "Discover nutritious meals, build better eating habits and track your progress at your own pace.",
+    "ctaPrimary": "Get started",
+    "ctaSecondary": "Explore recipes",
+    "freeLine": "Free to use. Accounts and meal tracking are still being built.",
+    "previewCaption": "Preview of the dashboard being built, with sample values.",
+    "previewTargetLabel": "Daily target",
+    "previewTargetUnit": "kcal",
+    "previewEatenLabel": "Eaten today",
+    "previewState": "On track",
+    "previewMealsLabel": "Meals",
+    "previewProteinLabel": "Protein",
+    "recipesHead": "Recipes you can cook today",
+    "recipesLead": "Sample recipes, written by hand, with estimates rather than verified values.",
+    "recipesAll": "See all recipes",
+    "guidesHead": "Guides for hard weeks",
+    "guidesLead": "Plain language about appetite, calories and eating on a budget.",
+    "guidesAll": "Read the guides",
+    "todayHead": "What works today, what comes next",
+    "todayLead": "The public library is open. The parts that need your account are still under construction.",
+    "todayNowLabel": "Open now",
+    "recipesItem": "Recipe library with search, categories and nutrition estimates.",
+    "guidesItem": "Guides on calories, protein and eating with a low appetite.",
+    "unitsItem": "Metric units, English and French, on every page.",
+    "nextLabel": "Being built",
+    "accountsItem": "Accounts, sign-in and a private profile.",
+    "logItem": "A daily meal log with calories and protein per meal.",
+    "goalsItem": "Daily targets set from your own weight and appetite.",
+    "statement": "GainWell helps you eat more without crowding your kitchen.",
+    "faqHead": "Questions people ask first",
+    "faq": {
+      "q1": "Is GainWell really free?",
+      "a1": "Yes. The recipe library and the guides are free, and they stay free. Accounts will be free too when they open.",
+      "q2": "Do you promise a certain number of kilograms?",
+      "a2": "No. People gain weight at different speeds, and your target depends on your own body. GainWell shows food and numbers, not a guaranteed result.",
+      "q3": "Is the nutrition data verified?",
+      "a3": "Not yet. Every recipe here is written by hand with estimated values, and each recipe page says so. Verified data arrives with the food database.",
+      "q4": "Is this medical advice?",
+      "a4": "No. The guides are general information. For a health condition, talk to a doctor or a dietitian before changing how you eat.",
+      "q5": "Which languages are supported?",
+      "a5": "English and French, with metric units. Your choice is remembered for your next visit."
+    }
+  },
+  "recipes": {
+    "title": "Recipes for eating more",
+    "lead": "Nine sample recipes across smoothies, breakfasts, lunches, dinners and snacks. Values are estimates, written by hand.",
+    "searchLabel": "Search recipes",
+    "searchPlaceholder": "Search by name or ingredient",
+    "filtersLabel": "Category",
+    "filterAll": "All",
+    "filterSmoothie": "Smoothies",
+    "filterBreakfast": "Breakfasts",
+    "filterLunch": "Lunches",
+    "filterDinner": "Dinners",
+    "filterSnack": "Snacks",
+    "resultCount": "{count, plural, one {# recipe} other {# recipes}}",
+    "emptyTitle": "No recipe matches that search",
+    "emptyBody": "Try a shorter word, like oats, milk or rice, or pick a category.",
+    "prepTime": "Preparation",
+    "minutes": "{count} min",
+    "kcal": "kcal",
+    "grams": "g",
+    "servings": "{count, plural, one {# serving} other {# servings}}"
+  },
+  "recipe": {
+    "backToRecipes": "All recipes",
+    "sampleNotice": "Sample recipe. The nutrition figures are hand-written estimates, not a verified database.",
+    "servingsLabel": "Servings",
+    "servingsDecrease": "One serving fewer",
+    "servingsIncrease": "One serving more",
+    "scaledNote": "Quantities and figures scale with the servings you choose.",
+    "ingredientsHead": "Ingredients",
+    "stepsHead": "Steps",
+    "nutritionHead": "Nutrition per serving",
+    "nutritionPerServing": "Per serving",
+    "nutritionTotal": "Total for {count} servings",
+    "kcal": "Calories",
+    "protein": "Protein",
+    "carbs": "Carbohydrates",
+    "fat": "Fat",
+    "tipHead": "Kitchen note",
+    "updated": "Updated {date}",
+    "notFoundTitle": "That recipe does not exist",
+    "notFoundBody": "The recipe library has nine sample recipes. Pick one from the list."
+  },
+  "guides": {
+    "title": "Guides for healthy weight gain",
+    "lead": "Five sample guides about calories, protein, appetite and eating on a budget.",
+    "readingTime": "{count} min read",
+    "updated": "Updated {date}",
+    "readGuide": "Read the guide",
+    "sampleNotice": "These guides are written sample content. They are general information, not medical advice.",
+    "notFoundTitle": "That guide does not exist",
+    "notFoundBody": "The guide library has five sample guides. Pick one from the list."
+  },
+  "guide": {
+    "backToGuides": "All guides",
+    "writtenBy": "Written for the GainWell library",
+    "sampleNotice": "Sample content, general information, not medical advice.",
+    "nextHead": "Next guide",
+    "nextLead": "Continue with"
+  },
+  "about": {
+    "title": "About GainWell",
+    "lead": "A free library for people who want to eat more, built in English and French.",
+    "body": [
+      "GainWell exists because gaining weight is harder than it looks. Full stomachs, low appetite, expensive food and vague advice all get in the way.",
+      "The plan is a small, quiet tool: recipes that are actually filling, guides that explain calories and protein in plain words, and a daily log that shows a trend rather than a verdict.",
+      "Today the public library is open. Accounts, profiles and tracking are being built, so nothing about you is stored yet.",
+      "GainWell is free, and it will stay free. It does not sell your data, and it does not advertise diets."
+    ],
+    "principlesHead": "How we write",
+    "principles": [
+      "No promised results. People gain weight at different speeds.",
+      "Metric units always: grams, millilitres, kilocalories.",
+      "Sample data is labelled sample data.",
+      "General information, not medical advice."
+    ],
+    "languagesHead": "Languages and units",
+    "languagesBody": "Every page is written in English and French. Numbers use metric units, and dates follow the language you chose."
+  },
+  "howItWorks": {
+    "title": "How GainWell works",
+    "lead": "Three steps, once accounts are open. Until then, the recipes and guides are yours to use.",
+    "stepsHead": "The three steps",
+    "step1Title": "Set your own target",
+    "step1Body": "You give a starting weight, an appetite range and a weekly pace. GainWell turns that into a daily calorie line, never a fixed promise.",
+    "step2Title": "Cook and log",
+    "step2Body": "Pick a recipe, cook it, and the meal lands in your day. Ingredients and quantities scale to the servings you made.",
+    "step3Title": "Read the trend",
+    "step3Body": "A week of days sits side by side, so you can see whether you ate more or less than your line.",
+    "statusHead": "Where the build stands today",
+    "statusOpen": "Open now: recipe library, guides, English and French, metric units.",
+    "statusBuilding": "Being built: accounts, profiles, meal logs, daily targets.",
+    "statusNote": "Nothing you write is stored yet, because there is no account system. This page describes what the tool will do.",
+    "ctaRecipes": "Explore recipes",
+    "ctaGuides": "Read the guides"
+  },
+  "privacy": {
+    "title": "Privacy",
+    "lead": "What this site stores about you today, in plain words.",
+    "sections": [
+      {
+        "heading": "Language preference",
+        "body": "When you switch to French or English, the site saves a small cookie called NEXT_LOCALE so your next visit opens in the same language. It holds a language code and nothing else."
+      },
+      {
+        "heading": "No accounts yet",
+        "body": "There is no sign-in, so GainWell has no profile, no meal log, no weight record and no email address for you. Accounts arrive later, and the privacy page will be updated when they do."
+      },
+      {
+        "heading": "No analytics, no advertising",
+        "body": "This site does not use analytics tools or advertising trackers, and it does not sell or share data."
+      },
+      {
+        "heading": "Recipe data",
+        "body": "Recipes and guides are written sample content stored in the site itself. They contain no personal information."
+      },
+      {
+        "heading": "Contact",
+        "body": "Questions about privacy can be sent to hello@example.com. This address is a placeholder until the support inbox is set up."
+      }
+    ],
+    "updated": "Updated {date}"
+  },
+  "terms": {
+    "title": "Terms of use",
+    "lead": "The short version: use the library freely, and treat the numbers as estimates.",
+    "sections": [
+      {
+        "heading": "Not medical advice",
+        "body": "GainWell gives general nutrition information. It is not a diagnosis, a treatment or a replacement for a doctor or dietitian. If you have a health condition, ask a professional before changing how you eat."
+      },
+      {
+        "heading": "Sample content",
+        "body": "Recipes and guides are hand-written samples with estimated nutrition figures. They are not verified against a food database, and they may change as the real data arrives."
+      },
+      {
+        "heading": "Your use",
+        "body": "You may read, cook and share the recipes for personal use. Do not scrape or resell the library, and do not present the estimates as verified data."
+      },
+      {
+        "heading": "No accounts, no stored data",
+        "body": "The site currently stores nothing about you beyond your language cookie. When accounts open, these terms will describe what is stored and how to delete it."
+      },
+      {
+        "heading": "Changes",
+        "body": "These terms change as the product grows. Each version is dated at the top of this page."
+      }
+    ],
+    "updated": "Updated {date}"
+  },
+  "notFound": {
+    "title": "That page is not here",
+    "body": "The address does not match a page in the library. Start from the homepage or browse recipes.",
+    "ctaHome": "Back to homepage",
+    "ctaRecipes": "Explore recipes"
+  }
+}

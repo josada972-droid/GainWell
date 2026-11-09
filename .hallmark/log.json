@@ -1,0 +1,33 @@
+[
+ {
+  "mode": "build",
+  "scope": "app",
+  "genre": "modern-minimal",
+  "theme": "Coral (deal 1/3)",
+  "prompt": "GainWell Stage 1: bilingual EN/FR public frontend for healthy weight gain - homepage, about, how-it-works, recipes and guides with detail pages, privacy, terms; free, no promised results, sample content, Supabase later",
+  "shape": "Narrative Workflow",
+  "axes": "light/grotesk-sans/warm",
+  "hero": "Settled",
+  "nav": "three-part bar",
+  "footer": "letter close",
+  "imagery": "the product built (dashboard preview), no photographs",
+  "entry": "the hero opens on GainWell's own daily-target panel beside the verbatim headline",
+  "fingerprint": "gainwell-friendly-bilingual-nutrition-a1bf-c1a171b6-2026-11-09-r0",
+  "draw": "99f5b5",
+  "job": "try",
+  "sections": [
+   "hero with the dashboard preview",
+   "the statement line",
+   "recipe preview rows",
+   "guide preview rows",
+   "how-it-works as three steps",
+   "FAQ",
+   "letter close footer"
+  ],
+  "signature": "the daily-target panel on the desk",
+  "waived": [
+   "84"
+  ],
+  "date": "2026-11-09"
+ }
+]

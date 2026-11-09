@@ -1,0 +1,235 @@
+{
+  "brand": {
+    "name": "GainWell",
+    "tagline": "La nutrition pour prendre du poids sainement"
+  },
+  "legal": {
+    "updatedDate": "2026-11-09"
+  },
+  "nav": {
+    "recipes": "Recettes",
+    "guides": "Guides",
+    "about": "À propos",
+    "howItWorks": "Comment ça marche",
+    "menu": "Menu",
+    "closeMenu": "Fermer le menu",
+    "skipToContent": "Aller au contenu",
+    "homeAria": "GainWell, retour à l'accueil"
+  },
+  "lang": {
+    "label": "Langue",
+    "en": "English",
+    "fr": "Français"
+  },
+  "footer": {
+    "closing": "Mangez avec un plan, à votre rythme.",
+    "navLabel": "Liens du site",
+    "recipes": "Recettes",
+    "guides": "Guides",
+    "about": "À propos de GainWell",
+    "howItWorks": "Comment ça marche",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "sampleNote": "Les recettes et les guides sont des contenus d'exemple écrits à la main. Rien n'est encore relié à une base nutritionnelle vérifiée.",
+    "builtNote": "GainWell est développé par une petite équipe et reste gratuit."
+  },
+  "home": {
+    "title": "Votre chemin vers une prise de poids plus saine commence ici.",
+    "lead": "Découvrez des repas nutritifs, améliorez vos habitudes alimentaires et suivez vos progrès à votre rythme.",
+    "ctaPrimary": "Commencer",
+    "ctaSecondary": "Voir les recettes",
+    "freeLine": "Gratuit. Les comptes et le suivi des repas sont encore en cours de construction.",
+    "previewCaption": "Aperçu du tableau de bord en construction, avec des valeurs d'exemple.",
+    "previewTargetLabel": "Objectif du jour",
+    "previewTargetUnit": "kcal",
+    "previewEatenLabel": "Mangé aujourd'hui",
+    "previewState": "Dans la bonne voie",
+    "previewMealsLabel": "Repas",
+    "previewProteinLabel": "Protéines",
+    "recipesHead": "Des recettes à cuisiner aujourd'hui",
+    "recipesLead": "Recettes d'exemple, écrites à la main, avec des estimations plutôt que des valeurs vérifiées.",
+    "recipesAll": "Voir toutes les recettes",
+    "guidesHead": "Des guides pour les semaines difficiles",
+    "guidesLead": "Des explications simples sur les calories, les protéines et manger avec un petit budget.",
+    "guidesAll": "Lire les guides",
+    "todayHead": "Ce qui fonctionne aujourd'hui, ce qui vient ensuite",
+    "todayLead": "La bibliothèque publique est ouverte. Les parties qui demandent un compte sont encore en chantier.",
+    "todayNowLabel": "Ouvert maintenant",
+    "recipesItem": "Bibliothèque de recettes avec recherche, catégories et estimations nutritionnelles.",
+    "guidesItem": "Guides sur les calories, les protéines et manger avec peu d'appétit.",
+    "unitsItem": "Unités métriques, anglais et français, sur chaque page.",
+    "nextLabel": "En construction",
+    "accountsItem": "Comptes, connexion et profil privé.",
+    "logItem": "Un journal quotidien avec les calories et les protéines de chaque repas.",
+    "goalsItem": "Des objectifs quotidiens calculés à partir de votre poids et de votre appétit.",
+    "statement": "GainWell vous aide à manger plus sans encombrer votre cuisine.",
+    "faqHead": "Les questions posées en premier",
+    "faq": {
+      "q1": "GainWell est vraiment gratuit ?",
+      "a1": "Oui. La bibliothèque de recettes et les guides sont gratuits et le restent. Les comptes seront gratuits aussi quand ils ouvriront.",
+      "q2": "Vous promettez un nombre de kilos précis ?",
+      "a2": "Non. Les personnes prennent du poids à des vitesses différentes, et votre objectif dépend de votre corps. GainWell montre des aliments et des chiffres, pas un résultat garanti.",
+      "q3": "Les données nutritionnelles sont vérifiées ?",
+      "a3": "Pas encore. Chaque recette ici est écrite à la main avec des valeurs estimées, et chaque page de recette le dit. Les données vérifiées arriveront avec la base alimentaire.",
+      "q4": "Est-ce un conseil médical ?",
+      "a4": "Non. Les guides donnent des informations générales. Pour un problème de santé, parlez à un médecin ou à un diététicien avant de changer votre alimentation.",
+      "q5": "Quelles langues sont prises en charge ?",
+      "a5": "L'anglais et le français, avec des unités métriques. Votre choix est mémorisé pour votre prochaine visite."
+    }
+  },
+  "recipes": {
+    "title": "Des recettes pour manger plus",
+    "lead": "Neuf recettes d'exemple : smoothies, petits-déjeuners, midis, dîners et collations. Les valeurs sont des estimations écrites à la main.",
+    "searchLabel": "Rechercher une recette",
+    "searchPlaceholder": "Par nom ou par ingrédient",
+    "filtersLabel": "Catégorie",
+    "filterAll": "Toutes",
+    "filterSmoothie": "Smoothies",
+    "filterBreakfast": "Petits-déjeuners",
+    "filterLunch": "Midis",
+    "filterDinner": "Dîners",
+    "filterSnack": "Collations",
+    "resultCount": "{count, plural, one {# recette} other {# recettes}}",
+    "emptyTitle": "Aucune recette ne correspond à cette recherche",
+    "emptyBody": "Essayez un mot plus court, comme avoine, lait ou riz, ou choisissez une catégorie.",
+    "prepTime": "Préparation",
+    "minutes": "{count} min",
+    "kcal": "kcal",
+    "grams": "g",
+    "servings": "{count, plural, one {# portion} other {# portions}}"
+  },
+  "recipe": {
+    "backToRecipes": "Toutes les recettes",
+    "sampleNotice": "Recette d'exemple. Les chiffres nutritionnels sont des estimations écrites à la main, pas une base vérifiée.",
+    "servingsLabel": "Portions",
+    "servingsDecrease": "Une portion de moins",
+    "servingsIncrease": "Une portion de plus",
+    "scaledNote": "Les quantités et les chiffres suivent le nombre de portions choisi.",
+    "ingredientsHead": "Ingrédients",
+    "stepsHead": "Étapes",
+    "nutritionHead": "Nutrition par portion",
+    "nutritionPerServing": "Par portion",
+    "nutritionTotal": "Total pour {count} portions",
+    "kcal": "Calories",
+    "protein": "Protéines",
+    "carbs": "Glucides",
+    "fat": "Lipides",
+    "tipHead": "Note de cuisine",
+    "updated": "Mise à jour le {date}",
+    "notFoundTitle": "Cette recette n'existe pas",
+    "notFoundBody": "La bibliothèque contient neuf recettes d'exemple. Choisissez-en une dans la liste."
+  },
+  "guides": {
+    "title": "Guides pour une prise de poids saine",
+    "lead": "Cinq guides d'exemple sur les calories, les protéines, l'appétit et manger avec un petit budget.",
+    "readingTime": "{count} min de lecture",
+    "updated": "Mis à jour le {date}",
+    "readGuide": "Lire le guide",
+    "sampleNotice": "Contenus d'exemple. Informations générales, pas des conseils médicaux.",
+    "notFoundTitle": "Ce guide n'existe pas",
+    "notFoundBody": "La bibliothèque contient cinq guides d'exemple. Choisissez-en un dans la liste."
+  },
+  "guide": {
+    "backToGuides": "Tous les guides",
+    "writtenBy": "Écrit pour la bibliothèque GainWell",
+    "sampleNotice": "Contenu d'exemple, information générale, pas un conseil médical.",
+    "nextHead": "Guide suivant",
+    "nextLead": "Continuez avec"
+  },
+  "about": {
+    "title": "À propos de GainWell",
+    "lead": "Une bibliothèque gratuite pour les personnes qui veulent manger plus, en anglais et en français.",
+    "body": [
+      "GainWell existe parce que prendre du poids est plus difficile qu'on ne le croit. L'estomac plein, l'appétit bas, la nourriture chère et les conseils flous gênent tout.",
+      "Le projet est un outil petit et calme : des recettes qui remplissent vraiment, des guides qui expliquent les calories et les protéines avec des mots simples, et un journal quotidien qui montre une tendance plutôt qu'un verdict.",
+      "Aujourd'hui, la bibliothèque publique est ouverte. Les comptes, les profils et le suivi sont en construction, donc rien à votre sujet n'est stocké.",
+      "GainWell est gratuit et le reste. Il ne vend pas vos données et ne fait pas la publicité des régimes."
+    ],
+    "principlesHead": "Comment nous écrivons",
+    "principles": [
+      "Aucun résultat promis. Les personnes prennent du poids à des vitesses différentes.",
+      "Toujours des unités métriques : grammes, millilitres, kilocalories.",
+      "Les données d'exemple sont marquées comme telles.",
+      "Des informations générales, pas un conseil médical."
+    ],
+    "languagesHead": "Langues et unités",
+    "languagesBody": "Chaque page est écrite en anglais et en français. Les chiffres utilisent les unités métriques, et les dates suivent la langue choisie."
+  },
+  "howItWorks": {
+    "title": "Comment ça marche",
+    "lead": "Trois étapes, quand les comptes seront ouverts. En attendant, les recettes et les guides sont à vous.",
+    "stepsHead": "Les trois étapes",
+    "step1Title": "Choisissez votre objectif",
+    "step1Body": "Vous donnez un poids de départ, une fourchette d'appétit et un rythme par semaine. GainWell en fait une ligne quotidienne de calories, jamais une promesse fixe.",
+    "step2Title": "Cuisez et notez",
+    "step2Body": "Choisissez une recette, cuisez-la, et le repas arrive dans votre journée. Les ingrédients et les quantités suivent les portions que vous avez faites.",
+    "step3Title": "Lisez la tendance",
+    "step3Body": "Une semaine de journées côte à côte, pour voir si vous avez mangé plus ou moins que votre ligne.",
+    "statusHead": "Où en est la construction",
+    "statusOpen": "Ouvert maintenant : bibliothèque de recettes, guides, anglais et français, unités métriques.",
+    "statusBuilding": "En construction : comptes, profils, journaux de repas, objectifs quotidiens.",
+    "statusNote": "Rien de ce que vous écrivez n'est stocké, car il n'y a pas de système de compte. Cette page décrit ce que l'outil fera.",
+    "ctaRecipes": "Voir les recettes",
+    "ctaGuides": "Lire les guides"
+  },
+  "privacy": {
+    "title": "Confidentialité",
+    "lead": "Ce que ce site stocke à votre sujet aujourd'hui, avec des mots simples.",
+    "sections": [
+      {
+        "heading": "Préférence de langue",
+        "body": "Quand vous passez au français ou à l'anglais, le site enregistre un petit cookie appelé NEXT_LOCALE pour que votre prochaine visite s'ouvre dans la même langue. Il contient un code de langue et rien d'autre."
+      },
+      {
+        "heading": "Pas encore de comptes",
+        "body": "Il n'y a pas de connexion, donc GainWell n'a ni profil, ni journal de repas, ni poids enregistré, ni adresse email pour vous. Les comptes arrivent plus tard, et cette page sera mise à jour quand ils ouvriront."
+      },
+      {
+        "heading": "Pas de mesure d'audience, pas de publicité",
+        "body": "Ce site n'utilise pas d'outils de mesure d'audience ni de traceurs publicitaires, et ne vend ni ne partage de données."
+      },
+      {
+        "heading": "Données des recettes",
+        "body": "Les recettes et les guides sont des contenus d'exemple écrits à la main, stockés dans le site. Ils ne contiennent aucune information personnelle."
+      },
+      {
+        "heading": "Contact",
+        "body": "Les questions sur la confidentialité peuvent être envoyées à hello@example.com. Cette adresse est un remplacement jusqu'à la mise en place de la boîte de support."
+      }
+    ],
+    "updated": "Mis à jour le {date}"
+  },
+  "terms": {
+    "title": "Conditions d'utilisation",
+    "lead": "La version courte : utilisez la bibliothèque librement et considérez les chiffres comme des estimations.",
+    "sections": [
+      {
+        "heading": "Pas un conseil médical",
+        "body": "GainWell donne des informations générales de nutrition. Ce n'est pas un diagnostic, un traitement ni un remplacement d'un médecin ou d'un diététicien. Si vous avez un problème de santé, demandez un professionnel avant de changer votre alimentation."
+      },
+      {
+        "heading": "Contenus d'exemple",
+        "body": "Les recettes et les guides sont des exemples écrits à la main avec des chiffres nutritionnels estimés. Ils ne sont pas vérifiés contre une base alimentaire, et ils peuvent changer quand les vraies données arriveront."
+      },
+      {
+        "heading": "Votre usage",
+        "body": "Vous pouvez lire, cuisiner et partager les recettes pour un usage personnel. Ne collectez pas ni ne revendez la bibliothèque, et ne présentez pas les estimations comme des données vérifiées."
+      },
+      {
+        "heading": "Pas de comptes, pas de données stockées",
+        "body": "Le site ne stocke rien à votre part sauf votre cookie de langue. Quand les comptes ouvriront, ces conditions diront ce qui est stocké et comment le supprimer."
+      },
+      {
+        "heading": "Changements",
+        "body": "Ces conditions changent avec le produit. Chaque version est datée en haut de cette page."
+      }
+    ],
+    "updated": "Mis à jour le {date}"
+  },
+  "notFound": {
+    "title": "Cette page n'est pas ici",
+    "body": "L'adresse ne correspond à aucune page de la bibliothèque. Repartez de l'accueil ou parcourez les recettes.",
+    "ctaHome": "Retour à l'accueil",
+    "ctaRecipes": "Voir les recettes"
+  }
+}

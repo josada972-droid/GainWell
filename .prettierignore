@@ -1,2 +1,5 @@
 # User-authored requirements document; never restyled by the formatter.
 AGENTS.md
+
+# Hallmark's own artifacts (theme log, captured screenshots); written by its scripts.
+.hallmark/

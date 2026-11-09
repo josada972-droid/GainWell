@@ -1,16 +1,269 @@
+/* Hallmark · shape: Narrative Workflow · genre: modern-minimal · theme: Coral (deal 1/3, seed gainwell-friendly-bilingual-nutrition-a1bf·c1a171b6·2026-11-09·r0) · job: try · draw: 99f5b5
+ * hero: Settled · nav: three-part bar · footer: letter close · imagery: the product built (dashboard preview), no photographs · signature: the daily-target panel on the desk
+ * axes: light/grotesk-sans/warm · posture: full palette · contrast: pass · fold: pass · copy: verbatim · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: S, the hero read like any nutrition site; it now leads with GainWell's own daily-target panel and the sample meal rows */
+/* Hallmark · waive 84 · guard: no dashboard route exists yet, nothing to capture · the dashboard preview is built because tracking is Stage 3 */
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "./tokens.css";
+@import "./base.css" layer(base);
 
+/* shadcn's component tokens read from the brand palette above. Light-only: no dark
+ * mode is in scope for Stage 1, so contrast is fixed once, in tokens.css. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: var(--color-paper);
+  --foreground: var(--color-ink);
+  --card: var(--color-cotton);
+  --card-foreground: var(--color-print);
+  --popover: var(--color-cotton);
+  --popover-foreground: var(--color-ink);
+  --primary: var(--color-green);
+  --primary-foreground: var(--color-green-ink);
+  --secondary: var(--color-paper-2);
+  --secondary-foreground: var(--color-ink);
+  --muted: var(--color-paper-2);
+  --muted-foreground: var(--color-muted);
+  --accent: var(--color-sage);
+  --accent-foreground: var(--color-ink);
+  --destructive: var(--color-error);
+  --border: var(--color-rule-2);
+  --input: var(--color-muted);
+  --ring: var(--color-focus);
+  --radius: 10px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --font-heading: var(--font-display);
+  --font-sans: var(--font-body);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
+/* Stationery: cotton sheets on the desk, lit from the left, casting to the right. */
+.desk {
+  background-color: var(--color-desk);
+  background-image: radial-gradient(
+    90% 120% at 0% 30%,
+    var(--color-cotton),
+    transparent 62%
+  );
+}
+
+.stock {
+  background-color: var(--color-cotton);
+  color: var(--color-print);
+  border-radius: var(--radius-stock);
+  box-shadow: var(--edge-stock), var(--cast-stock);
+}
+
+.well {
+  background-color: var(--color-paper-2);
+  border-radius: var(--radius-card);
+}
+
+.hairline {
+  border-top: var(--rule-hair) solid var(--color-rule);
+}
+
+/* Pressed card controls: one filled primary per page, everything else quiet. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  min-height: 48px;
+  padding-inline: var(--space-lg);
+  border-radius: var(--radius-stock);
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none;
+  transition:
+    background-color var(--dur-short) var(--ease-out),
+    transform var(--dur-micro) var(--ease-out),
+    box-shadow var(--dur-short) var(--ease-out);
+}
+
+.btn--primary {
+  background-color: var(--color-green);
+  color: var(--color-green-ink);
+  box-shadow: var(--cast-stock);
+}
+
+.btn--primary:hover {
+  background-color: var(--color-green-deep);
+  transform: translateY(-1px);
+}
+
+.btn--primary:active {
+  transform: translateY(1px);
+}
+
+.btn--quiet {
+  background-color: transparent;
+  border: 1px solid var(--color-muted);
+  color: var(--color-ink);
+  box-shadow: var(--cast-stock);
+}
+
+.btn--quiet:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--cast-stock-lift);
+}
+
+.btn--quiet:active {
+  transform: translateY(1px);
+}
+
+.btn[disabled],
+.btn[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* A choice pressed into cotton: the language selector and recipe category filters. */
+.groove {
+  display: flex;
+  gap: var(--space-3xs);
+  padding: var(--space-3xs);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--press-groove);
+  background-color: var(--color-paper-2);
+}
+
+.groove__stop {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding-inline: var(--space-md);
+  border: 0;
+  border-radius: var(--radius-pill);
+  color: var(--color-muted);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--dur-short) var(--ease-out);
+}
+
+/* Text fields press into the stock the same way the groove does. */
+.field {
+  min-height: 48px;
+  padding-inline: var(--space-md);
+  border: 1px solid var(--color-muted);
+  border-radius: var(--radius-input);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+}
+
+.field::placeholder {
+  color: var(--color-muted);
+}
+
+.field:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.groove__stop:hover {
+  color: var(--color-ink);
+}
+
+.groove__stop[aria-current="true"],
+.groove__stop[aria-pressed="true"] {
+  background-color: var(--color-sage);
+  color: var(--color-accent-ink);
+}
+
+/* The dashboard preview: the product's own screen, built at full size, sample values. */
+.preview-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-block: var(--space-sm);
+}
+
+.preview-row + .preview-row {
+  border-top: var(--rule-hair) solid var(--color-rule);
+}
+
+.preview-bar {
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-paper-3);
+  overflow: hidden;
+}
+
+.preview-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-green);
+}
+
+/* Prose for guides and legal pages: one measure, generous leading. */
+.prose {
+  max-width: 68ch;
+  line-height: 1.7;
+}
+
+.prose > p + p {
+  margin-top: var(--space-md);
+}
+
+.prose > ul {
+  margin-top: var(--space-md);
+  padding-left: var(--space-lg);
+  list-style: disc;
+}
+
+.prose > ul > li + li {
+  margin-top: var(--space-xs);
+}
+
+.prose > h2 {
+  margin-top: var(--space-xl);
+}
+
+.prose > h2 + p {
+  margin-top: var(--space-sm);
+}
+
+/* FAQ as native details/summary: keyboard usable with no script. */
+.faq > details {
+  border-top: var(--rule-hair) solid var(--color-rule);
+  padding-block: var(--space-md);
+}
+
+.faq > details > summary {
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--text-title);
+  line-height: 1.2;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.faq > details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq > details > p {
+  margin-top: var(--space-sm);
+  max-width: 60ch;
+  color: var(--color-ink-2);
+}
+
+/* The state marker is a rotated plus, so it reads open and closed without a script. */
+.faq > details > summary::after {
+  content: "+";
+  font-family: var(--font-display);
+  color: var(--color-green);
+  transition: transform var(--dur-short) var(--ease-out);
+}
+
+.faq > details[open] > summary::after {
+  transform: rotate(45deg);
 }
