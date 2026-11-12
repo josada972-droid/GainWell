@@ -9,8 +9,14 @@ Reusable conventions for every stage. `AGENTS.md` remains the source of truth fo
 - `src/components/` — Reusable UI components. Presentational; no direct database or API access.
 - `src/lib/` — All business logic. Nutrition calculations, Open Food Facts service, Supabase clients, Zod schemas. Pure TypeScript modules with no React imports, so they stay independently testable.
 - `src/lib/content/` — Stage 1 hand-written sample recipes and guides (`recipes.ts`, `guides.ts`). Sample content, not production data.
+- `src/lib/supabase/` — Stage 2: `env.ts` (Zod-validated env, fail-closed), `client.ts` (browser), `server.ts` (per-request server client), `proxy.ts` (session refresh for `src/proxy.ts`), `types.ts` (hand-written `Database` type until generated).
+- `src/lib/auth/` — Stage 2: `schemas.ts` (Zod), `errors.ts` (Supabase error → i18n key), `redirect.ts` (open-redirect whitelist), `session.ts` (`getUser()` readers), `actions.ts` ("use server" mutations for every auth form).
+- `src/app/auth/confirm/route.ts` — PKCE token-hash landing handler (email confirmation + recovery), outside `[locale]`, manages its own cookie writes.
+- `src/app/[locale]/login|signup|forgot-password|reset-password|dashboard/` — Stage 2 auth pages; the dashboard is protected via a Suspense-gated session check.
+- `src/components/auth/` — form components (`useActionState`), submit button (`useFormStatus`), session gates, card shell.
+- `supabase/migrations/` — versioned SQL; `0001_profiles.sql` creates `public.profiles` with RLS (`docs/supabase.md`).
 - `src/i18n/` — `routing.ts` (defineRouting), `request.ts` (per-request locale + messages), `navigation.ts` (`createNavigation` links and `usePathname`).
-- `src/proxy.ts` — locale detection, redirect, and the `NEXT_LOCALE` cookie.
+- `src/proxy.ts` — locale detection, redirect, the `NEXT_LOCALE` cookie, and the Supabase session refresh (`auth.getClaims()`, no database access); `auth/` paths are excluded so the confirm route handler runs bare.
 - `messages/` — `en.json`, `fr.json`; one namespace per page/component.
 - `e2e/` — Playwright specs; `playwright.config.ts` drives the built app.
 - `docs/` — Architecture, decisions, setup notes; `docs/screenshots/` holds QA evidence.
@@ -59,7 +65,8 @@ Import alias: `@/*` → `src/*`.
 ## Dependency policy
 
 - Add a dependency only when the current stage needs it, and say why. No speculative packages.
-- Stage 1 shipped: `next-intl` (bilingual UI), `lucide-react` (icons), `cn` + `class-variance-authority` + `@base-ui/react` + `shadcn` (the shadcn/ui base AGENTS.md §3 requires; only `Button` is installed and no page uses it yet — it arrives with Stage 2 forms), `@playwright/test` (QA gate, earlier than the Stage 6 plan because Stage 1 is the first UI).
+- Stage 1 shipped: `next-intl` (bilingual UI), `lucide-react` (icons), `cn` + `class-variance-authority` + `@base-ui/react` + `shadcn` (the shadcn/ui base AGENTS.md §3 requires; only `Button` is installed and no page uses it — auth forms use the design-system `.btn`/`.field` classes instead), `@playwright/test` (QA gate, earlier than the Stage 6 plan because Stage 1 is the first UI).
+- Stage 2 shipped: `@supabase/supabase-js` + `@supabase/ssr` (backend + cookie sessions), `zod` (trust-boundary validation, brought forward from the Stage 3 plan), `server-only` (keeps server clients out of the browser bundle), `vitest` (dev; unit/integration tests — kept at v4 because v5 needs a newer `@types/node`). React Hook Form still belongs to Stage 3.
 - `npx shadcn` fails on this machine (`EALLOWSCRIPTS` from the user's `~/.npmrc`); run the CLI as `node node_modules\shadcn\dist\index.js`.
 - Stage plan: Stage 2 Supabase · Stage 3 Zod + React Hook Form + Vitest · Stage 4 Open Food Facts service · Stage 5 Recharts · Stage 6 React Testing Library.
 
@@ -82,4 +89,5 @@ Temporary sample content must be clearly marked (module name, comment, or metada
 - Vitest defaults to `environment: "node"`; component tests need the `jsdom` package. Vitest also collects `*.spec.ts`, which collides with Playwright's test files — the Vitest config must exclude the e2e directory. Tests using next-intl's `createNavigation` need `test.server.deps.inline: ["next-intl"]`.
 - Playwright drives the built app via `webServer` (`npm run start`) and responsive viewports through config `projects` (`devices`), with per-test `page.setViewportSize()` for 320/375 px.
 - Stage 1 specs (`npm run test:e2e`): every route in both locales, locale redirect and cookie persistence, localized 404s, nav and footer link resolution, recipe search (accent-folded) and category filters, serving scaling, no horizontal overflow at 320/375/768/1024/1440, mobile menu, keyboard focus and landmarks, and a console/page-error guard. Assert navigation with `await expect(page).toHaveURL(...)` — reading `page.url()` right after a click races the client-side redirect.
+- Stage 2 specs: `e2e/auth.spec.ts` always runs (auth pages render, links, dashboard → login redirect, 320 px overflow); `e2e/auth-flows.spec.ts` runs only with `RUN_SUPABASE_E2E=1` + credentials (signup → dashboard → signout → signin, session persistence, FR dashboard). Unit/integration tests live in `tests/` (`npm test`, Vitest); the RLS isolation test is gated by `SUPABASE_TEST_*` the same way. `docs/supabase.md` documents every manual step.
 - The console guard ignores "Failed to load resource" so the intentional 404 tests do not fail on their own status codes.

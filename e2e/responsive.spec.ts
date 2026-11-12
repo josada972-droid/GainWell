@@ -68,8 +68,8 @@ test("the phone menu opens, navigates and stays touch-sized", async ({
   await expect(
     page.getByRole("button", { name: "Close menu" }),
   ).toHaveAttribute("aria-expanded", "true");
-  // Four destinations plus the two language stops the menu carries.
-  await expect(page.locator("#site-menu").getByRole("link")).toHaveCount(6);
+  // Five destinations plus the two language stops the menu carries.
+  await expect(page.locator("#site-menu").getByRole("link")).toHaveCount(7);
   await expect(
     page.locator("#site-menu").getByRole("group", { name: "Language" }),
   ).toBeVisible();

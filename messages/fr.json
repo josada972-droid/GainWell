@@ -14,7 +14,8 @@
     "menu": "Menu",
     "closeMenu": "Fermer le menu",
     "skipToContent": "Aller au contenu",
-    "homeAria": "GainWell, retour à l'accueil"
+    "homeAria": "GainWell, retour à l'accueil",
+    "login": "Se connecter"
   },
   "lang": {
     "label": "Langue",
@@ -182,8 +183,8 @@
         "body": "Quand vous passez au français ou à l'anglais, le site enregistre un petit cookie appelé NEXT_LOCALE pour que votre prochaine visite s'ouvre dans la même langue. Il contient un code de langue et rien d'autre."
       },
       {
-        "heading": "Pas encore de comptes",
-        "body": "Il n'y a pas de connexion, donc GainWell n'a ni profil, ni journal de repas, ni poids enregistré, ni adresse email pour vous. Les comptes arrivent plus tard, et cette page sera mise à jour quand ils ouvriront."
+        "heading": "Votre compte",
+        "body": "Les comptes sont ouverts. En créer un stocke votre adresse courriel, un nom affiché optionnel, votre choix de langue et quelques horodatages — rien d'autre pour l'instant. Le journal de repas et les poids arriveront dans une étape ultérieure, sous les mêmes règles. Pour faire supprimer votre compte, écrivez à hello@example.com tant que la suppression dans l'application n'existe pas."
       },
       {
         "heading": "Pas de mesure d'audience, pas de publicité",
@@ -217,8 +218,8 @@
         "body": "Vous pouvez lire, cuisiner et partager les recettes pour un usage personnel. Ne collectez pas ni ne revendez la bibliothèque, et ne présentez pas les estimations comme des données vérifiées."
       },
       {
-        "heading": "Pas de comptes, pas de données stockées",
-        "body": "Le site ne stocke rien à votre part sauf votre cookie de langue. Quand les comptes ouvriront, ces conditions diront ce qui est stocké et comment le supprimer."
+        "heading": "Comptes",
+        "body": "Un compte stocke votre adresse courriel, un nom affiché optionnel et votre choix de langue. La page Confidentialité liste tout ce qui est stocké. Les recettes restent des contenus d'exemple et les chiffres restent des estimations."
       },
       {
         "heading": "Changements",
@@ -232,5 +233,76 @@
     "body": "L'adresse ne correspond à aucune page de la bibliothèque. Repartez de l'accueil ou parcourez les recettes.",
     "ctaHome": "Retour à l'accueil",
     "ctaRecipes": "Voir les recettes"
+  },
+  "auth": {
+    "common": {
+      "submitting": "Envoi…"
+    },
+    "login": {
+      "title": "Connexion",
+      "lead": "Content de vous revoir. Votre tableau de bord garde le journal de repas que vous construisez.",
+      "emailLabel": "Adresse courriel",
+      "passwordLabel": "Mot de passe",
+      "submit": "Se connecter",
+      "noAccount": "Pas encore de compte ?",
+      "createAccountLink": "Créez-en un",
+      "forgotLink": "Mot de passe oublié ?"
+    },
+    "signup": {
+      "title": "Créer un compte",
+      "lead": "Gratuit. Une adresse courriel et un mot de passe suffisent.",
+      "displayNameLabel": "Nom affiché",
+      "displayNameHint": "Optionnel. Il apparaît sur votre tableau de bord.",
+      "emailLabel": "Adresse courriel",
+      "passwordLabel": "Mot de passe",
+      "passwordHint": "Au moins 8 caractères.",
+      "submit": "Créer le compte",
+      "haveAccount": "Vous avez déjà un compte ?",
+      "signInLink": "Connectez-vous"
+    },
+    "forgot": {
+      "title": "Réinitialiser votre mot de passe",
+      "lead": "Nous envoyons un lien de récupération si un compte existe pour cette adresse.",
+      "emailLabel": "Adresse courriel",
+      "submit": "Envoyer le lien de récupération",
+      "backToLogin": "Retour à la connexion"
+    },
+    "reset": {
+      "title": "Choisir un nouveau mot de passe",
+      "lead": "Vous êtes connecté grâce à votre lien de récupération. Choisissez un nouveau mot de passe.",
+      "passwordLabel": "Nouveau mot de passe",
+      "passwordHint": "Au moins 8 caractères.",
+      "submit": "Enregistrer le nouveau mot de passe",
+      "backToForgot": "Demander un nouveau lien de récupération"
+    },
+    "dashboard": {
+      "title": "Votre tableau de bord",
+      "lead": "L'espace compte de GainWell.",
+      "signedInAsName": "Connecté en tant que {name}.",
+      "signedInAsGeneric": "Vous êtes connecté.",
+      "stageNote": "Le suivi des repas, les objectifs et le vrai tableau de bord arrivent à l'étape suivante. Rien d'autre n'est encore stocké à votre sujet.",
+      "signOut": "Se déconnecter"
+    },
+    "errors": {
+      "invalidEmail": "Cette adresse courriel ne semble pas valide.",
+      "emailTooLong": "Cette adresse courriel est trop longue.",
+      "weakPassword": "Utilisez au moins 8 caractères pour votre mot de passe.",
+      "passwordTooLong": "Les mots de passe comptent au plus 72 caractères.",
+      "missingPassword": "Saisissez votre mot de passe.",
+      "invalidName": "Le nom affiché compte au plus 60 caractères.",
+      "invalidCredentials": "L'adresse courriel ou le mot de passe n'est pas correct.",
+      "emailTaken": "Un compte existe déjà avec cette adresse. Essayez de vous connecter.",
+      "emailNotConfirmed": "Confirmez d'abord votre adresse courriel — le lien est dans votre boîte de réception.",
+      "rateLimited": "Trop de tentatives. Attendez un instant et réessayez.",
+      "sessionExpired": "Votre session a expiré. Reconnectez-vous.",
+      "config": "L'application n'est pas encore reliée à son serveur. Réessayez plus tard.",
+      "unexpected": "Une erreur est survenue. Réessayez."
+    },
+    "notices": {
+      "confirmEmailSent": "Consultez votre boîte de réception : nous vous avons envoyé un lien de confirmation pour finir de créer votre compte.",
+      "resetEmailSent": "Consultez votre boîte de réception : si un compte existe pour cette adresse, un lien de récupération est en route.",
+      "confirmFailed": "Ce lien n'est plus valable ou a déjà été utilisé.",
+      "recoveryExpired": "Cette page exige une session créée par un lien de récupération. Demandez un nouveau lien pour continuer."
+    }
   }
 }

@@ -14,7 +14,8 @@
     "menu": "Menu",
     "closeMenu": "Close menu",
     "skipToContent": "Skip to content",
-    "homeAria": "GainWell, back to the homepage"
+    "homeAria": "GainWell, back to the homepage",
+    "login": "Log in"
   },
   "lang": {
     "label": "Language",
@@ -182,8 +183,8 @@
         "body": "When you switch to French or English, the site saves a small cookie called NEXT_LOCALE so your next visit opens in the same language. It holds a language code and nothing else."
       },
       {
-        "heading": "No accounts yet",
-        "body": "There is no sign-in, so GainWell has no profile, no meal log, no weight record and no email address for you. Accounts arrive later, and the privacy page will be updated when they do."
+        "heading": "Your account",
+        "body": "Accounts are open. Creating one stores your email address, an optional display name, your language choice and a couple of timestamps — nothing else yet. The meal log and weight records arrive in a later stage under the same rules. To have your account deleted, write to hello@example.com until deletion ships in the app."
       },
       {
         "heading": "No analytics, no advertising",
@@ -217,8 +218,8 @@
         "body": "You may read, cook and share the recipes for personal use. Do not scrape or resell the library, and do not present the estimates as verified data."
       },
       {
-        "heading": "No accounts, no stored data",
-        "body": "The site currently stores nothing about you beyond your language cookie. When accounts open, these terms will describe what is stored and how to delete it."
+        "heading": "Accounts",
+        "body": "An account stores your email address, an optional display name and your language choice. The privacy page lists everything that is stored. Recipes remain sample content, and the numbers remain estimates."
       },
       {
         "heading": "Changes",
@@ -232,5 +233,76 @@
     "body": "The address does not match a page in the library. Start from the homepage or browse recipes.",
     "ctaHome": "Back to homepage",
     "ctaRecipes": "Explore recipes"
+  },
+  "auth": {
+    "common": {
+      "submitting": "Sending…"
+    },
+    "login": {
+      "title": "Log in",
+      "lead": "Welcome back. Your dashboard keeps the meal log you are building.",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "submit": "Log in",
+      "noAccount": "No account yet?",
+      "createAccountLink": "Create one",
+      "forgotLink": "Forgot your password?"
+    },
+    "signup": {
+      "title": "Create your account",
+      "lead": "Free to use. An email address and a password are enough.",
+      "displayNameLabel": "Display name",
+      "displayNameHint": "Optional. Shown on your dashboard.",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "passwordHint": "At least 8 characters.",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "signInLink": "Log in"
+    },
+    "forgot": {
+      "title": "Reset your password",
+      "lead": "We send a recovery link if an account exists for this address.",
+      "emailLabel": "Email",
+      "submit": "Send recovery link",
+      "backToLogin": "Back to log in"
+    },
+    "reset": {
+      "title": "Choose a new password",
+      "lead": "You are signed in through your recovery link. Pick a new password.",
+      "passwordLabel": "New password",
+      "passwordHint": "At least 8 characters.",
+      "submit": "Save new password",
+      "backToForgot": "Request a new recovery link"
+    },
+    "dashboard": {
+      "title": "Your dashboard",
+      "lead": "The account area of GainWell.",
+      "signedInAsName": "Signed in as {name}.",
+      "signedInAsGeneric": "You are signed in.",
+      "stageNote": "Meal tracking, goals and the real dashboard arrive in the next stage. Nothing else is stored about you yet.",
+      "signOut": "Sign out"
+    },
+    "errors": {
+      "invalidEmail": "That email address does not look right.",
+      "emailTooLong": "That email address is too long.",
+      "weakPassword": "Use at least 8 characters for your password.",
+      "passwordTooLong": "Passwords can be at most 72 characters.",
+      "missingPassword": "Enter your password.",
+      "invalidName": "The display name can be at most 60 characters.",
+      "invalidCredentials": "Email or password is not correct.",
+      "emailTaken": "An account with this email already exists. Try logging in instead.",
+      "emailNotConfirmed": "Confirm your email address first — the link is in your inbox.",
+      "rateLimited": "Too many attempts. Wait a moment and try again.",
+      "sessionExpired": "Your session has expired. Log in again.",
+      "config": "The app is not connected to its backend yet. Please try again later.",
+      "unexpected": "Something went wrong. Please try again."
+    },
+    "notices": {
+      "confirmEmailSent": "Check your inbox: we sent a confirmation link to finish creating your account.",
+      "resetEmailSent": "Check your inbox: if an account exists for this address, a recovery link is on its way.",
+      "confirmFailed": "That link is no longer valid or has already been used.",
+      "recoveryExpired": "This page needs a session created by a recovery link. Request a fresh link to continue."
+    }
   }
 }

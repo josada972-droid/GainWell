@@ -260,6 +260,17 @@
   font-weight: 500;
 }
 
+/* Auth forms: the one-line announcement under a form, asserted or reported. */
+.form-alert {
+  margin-top: var(--space-2xs);
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+}
+
+.form-alert--error {
+  color: var(--color-error);
+}
+
 /* Prose for guides and legal pages: one measure, generous leading. */
 .prose {
   max-width: 68ch;

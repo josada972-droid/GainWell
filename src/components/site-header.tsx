@@ -13,6 +13,7 @@ const destinations = [
   { href: "/guides", key: "guides" },
   { href: "/how-it-works", key: "howItWorks" },
   { href: "/about", key: "about" },
+  { href: "/login", key: "login" },
 ] as const;
 
 /**
