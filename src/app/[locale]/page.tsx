@@ -77,6 +77,7 @@ export default async function HomePage() {
       </section>
 
       <FeatureSection
+        index="01"
         title={t("recipesHead")}
         lead={t("recipesLead")}
         action={
@@ -94,6 +95,7 @@ export default async function HomePage() {
 
       <FeatureSection
         tone="desk"
+        index="02"
         title={t("guidesHead")}
         lead={t("guidesLead")}
         action={
@@ -109,7 +111,7 @@ export default async function HomePage() {
         </ul>
       </FeatureSection>
 
-      <FeatureSection title={t("todayHead")} lead={t("todayLead")}>
+      <FeatureSection index="03" title={t("todayHead")} lead={t("todayLead")}>
         <StatusList
           groups={[
             {

@@ -36,14 +36,15 @@ export async function DashboardPreview() {
 
   return (
     <figure data-slot="dashboard" className="stock p-(--space-lg)">
-      <div className="flex items-baseline justify-between gap-(--space-md)">
-        <span className="text-sm text-(--color-muted)">
-          {t("previewTargetLabel")}
-        </span>
+      <div className="flex flex-wrap items-center justify-between gap-(--space-sm)">
+        <span className="chip--sample">{t("previewSampleBadge")}</span>
         <span className="num font-display text-2xl text-(--color-ink)">
           {format.number(SAMPLE_TARGET)} {t("previewTargetUnit")}
         </span>
       </div>
+      <p className="mt-(--space-2xs) text-sm text-(--color-muted)">
+        {t("previewTargetLabel")}
+      </p>
       <div className="preview-bar mt-(--space-sm)" aria-hidden="true">
         <span style={{ width: `${fill}%` }} />
       </div>

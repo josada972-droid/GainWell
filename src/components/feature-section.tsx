@@ -7,12 +7,14 @@ import { SectionHeading } from "@/components/section-heading";
  */
 export function FeatureSection({
   tone = "paper",
+  index,
   title,
   lead,
   children,
   action,
 }: {
   tone?: "paper" | "desk";
+  index?: string;
   title: string;
   lead?: string;
   children: React.ReactNode;
@@ -23,7 +25,7 @@ export function FeatureSection({
       className={cn("hairline py-(--section-gap)", tone === "desk" && "desk")}
     >
       <div className="container">
-        <SectionHeading title={title} lead={lead} />
+        <SectionHeading title={title} lead={lead} index={index} />
         <div className="mt-(--space-xl)">{children}</div>
         {action ? <div className="mt-(--space-lg)">{action}</div> : null}
       </div>

@@ -18,4 +18,7 @@ test("homepage screenshots at desktop and phone widths", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 720 });
   await page.goto("/en");
   await page.screenshot({ path: `${dir}/home-en-mobile.png`, fullPage: true });
+
+  await page.goto("/fr");
+  await page.screenshot({ path: `${dir}/home-fr-mobile.png`, fullPage: true });
 });

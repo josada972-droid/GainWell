@@ -73,7 +73,7 @@ Import alias: `@/*` → `src/*`.
 
 Temporary sample content must be clearly marked (module name, comment, or metadata) and removed at Stage 6. Mock data never silently stands in for production data.
 
-- Stage 1 content is hand-written sample data in `src/lib/content/recipes.ts` and `guides.ts` — no scraped recipe text, no fabricated nutrition from a database. Recipe and guide pages carry a visible sample notice, the recipe list says values are estimates, and the homepage dashboard preview derives its numbers from the seed recipes and is captioned as sample.
+- Stage 1 content is hand-written sample data in `src/lib/content/recipes.ts` and `guides.ts` — no scraped recipe text, no fabricated nutrition from a database. Recipe and guide pages carry a visible sample notice, the recipe list says values are estimates, and the homepage dashboard preview derives its numbers from the seed recipes, carries a "Sample data" badge, labels its line "Example day", and is captioned as illustrative rather than a personal target.
 - Nothing here talks to Supabase. Pages read the seed modules through the same shape a later repository layer will return, so the swap is a fetch, not a rewrite.
 
 ## Testing

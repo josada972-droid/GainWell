@@ -1,20 +1,22 @@
-/** Section heading: the title and its one lead line. Page heroes use level 1. */
+/** Section heading: a ledger numeral, the title and its one lead line. */
 export function SectionHeading({
   title,
   lead,
+  index,
   level = 2,
 }: {
   title: string;
   lead?: string;
+  index?: string;
   level?: 1 | 2;
 }) {
   const Heading = level === 1 ? "h1" : "h2";
   return (
-    <>
-      <Heading>{title}</Heading>
-      {lead ? (
-        <p className="lead mt-(--space-md) text-(--color-ink-2)">{lead}</p>
-      ) : null}
-    </>
+    <div className="section-head">
+      <div data-index={index}>
+        <Heading>{title}</Heading>
+      </div>
+      {lead ? <p className="lead text-(--color-ink-2)">{lead}</p> : null}
+    </div>
   );
 }
