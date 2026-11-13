@@ -1,4 +1,4 @@
-# Supabase backend (Stage 2)
+# Supabase backend (Stages 2–3)
 
 How the GainWell app talks to Supabase, and exactly what you must configure by
 hand. No credentials exist in this repository and none were used while building
@@ -47,6 +47,21 @@ npx supabase db push
   names, and only reads `raw_user_meta_data` keys that the app itself sets
   (`display_name`, `preferred_language`); values are coerced to safe literals.
 
+`supabase/migrations/0002_nutrition_profiles.sql` creates:
+
+- `public.nutrition_profiles` — the onboarding answers, in its own table so
+  `public.profiles` stays about account identity and language. `user_id` is the
+  primary key and the owner (FK to `auth.users(id)` on delete cascade). Every
+  answer column is nullable except `dietary_preference` (`'none'` default), so
+  an unfinished onboarding resumes instead of being filled with invented values.
+- CHECK constraints mirror the form ranges: `age_years` 0–120, `height_cm`
+  90–250, `weight_kg` 25–300, `target_weight_kg` 25–300, `professional_kcal`
+  800–8000, `meals_per_day` 1–12, `onboarding_step` 1–5, enums for sex,
+  activity, habits, appetite, preference, goal and status. `dietary_notes` is
+  capped at 300 characters. **No date of birth is stored** — completed years only.
+- `nutrition_profiles_touch_updated_at` — the same `touch_updated_at` trigger as
+  `profiles`; clients cannot write the timestamps.
+
 ## 3. Row Level Security — decisions
 
 - **Read:** `profiles_select_own` — `for select to authenticated using (auth.uid() = id)`.
@@ -61,6 +76,25 @@ npx supabase db push
   trusts a client-sent user id.
 - The server client uses the **publishable** key everywhere. The secret key is
   reserved for future stages (server-only jobs such as account deletion).
+
+`nutrition_profiles` (Stage 3) follows the same model, and `profiles` policies
+were not touched:
+
+- **Read / insert / update:** `nutrition_profiles_select_own`,
+  `nutrition_profiles_insert_own`, `nutrition_profiles_update_own` — all
+  `to authenticated` with `auth.uid() = user_id` (insert uses `with check`).
+- **No delete policy**, as with `profiles`.
+- **Column grants on top of RLS:** `revoke update … from anon, authenticated`,
+  then `grant update` on the fifteen answer columns only — `user_id` and the
+  timestamps stay server-managed. `revoke insert, delete … from anon` leaves
+  `authenticated` its **table-level INSERT**, because PostgREST needs that
+  privilege to write at all; ownership is the RLS policy's job, not the grant's.
+- **No upsert.** PostgREST's `ON CONFLICT DO UPDATE` rewrites every column in the
+  payload, including the ungranted `user_id`, and fails with 42501. So
+  `saveNutritionStep()` inserts on the first save (under the server-verified id)
+  and updates afterwards, with a race fallback to the update path. Verified
+  against the local database: `pg_attribute.attacl` carries the column UPDATE
+  grants and no table-level UPDATE for `authenticated`.
 
 ## 4. Manual dashboard configuration (hosted project)
 
@@ -92,8 +126,22 @@ npx supabase db push
 ## 6. Privacy notes
 
 - Stored per account: email address (by Supabase Auth), optional display name
-  (≤ 60 chars), language choice, timestamps. No date of birth, no health data,
-  no analytics.
+  (≤ 60 chars), language choice, timestamps. No date of birth, no analytics.
+- Stage 3 adds one health-related table, `public.nutrition_profiles`, owned by
+  the signed-in user and readable only by that user (RLS): completed age years,
+  optional sex, height, current weight, activity level, eating habits, optional
+  appetite and meals per day, dietary preference, free-text allergies/avoidance
+  (≤ 300 chars), goal, optional target weight, and an optional professional
+  calorie target. Estimates are computed from these on render and are **not**
+  stored; nothing is invented when an answer is missing. Under-18 accounts store
+  the answers they gave but never receive personal numbers.
+- **Age is a snapshot, not a birth date.** Time can only make a stored age
+  younger than reality, so stale data can never upgrade a minor to an adult
+  calculation; a missing age stays unverified. For estimate freshness the
+  dashboard asks for a reconfirmation once the row's `updated_at` is over a
+  year old — no exact birth date is ever collected (`docs/nutrition.md` §2).
+- No nutrition data, tokens or passwords are written to logs. The engine and the
+  Server Actions return message keys, never database error text.
 - Passwords are Supabase Auth's responsibility (bcrypt); this app never logs
   tokens, passwords or auth errors' payloads.
 - Account deletion is **not** implemented in Stage 2. The FK is `on delete
@@ -120,6 +168,11 @@ npx supabase gen types typescript --linked > src/lib/supabase/types.ts  # hosted
 - RLS isolation (`tests/rls-profiles.test.ts`): runs only with
   `SUPABASE_TEST_URL` + `SUPABASE_TEST_PUBLISHABLE_KEY` against a real project
   (local Supabase works; email confirmation must be off).
+- Nutrition RLS (`tests/rls-nutrition-profiles.test.ts`): same gating, plus
+  `SUPABASE_TEST_SECRET_KEY` to clean up the test users. It proves own-row
+  create/read/update, cross-user read and update denial, refusal to insert for
+  another user, refusal to write ungranted columns (`user_id`, timestamps),
+  constraint violations, and that the app cannot delete rows.
 - E2E flows (`e2e/auth-flows.spec.ts`): only with
   `RUN_SUPABASE_E2E=1 SUPABASE_E2E_URL=… SUPABASE_E2E_PUBLISHABLE_KEY=…`.
 - The always-on e2e suite (`e2e/auth.spec.ts`) covers rendering, links, the

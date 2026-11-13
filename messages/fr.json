@@ -184,7 +184,7 @@
       },
       {
         "heading": "Votre compte",
-        "body": "Les comptes sont ouverts. En créer un stocke votre adresse courriel, un nom affiché optionnel, votre choix de langue et quelques horodatages — rien d'autre pour l'instant. Le journal de repas et les poids arriveront dans une étape ultérieure, sous les mêmes règles. Pour faire supprimer votre compte, écrivez à hello@example.com tant que la suppression dans l'application n'existe pas."
+        "body": "Les comptes sont ouverts. En créer un stocke votre adresse courriel, un nom affiché optionnel, votre choix de langue et quelques horodatages. Quand vous complétez le profil nutrition, le site stocke aussi les réponses que vous avez écrites : âge en années révolues (jamais une date de naissance), sexe optionnel, taille, poids actuel, niveau d'activité, habitudes alimentaires, appétit et repas optionnels, préférence alimentaire, allergies ou aliments évités, votre objectif, et un poids cible ou une cible en calories donnée par un professionnel. Seule vous pouvez lire ces réponses ; les estimations sont recalculées à partir d'elles et ne sont pas stockées, et aucun chiffre n'est produit pour un compte de moins de 18 ans. Le journal de repas et les poids arriveront dans une étape ultérieure, sous les mêmes règles. Pour faire supprimer votre compte, écrivez à hello@example.com tant que la suppression dans l'application n'existe pas."
       },
       {
         "heading": "Pas de mesure d'audience, pas de publicité",
@@ -240,7 +240,7 @@
     },
     "login": {
       "title": "Connexion",
-      "lead": "Content de vous revoir. Votre tableau de bord garde le journal de repas que vous construisez.",
+      "lead": "Content de vous revoir. Votre tableau de bord montre vos estimations nutrition une fois que vous les avez configurées.",
       "emailLabel": "Adresse courriel",
       "passwordLabel": "Mot de passe",
       "submit": "Se connecter",
@@ -280,8 +280,44 @@
       "lead": "L'espace compte de GainWell.",
       "signedInAsName": "Connecté en tant que {name}.",
       "signedInAsGeneric": "Vous êtes connecté.",
-      "stageNote": "Le suivi des repas, les objectifs et le vrai tableau de bord arrivent à l'étape suivante. Rien d'autre n'est encore stocké à votre sujet.",
-      "signOut": "Se déconnecter"
+      "signOut": "Se déconnecter",
+      "onboardingCta": "Compléter votre profil nutrition",
+      "editOnboarding": "Modifier vos réponses du profil",
+      "estimateChip": "Estimation",
+      "professionalChip": "Cible professionnelle que vous avez saisie",
+      "goalRow": "Objectif",
+      "weightRow": "Poids actuel",
+      "maintenanceRow": "Énergie de maintenance estimée",
+      "targetRow": "Cible quotidienne",
+      "surplusRow": "Excédent suggéré",
+      "proteinRow": "Protéines",
+      "carbsRow": "Glucides",
+      "fatRow": "Lipides",
+      "macrosNote": "Les quantités en grammes utilisent les facteurs de conversion standards (4 kcal/g pour les protéines et les glucides, 9 kcal/g pour les lipides). Cette répartition est une hypothèse produit simple, pas une exigence. Après arrondi, les grammes peuvent différer de la cible de quelques kilocalories.",
+      "lowEstimateNote": "Cette estimation est inhabituellement basse pour un adulte. C'est le simple résultat arithmétique des réponses ci-dessus — pas une recommandation et pas un signe qu'il est prudent de manger si peu. Si elle ne correspond pas à votre situation, un professionnel peut vous aider à la lire.",
+      "reconfirmNote": "Vos réponses nutrition datent de plus d'un an. Si quelque chose a changé — votre âge compris — les mettre à jour garde les estimations honnêtes.",
+      "assumptions": "Estimation d'après l'équation d'énergie de repos Mifflin–St Jeor et des bandes d'activité arrondies, puis ajustée avec prudence. Ce sont des estimations à fins éducatives, pas des mesures ni des conseils médicaux.",
+      "professionalNote": "La cible quotidienne est le nombre que vous avez saisi d'après votre professionnel. GainWell l'affiche tel quel, ne l'ajuste ni ne le remplace, et ne le vérifie pas ; sa propre suggestion ({kcal} kcal) reste à côté pour la comparaison.",
+      "professionalLowNote": "Une cible professionnelle aussi basse est inhabituelle pour la plupart des adultes. GainWell ne valide pas les chiffres donnés par un professionnel — pour confirmer que celle-ci vous convient, parlez-en au professionnel qui l'a donnée.",
+      "highActivityNote": "Vous avez choisi le niveau d'activité le plus élevé que GainWell propose. L'estimation peut quand même être trop basse pour un mode de vie vraiment vigoureux : traitez-la comme un point de départ plutôt que comme une cible précise.",
+      "recalculatedNote": "Les estimations sont recalculées d'après vos réponses à chaque modification.",
+      "minorTitle": "Des conseils généraux pour vous",
+      "minorBody": "Vous avez moins de 18 ans, alors GainWell ne calcule pas de cible personnelle de calories ou de macronutriments : ces chiffres adultes ne conviennent pas aux personnes plus jeunes. À la place : mangez régulièrement, incluez des protéines à chaque repas et buvez assez d'eau.",
+      "minorTalkTo": "Si votre poids vous inquiète, parlez-en avec un parent ou un tuteur et un professionnel de santé de confiance. Ils pourront répondre d'une façon adaptée à votre corps et à votre âge.",
+      "minorGuidesLink": "Lire les guides alimentaires",
+      "minorRecipesLink": "Parcourir les recettes",
+      "incompleteTitle": "Rien à afficher pour l'instant",
+      "incompleteBody": "Votre profil nutrition n'est pas terminé, donc GainWell n'a rien sur quoi travailler. Il n'invente pas de chiffres.",
+      "missingTitle": "Encore nécessaire",
+      "missing": {
+        "age": "Âge",
+        "sex": "Sexe (l'équation d'énergie de repos en a besoin)",
+        "height": "Taille",
+        "weight": "Poids actuel",
+        "activity": "Niveau d'activité",
+        "goal": "Objectif général",
+        "professional": "Une cible professionnelle valide en calories (800–8000 kcal)"
+      }
     },
     "errors": {
       "invalidEmail": "Cette adresse courriel ne semble pas valide.",
@@ -303,6 +339,182 @@
       "resetEmailSent": "Consultez votre boîte de réception : si un compte existe pour cette adresse, un lien de récupération est en route.",
       "confirmFailed": "Ce lien n'est plus valable ou a déjà été utilisé.",
       "recoveryExpired": "Cette page exige une session créée par un lien de récupération. Demandez un nouveau lien pour continuer."
+    }
+  },
+  "onboarding": {
+    "title": "Compléter votre profil",
+    "lead": "Cinq étapes courtes. GainWell utilise vos réponses pour estimer votre énergie quotidienne. Rien ici n'est un diagnostic.",
+    "progress": {
+      "label": "Étapes du profil",
+      "count": "Étape {step} sur {total}"
+    },
+    "step1": {
+      "title": "À propos de vous",
+      "lead": "Vos mesures corporelles : l'estimation vous est propre, ce n'est pas un chiffre universel. L'âge est enregistré en années révolues ; la date de naissance n'est jamais demandée."
+    },
+    "step2": {
+      "title": "Activité et habitudes alimentaires",
+      "lead": "Combien vous bougez et comment vous mangez aujourd'hui. Choisissez la description qui vous ressemble : une réponse approximative suffit."
+    },
+    "step3": {
+      "title": "Préférences alimentaires",
+      "lead": "Ce que vous aimez manger et ce que vous évitez. Cela oriente seulement les suggestions de recettes, et vous pouvez effacer cette information plus tard."
+    },
+    "step4": {
+      "title": "Votre objectif",
+      "lead": "Décrivez où vous voulez en arriver. GainWell reste progressif et ne promet jamais une vitesse de prise de poids."
+    },
+    "step5": {
+      "title": "Révision",
+      "lead": "Vérifiez vos réponses avant qu'elles soient enregistrées. Chaque étape reste modifiable ensuite."
+    },
+    "unit": {
+      "years": "années",
+      "cm": "cm",
+      "kg": "kg",
+      "kcal": "kcal",
+      "meals": "repas par jour"
+    },
+    "age": {
+      "label": "Âge",
+      "hint": "Années révolues. Les estimations personnelles exigent 18 ans ou plus ; en dessous de 18 ans vous recevez des conseils généraux."
+    },
+    "height": {
+      "label": "Taille",
+      "hint": "En centimètres, par exemple 175."
+    },
+    "weight": {
+      "label": "Poids actuel",
+      "hint": "En kilogrammes, par exemple 62,5."
+    },
+    "sex": {
+      "legend": "Sexe",
+      "hint": "Facultatif. L'équation d'énergie de repos dépend du sexe : sans cette réponse GainWell ne peut pas produire de chiffres. Rien n'est deviné à partir des autres réponses. La question porte sur le corps que modélise l'équation, pas sur l'identité de genre.",
+      "female": "Femme",
+      "male": "Homme",
+      "unset": "Je préfère ne pas répondre"
+    },
+    "activity": {
+      "legend": "Niveau d'activité",
+      "sedentary": {
+        "label": "Assis surtout",
+        "hint": "Travail de bureau, peu d'exercice planifié"
+      },
+      "light": {
+        "label": "Léger",
+        "hint": "Promenades courtes, un peu de station debout"
+      },
+      "moderate": {
+        "label": "Modéré",
+        "hint": "Exercice presque chaque jour ou marche régulière"
+      },
+      "high": {
+        "label": "Élevé",
+        "hint": "Travail physique ou entraînement quotidien"
+      }
+    },
+    "habits": {
+      "legend": "Habitudes alimentaires du moment",
+      "regular": {
+        "label": "Des repas la plupart des jours",
+        "hint": "Vous mangez à peu près aux mêmes heures chaque jour"
+      },
+      "skipped_meals": {
+        "label": "Des repas sont sautés",
+        "hint": "Les jours chargés sautent souvent un repas"
+      },
+      "low_appetite": {
+        "label": "Petit appétit",
+        "hint": "Les portions complètes semblent beaucoup"
+      },
+      "varied": {
+        "label": "Variable",
+        "hint": "Les heures et les tailles changent d'un jour à l'autre"
+      }
+    },
+    "appetite": {
+      "legend": "Appétit (facultatif)",
+      "hint": "Votre appétit indique à GainWell combien de nourriture vous pouvez manger confortablement.",
+      "low": { "label": "Faible" },
+      "medium": { "label": "Moyen" },
+      "high": { "label": "Élevé" }
+    },
+    "meals": {
+      "label": "Repas habituels par jour (facultatif)",
+      "hint": "Occasions de manger, collations comprises."
+    },
+    "preference": {
+      "legend": "Préférence alimentaire",
+      "none": "Aucune préférence particulière",
+      "vegetarian": "Végétarien",
+      "vegan": "Végétalien",
+      "pescatarian": "Pescétarien",
+      "other": "Autre"
+    },
+    "notes": {
+      "label": "Allergies ou aliments que vous évitez (facultatif)",
+      "hint": "En vos propres mots. Utilisé pour garder les suggestions de recettes adaptées, jamais pour calculer des chiffres. Videz cette case pour retirer l'information."
+    },
+    "goal": {
+      "legend": "Votre objectif général",
+      "gain_gradually": {
+        "label": "Prendre du poids progressivement",
+        "hint": "Un petit excédent quotidien régulier ; aucune vitesse promise"
+      },
+      "eating_consistency": {
+        "label": "Manger plus régulièrement",
+        "hint": "La régularité est l'objectif : la cible reste à la maintenance"
+      },
+      "healthier_habits": {
+        "label": "Prendre de meilleures habitudes alimentaires",
+        "hint": "L'énergie de maintenance, avec la place pour changer les habitudes"
+      },
+      "professional_guidance": {
+        "label": "Suivre une cible donnée par un professionnel",
+        "hint": "Le chiffre de votre professionnel gagne ; GainWell ne le remplace jamais"
+      }
+    },
+    "targetWeight": {
+      "label": "Poids cible (facultatif)",
+      "hint": "Un objectif vague, pas un engagement. Laissez vide si vous préférez."
+    },
+    "professional": {
+      "label": "Cible quotidienne en calories d'un professionnel (facultatif)",
+      "hint": "Si un médecin ou un diététicien vous a donné un chiffre, indiquez-le ici. Il est stocké séparément et n'est jamais remplacé par l'estimation de GainWell."
+    },
+    "stepNav": {
+      "label": "Revenir et modifier une étape précédente",
+      "edit": "Modifier l'étape {step}"
+    },
+    "notAnswered": "Sans réponse",
+    "continue": "Continuer",
+    "finish": "Enregistrer et aller au tableau de bord",
+    "review": {
+      "incomplete": "Il manque des réponses. Terminez les étapes précédentes avant d'enregistrer.",
+      "minorNotice": "Vous avez moins de 18 ans, donc GainWell affichera des conseils généraux plutôt que des calories personnelles.",
+      "calculates": "GainWell estimera votre énergie de maintenance, une cible quotidienne suggérée et des gammes en grammes pour les protéines, les glucides et les lipides. Les estimations utilisent des équations publiées et des bandes d'activité arrondies : ce sont des chiffres éducatifs, pas des mesures.",
+      "doesNotCalculate": "GainWell ne fera aucun diagnostic, ne prescrira aucun régime et ne promettra pas la vitesse de votre prise de poids.",
+      "professionalKept": "La cible professionnelle que vous avez saisie reste la vôtre ; GainWell garde sa suggestion à côté pour la comparaison."
+    },
+    "errors": {
+      "invalidStep": "Cette étape ne fait pas partie du profil.",
+      "sessionExpired": "Votre session a expiré. Reconnectez-vous.",
+      "config": "L'application n'est pas encore reliée à son serveur. Réessayez plus tard.",
+      "invalidInput": "Cette réponse n'a pas pu être enregistrée. Vérifiez la valeur et réessayez.",
+      "onboardingIncomplete": "Il manque encore des réponses. Terminez d'abord les étapes précédentes.",
+      "invalidAge": "Indiquez votre âge en années entières, entre 1 et 120.",
+      "invalidHeight": "Indiquez une taille entre 90 et 250 cm.",
+      "invalidWeight": "Indiquez un poids entre 25 et 300 kg.",
+      "invalidSex": "Choisissez Femme, Homme ou « Je préfère ne pas répondre ».",
+      "invalidActivity": "Choisissez un niveau d'activité.",
+      "invalidHabits": "Choisissez la description des habitudes qui vous ressemble.",
+      "invalidAppetite": "Choisissez un niveau d'appétit, ou laissez vide.",
+      "invalidMeals": "Indiquez un nombre entier de repas entre 1 et 12.",
+      "invalidPreference": "Choisissez une préférence alimentaire.",
+      "notesTooLong": "Gardez cette note sous 300 caractères.",
+      "invalidGoal": "Choisissez un objectif.",
+      "invalidTargetWeight": "Indiquez un poids cible entre 25 et 300 kg.",
+      "invalidProfessionalKcal": "Indiquez un nombre entier de kilocalories entre 800 et 8000."
     }
   }
 }

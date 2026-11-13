@@ -10,11 +10,14 @@ import { useTranslations } from "next-intl";
 export function FormAlert({
   errorKey,
   noticeKey,
+  namespace = "auth",
 }: {
   errorKey?: string;
   noticeKey?: string;
+  /** Message namespace the keys live in (`auth`, `onboarding`, …). */
+  namespace?: string;
 }) {
-  const t = useTranslations("auth");
+  const t = useTranslations(namespace);
   if (!errorKey && !noticeKey) return null;
   if (errorKey) {
     return (

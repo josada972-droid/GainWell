@@ -162,6 +162,37 @@
   outline-offset: 2px;
 }
 
+/* Radio choice rows: the whole label is the target, checked rows press in. */
+.choice-group {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.choice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  min-height: 44px;
+  padding: var(--space-2xs) var(--space-sm);
+  border-radius: var(--radius-card);
+  background-color: var(--color-paper-2);
+  cursor: pointer;
+}
+
+.choice input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  margin-top: var(--space-3xs);
+  accent-color: var(--color-accent-2);
+}
+
+.choice:has(input[type="radio"]:checked) {
+  background-color: var(--color-sage);
+  color: var(--color-accent-ink);
+}
+
 .groove__stop:hover {
   color: var(--color-ink);
 }

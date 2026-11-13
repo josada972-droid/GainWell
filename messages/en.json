@@ -184,7 +184,7 @@
       },
       {
         "heading": "Your account",
-        "body": "Accounts are open. Creating one stores your email address, an optional display name, your language choice and a couple of timestamps — nothing else yet. The meal log and weight records arrive in a later stage under the same rules. To have your account deleted, write to hello@example.com until deletion ships in the app."
+        "body": "Accounts are open. Creating one stores your email address, an optional display name, your language choice and a couple of timestamps. Once you set up the nutrition profile it also stores the answers you typed: completed age in years (never a birthday), optional sex, height, current weight, activity level, eating habits, optional appetite and meals, dietary preference, allergies or foods you avoid, your goal, and optional target weight or a calorie target a professional gave you. Only you can read those answers, estimates are recalculated from them rather than stored, and no numbers are produced for an account under 18. The meal log and weight records arrive in a later stage under the same rules. To have your account deleted, write to hello@example.com until deletion ships in the app."
       },
       {
         "heading": "No analytics, no advertising",
@@ -240,7 +240,7 @@
     },
     "login": {
       "title": "Log in",
-      "lead": "Welcome back. Your dashboard keeps the meal log you are building.",
+      "lead": "Welcome back. Your dashboard shows the nutrition estimates once you set them up.",
       "emailLabel": "Email",
       "passwordLabel": "Password",
       "submit": "Log in",
@@ -280,8 +280,44 @@
       "lead": "The account area of GainWell.",
       "signedInAsName": "Signed in as {name}.",
       "signedInAsGeneric": "You are signed in.",
-      "stageNote": "Meal tracking, goals and the real dashboard arrive in the next stage. Nothing else is stored about you yet.",
-      "signOut": "Sign out"
+      "signOut": "Sign out",
+      "onboardingCta": "Set up your nutrition profile",
+      "editOnboarding": "Edit your onboarding answers",
+      "estimateChip": "Estimate",
+      "professionalChip": "Professional target you entered",
+      "goalRow": "Goal",
+      "weightRow": "Current weight",
+      "maintenanceRow": "Estimated maintenance energy",
+      "targetRow": "Daily target",
+      "surplusRow": "Suggested surplus",
+      "proteinRow": "Protein",
+      "carbsRow": "Carbohydrate",
+      "fatRow": "Fat",
+      "macrosNote": "The gram amounts use the standard conversion factors (4 kcal per g for protein and carbohydrate, 9 kcal per g for fat). The split itself is one simple product assumption, not a requirement. Rounded grams can differ from the target by a few kilocalories.",
+      "highActivityNote": "You chose the highest activity level GainWell offers. The estimate can still be too low for a genuinely vigorous lifestyle, so treat it as a starting point rather than a precise target.",
+      "lowEstimateNote": "This estimate is unusually low for an adult. It is the plain arithmetic result of the answers above — not a recommendation and not a sign that eating this little is safe. If it does not match your situation, a professional can help you read it.",
+      "reconfirmNote": "Your nutrition answers were last saved over a year ago. If anything has changed — your age included — updating them keeps the estimates honest.",
+      "assumptions": "Estimated with the Mifflin–St Jeor resting-energy equation and rounded activity bands, then adjusted conservatively. These are estimates for general education, not measurements and not medical advice.",
+      "professionalNote": "The daily target is the number you entered from your professional. GainWell shows it exactly as given, never clamps or replaces it, and does not check it; its own suggestion ({kcal} kcal) is beside it for comparison.",
+      "professionalLowNote": "A professional target this low is unusual for most adults. GainWell does not validate the numbers professionals give — confirming this one fits you is a conversation to have with the professional who gave it.",
+      "recalculatedNote": "Estimates are recalculated from your answers each time you edit them.",
+      "minorTitle": "General guidance for you",
+      "minorBody": "You are under 18, so GainWell does not calculate personal calorie or macronutrient targets — those adult numbers are not appropriate for younger people. Instead: eat regularly, include protein at each meal, and drink enough water.",
+      "minorTalkTo": "If you are worried about your weight, talk with a parent or guardian and a healthcare professional you trust. They can answer in a way that fits your body and your age.",
+      "minorGuidesLink": "Read the eating guides",
+      "minorRecipesLink": "Browse recipes",
+      "incompleteTitle": "Nothing to show yet",
+      "incompleteBody": "Your nutrition profile is not finished, so GainWell has no answers to work from. It will not invent numbers.",
+      "missingTitle": "Still needed",
+      "missing": {
+        "age": "Age",
+        "sex": "Sex (the resting-energy equation needs it)",
+        "height": "Height",
+        "weight": "Current weight",
+        "activity": "Activity level",
+        "goal": "General goal",
+        "professional": "A valid professional calorie target (800–8000 kcal)"
+      }
     },
     "errors": {
       "invalidEmail": "That email address does not look right.",
@@ -303,6 +339,182 @@
       "resetEmailSent": "Check your inbox: if an account exists for this address, a recovery link is on its way.",
       "confirmFailed": "That link is no longer valid or has already been used.",
       "recoveryExpired": "This page needs a session created by a recovery link. Request a fresh link to continue."
+    }
+  },
+  "onboarding": {
+    "title": "Set up your profile",
+    "lead": "Five short steps. GainWell uses your answers to estimate your daily energy. Nothing here is a diagnosis.",
+    "progress": {
+      "label": "Onboarding steps",
+      "count": "Step {step} of {total}"
+    },
+    "step1": {
+      "title": "About you",
+      "lead": "Your body measures, so the estimate is built from you rather than a generic number. Age is stored as completed years; a birthday is never asked for."
+    },
+    "step2": {
+      "title": "Activity and eating habits",
+      "lead": "How much you move and how you eat today. Choose the description that fits best; a rough answer is enough."
+    },
+    "step3": {
+      "title": "Dietary preferences",
+      "lead": "What you like to eat and what you avoid. This shapes recipe suggestions only, and you can clear it later."
+    },
+    "step4": {
+      "title": "Your goal",
+      "lead": "Describe where you want to get to. GainWell stays gradual and never promises a pace of weight gain."
+    },
+    "step5": {
+      "title": "Review",
+      "lead": "Check your answers before they are saved. Every step stays editable afterwards."
+    },
+    "unit": {
+      "years": "years",
+      "cm": "cm",
+      "kg": "kg",
+      "kcal": "kcal",
+      "meals": "meals per day"
+    },
+    "age": {
+      "label": "Age",
+      "hint": "Completed years. Personal estimates require 18 or older; under 18 you get general guidance instead."
+    },
+    "height": {
+      "label": "Height",
+      "hint": "Centimetres, for example 175."
+    },
+    "weight": {
+      "label": "Current weight",
+      "hint": "Kilograms, for example 62.5."
+    },
+    "sex": {
+      "legend": "Sex",
+      "hint": "Optional. The resting-energy equation is sex-specific, so without this answer GainWell cannot produce numbers. Nothing is guessed from other answers. This asks about the body the equation models, not about gender identity.",
+      "female": "Female",
+      "male": "Male",
+      "unset": "Prefer not to say"
+    },
+    "activity": {
+      "legend": "Activity level",
+      "sedentary": {
+        "label": "Mostly sitting",
+        "hint": "Desk work, little planned exercise"
+      },
+      "light": {
+        "label": "Light",
+        "hint": "Short walks, some standing"
+      },
+      "moderate": {
+        "label": "Moderate",
+        "hint": "Exercise most days or regular walking"
+      },
+      "high": {
+        "label": "High",
+        "hint": "Daily physical work or training"
+      }
+    },
+    "habits": {
+      "legend": "Eating habits today",
+      "regular": {
+        "label": "Meals most days",
+        "hint": "You eat at roughly the same times each day"
+      },
+      "skipped_meals": {
+        "label": "Meals get skipped",
+        "hint": "Busy days often leave out a meal"
+      },
+      "low_appetite": {
+        "label": "Small appetite",
+        "hint": "Full portions feel like a lot"
+      },
+      "varied": {
+        "label": "Varied",
+        "hint": "Meal times and sizes change day to day"
+      }
+    },
+    "appetite": {
+      "legend": "Appetite (optional)",
+      "hint": "Your appetite tells GainWell how much food you can comfortably eat.",
+      "low": { "label": "Low" },
+      "medium": { "label": "Medium" },
+      "high": { "label": "High" }
+    },
+    "meals": {
+      "label": "Usual meals per day (optional)",
+      "hint": "Eating occasions including snacks."
+    },
+    "preference": {
+      "legend": "Dietary preference",
+      "none": "No specific preference",
+      "vegetarian": "Vegetarian",
+      "vegan": "Vegan",
+      "pescatarian": "Pescatarian",
+      "other": "Other"
+    },
+    "notes": {
+      "label": "Allergies or foods you avoid (optional)",
+      "hint": "In your own words. Used to keep recipe suggestions suitable, never to calculate numbers. Clear it by emptying this box."
+    },
+    "goal": {
+      "legend": "Your general goal",
+      "gain_gradually": {
+        "label": "Gain weight gradually",
+        "hint": "A small, steady daily surplus; no promised pace"
+      },
+      "eating_consistency": {
+        "label": "Eat more consistently",
+        "hint": "Steadiness is the goal, so the target stays at maintenance"
+      },
+      "healthier_habits": {
+        "label": "Build healthier eating habits",
+        "hint": "Maintenance energy, with room to change habits"
+      },
+      "professional_guidance": {
+        "label": "Follow a target from a professional",
+        "hint": "Your professional's number wins; GainWell never overwrites it"
+      }
+    },
+    "targetWeight": {
+      "label": "Target weight (optional)",
+      "hint": "A loose goal, not a commitment. Leave it empty if you prefer."
+    },
+    "professional": {
+      "label": "Daily calorie target from a professional (optional)",
+      "hint": "If a doctor or dietitian gave you a number, put it here. It is stored separately and never replaced by GainWell's estimate."
+    },
+    "stepNav": {
+      "label": "Go back and edit an earlier step",
+      "edit": "Edit step {step}"
+    },
+    "notAnswered": "Not answered",
+    "continue": "Continue",
+    "finish": "Save and go to dashboard",
+    "review": {
+      "incomplete": "Some answers are missing. Finish the earlier steps before saving.",
+      "minorNotice": "You are under 18, so GainWell will show general guidance rather than personal calorie numbers.",
+      "calculates": "GainWell will estimate your maintenance energy, a suggested daily target and gram ranges for protein, carbohydrate and fat. The estimates use published equations and rounded activity bands, so they are educational figures, not measurements.",
+      "doesNotCalculate": "GainWell will not diagnose anything, prescribe a diet, or promise how fast you gain weight.",
+      "professionalKept": "A professional target you entered stays yours; GainWell keeps its own suggestion beside it for comparison."
+    },
+    "errors": {
+      "invalidStep": "That step is not part of the onboarding.",
+      "sessionExpired": "Your session has expired. Log in again.",
+      "config": "The app is not connected to its backend yet. Please try again later.",
+      "invalidInput": "That answer could not be saved. Check the value and try again.",
+      "onboardingIncomplete": "Some answers are still missing. Complete the earlier steps first.",
+      "invalidAge": "Enter your age as a whole number of years, between 1 and 120.",
+      "invalidHeight": "Enter a height between 90 and 250 cm.",
+      "invalidWeight": "Enter a weight between 25 and 300 kg.",
+      "invalidSex": "Choose Female, Male or Prefer not to say.",
+      "invalidActivity": "Choose an activity level.",
+      "invalidHabits": "Choose the eating-habits description that fits best.",
+      "invalidAppetite": "Choose an appetite level, or leave it empty.",
+      "invalidMeals": "Enter a whole number of meals between 1 and 12.",
+      "invalidPreference": "Choose a dietary preference.",
+      "notesTooLong": "Keep that note under 300 characters.",
+      "invalidGoal": "Choose a goal.",
+      "invalidTargetWeight": "Enter a target weight between 25 and 300 kg.",
+      "invalidProfessionalKcal": "Enter a whole number of kilocalories between 800 and 8000."
     }
   }
 }
