@@ -1,4 +1,4 @@
-# Supabase backend (Stages 2–3)
+# Supabase backend (Stages 2-4)
 
 How the GainWell app talks to Supabase, and exactly what you must configure by
 hand. No credentials exist in this repository and none were used while building
@@ -10,17 +10,21 @@ are set.
 
 Copy `.env.example` to `.env.local` and fill in:
 
-| Variable                               | Where it is read | Notes                                                                                    |
-| -------------------------------------- | ---------------- | ---------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SUPABASE_URL`             | browser + server | `https://<project-ref>.supabase.co`                                                      |
-| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | browser + server | the new `sb_publishable_…` key (replaces the legacy anon key)                            |
-| `SUPABASE_SECRET_KEY`                  | server only      | `sb_secret_…`; not required by Stage 2 code, but keep it out of the browser at all times |
+| Variable                               | Where it is read | Notes                                                                                                                                                       |
+| -------------------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`             | browser + server | `https://<project-ref>.supabase.co`                                                                                                                         |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | browser + server | the new `sb_publishable_…` key (replaces the legacy anon key)                                                                                               |
+| `SUPABASE_SECRET_KEY`                  | server only      | `sb_secret_…`; required from Stage 4 (tracker entry writes, the OFF caches and the OFF rate limiter go through the privileged client), never in the browser |
 
 - Validation lives in `src/lib/supabase/env.ts` (Zod). Missing or invalid
   values disable the integration instead of crashing the build.
 - `.env*` files are gitignored; only `.env.example` (placeholders) is tracked.
 - The secret key is never referenced by browser code and is never sent to the
-  client bundle.
+  client bundle. Never prefix it with `NEXT_PUBLIC_`: variables with that
+  prefix are inlined into the browser bundle at build time and must never hold
+  privileged credentials.
+- The secret is never logged, included in error messages or API responses, or
+  exposed to client-side code.
 
 ## 2. Applying the migration
 
@@ -35,6 +39,14 @@ npx supabase db reset    # applies supabase/migrations/*.sql
 npx supabase link --project-ref <project-ref>
 npx supabase db push
 ```
+
+On your hosting platform (for example, Vercel project settings), configure
+`SUPABASE_SECRET_KEY` as a server-side environment variable **before enabling
+tracker functionality**. It is required for tracker entry writes, the OFF
+caches and the OFF rate limiter: without it, `getSupabaseAdminClient()`
+returns `null`, those privileged operations fail closed, and tracker entry
+writes surface the translated `config` error instead of silently falling back
+to an insecure client.
 
 `supabase/migrations/0001_profiles.sql` creates:
 
@@ -62,6 +74,12 @@ npx supabase db push
 - `nutrition_profiles_touch_updated_at` — the same `touch_updated_at` trigger as
   `profiles`; clients cannot write the timestamps.
 
+`supabase/migrations/0003_meal_tracking.sql` and
+`supabase/migrations/0004_stage4_security_hardening.sql` build the Stage 4 schema
+(§9). 0004 is **forward-only**: 0003 stays as applied and 0004 changes grants,
+policies, constraints and functions on top of it, so an existing database is
+hardened without rewriting any row.
+
 ## 3. Row Level Security — decisions
 
 - **Read:** `profiles_select_own` — `for select to authenticated using (auth.uid() = id)`.
@@ -74,8 +92,10 @@ npx supabase db push
   a policy cannot let a user write `id`, `created_at` or `updated_at`.
 - Authorization always comes from `auth.uid()` inside Postgres; the app never
   trusts a client-sent user id.
-- The server client uses the **publishable** key everywhere. The secret key is
-  reserved for future stages (server-only jobs such as account deletion).
+- The server client uses the **publishable** key for all ordinary user reads and
+  writes. The secret key lives only on `getSupabaseAdminClient()`
+  (`src/lib/supabase/admin.ts`), used for the two narrow jobs ordinary roles are
+  barred from (§9.3).
 
 `nutrition_profiles` (Stage 3) follows the same model, and `profiles` policies
 were not touched:
@@ -164,7 +184,7 @@ npx supabase gen types typescript --linked > src/lib/supabase/types.ts  # hosted
 ## 8. What is tested, and what is not
 
 - Unit tests (`npm test`): schemas, redirect whitelist, error mapping, env
-  validation — always run.
+  validation, the nutrition engine and the Open Food Facts client — always run.
 - RLS isolation (`tests/rls-profiles.test.ts`): runs only with
   `SUPABASE_TEST_URL` + `SUPABASE_TEST_PUBLISHABLE_KEY` against a real project
   (local Supabase works; email confirmation must be off).
@@ -173,7 +193,208 @@ npx supabase gen types typescript --linked > src/lib/supabase/types.ts  # hosted
   create/read/update, cross-user read and update denial, refusal to insert for
   another user, refusal to write ungranted columns (`user_id`, timestamps),
   constraint violations, and that the app cannot delete rows.
-- E2E flows (`e2e/auth-flows.spec.ts`): only with
+- Meal-tracking RLS (`tests/rls-meal-tracking.test.ts`): same gating; the
+  legitimate entry writes go through the service-role client (the same one the
+  server modules use), so those cases additionally need
+  `SUPABASE_TEST_SECRET_KEY` and are skipped without it. Proves own-row
+  create/read, cross-user read denial, that **no ordinary role can INSERT or
+  UPDATE an entry at all** (even a correctly owner-scoped insert), forged
+  attachment to another user's meal or saved meal (composite foreign keys),
+  that the database re-derives `calc_*` on a quantity edit, that the deletion
+  functions refuse another user's rows, that the shared OFF caches reject client
+  reads and writes, and that `custom_foods` has no client DELETE path.
+- Security hardening (`tests/security-hardening.test.ts`): same gating, with the
+  privileged-path groups gated on `SUPABASE_TEST_SECRET_KEY`. Attacks the
+  database boundary directly with real authenticated sessions and ordinary REST
+  calls: limiter execution denied for `authenticated` and `anon`, forged
+  limit/window arguments rejected, unknown buckets refused without creating a
+  row, real limit accounting (search 6/min, product 10/min, counters stop at the
+  limit), cache reads/enumeration denied, fabricated `calc_*` inserts and
+  snapshot/unit/owner UPDATEs refused, hand-written `calc_*` overwritten by the
+  trigger, unknown nutrients kept `NULL`, bad unit↔basis pairs and negative
+  quantities rejected, and meal totals following the recalculated values.
+- Rate-limiter caller (`tests/off-rate-limit.test.ts`): mocked privileged client
+  (no live network, no live database). Proves the fail-closed contract — only an
+  exact `true` admits a request; `false`, `NULL`, an RPC error, a throw and a
+  missing privileged client all deny it — and that the RPC is asked for a bucket
+  only, with no caller-supplied limit or window.
+- E2E flows (`e2e/auth-flows.spec.ts`, `e2e/onboarding-flows.spec.ts`,
+  `e2e/tracker-flows.spec.ts`): only with
   `RUN_SUPABASE_E2E=1 SUPABASE_E2E_URL=… SUPABASE_E2E_PUBLISHABLE_KEY=…`.
-- The always-on e2e suite (`e2e/auth.spec.ts`) covers rendering, links, the
-  dashboard redirect and overflow with no project configured.
+  The tracker flow suite makes **no live Open Food Facts calls**; OFF empty
+  and error states are covered by mocked unit tests instead.
+- The always-on e2e suites (`e2e/auth.spec.ts`, `e2e/tracker.spec.ts`) cover
+  rendering, links, the dashboard redirect and overflow with no project
+  configured.
+
+## 9. Meal tracking (Stage 4)
+
+### 9.1 Schema
+
+Migration `0003_meal_tracking.sql` adds five user-owned tables and one
+service-owned table; `0004_stage4_security_hardening.sql` hardens their
+permissions and integrity without changing the shape:
+
+| Table                | Purpose                                                                                                                 |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `meals`              | One container per user/day/type (`breakfast`, `lunch`, `dinner`, `snack`), unique on `(user_id, meal_date, meal_type)`. |
+| `meal_entries`       | Rows inside a meal, each a self-contained nutrition snapshot.                                                           |
+| `saved_meals`        | A user's reusable meal templates.                                                                                       |
+| `saved_meal_entries` | Template contents, same snapshot shape as `meal_entries`.                                                               |
+| `custom_foods`       | Foods the user defined themselves (name, brand, per-basis values).                                                      |
+| `off_rate_limit`     | Shared rate-limit window counters. No grants to client roles; `bucket` is CHECKed to `search`/`product`.                |
+
+Two shared caches, also service-owned, round out the OFF integration:
+
+| Table                | Purpose                                                                               |
+| -------------------- | ------------------------------------------------------------------------------------- |
+| `off_products_cache` | One row per barcode, 48 h TTL. No ordinary-role read or write.                        |
+| `off_search_cache`   | One row per normalized query (sha-256 key), 48 h TTL. No ordinary-role read or write. |
+
+### 9.2 The snapshot model
+
+Every entry (meal or saved-meal) carries two groups of columns:
+
+- `source_*` — the food's nutrition values as originally recorded, per its
+  `source_basis` (`per_100g`, `per_100ml`, `per_serving`), plus
+  `source_serving_quantity`/`source_serving_unit`,
+  `source_attribution` (the Open Food Facts product URL, when applicable),
+  and name/brand snapshots (`food_name_snapshot`, `brand_snapshot`) so history
+  stays readable even if the source product or custom food changes later.
+- `calc_*` — the values for the entry's current `quantity`/`quantity_unit`.
+  These are **derived by the database**, never supplied: the
+  `enforce_entry_snapshot` trigger recomputes them from the row's own
+  `source_*`, `quantity` and `quantity_unit` on every INSERT and UPDATE, so
+  hand-written nutrition numbers cannot be stored even by a privileged write.
+  The trigger mirrors `nutritionForQuantity` in `src/lib/nutrition/food.ts`:
+  `factor = quantity` for `per_serving`, `quantity / 100` for the per-100
+  bases; `calc_x = round(source_x * factor * 1000) / 1000`, `NULL` when
+  `source_x` is `NULL`; `calc_grams` only for gram-based entries (millilitres
+  and servings never claim a gram mass — no density is invented);
+  `calc_complete` is exactly "all five calculated values are present".
+
+Unknown nutrients are stored as `NULL` and are never coerced to zero. Totals
+therefore report a lower bound ("At least …"), which the UI states explicitly.
+
+The integrity rules are also CHECK constraints (`calc_complete` equality,
+`calc_*`/`source_*` null-parity, nonnegative nutrients, positive
+`source_serving_quantity` and `calc_grams`, and the unit↔basis pair), so the
+database refuses a row the engine could not compute. `quantity_unit` is
+immutable — switching a unit would be an unvalidated conversion — so a quantity
+edit changes `quantity` alone and the trigger re-derives everything else.
+
+Immutability is enforced three ways: ordinary roles have no INSERT/UPDATE on the
+entry tables at all (§9.3), the trigger raises on any UPDATE of `source_*`, the
+provenance/name/brand columns, `quantity_unit` or `user_id`, and the
+application only ever sends `quantity` when editing an entry.
+
+### 9.3 Row Level Security and grants
+
+After the hardening pass, the permission model is:
+
+- **Ordinary roles (`anon`, `authenticated`) may only read.** SELECT stays
+  owner-scoped on every user-owned table (`using (auth.uid() = user_id)`);
+  `anon` has no policy, so it reads nothing.
+- **Writes that belong to a user's session stay direct**, on the containers the
+  user legitimately authors, all owner-scoped (`WITH CHECK` on insert):
+  `meals` SELECT + INSERT, `saved_meals` SELECT + INSERT + UPDATE,
+  `custom_foods` SELECT + INSERT + UPDATE. `meals` has no UPDATE policy — a meal
+  container is never renamed or moved.
+- **Entry writes are server-only.** INSERT and UPDATE are revoked from
+  `anon`/`authenticated` on `meal_entries` and `saved_meal_entries`, and the
+  `*_insert_own`/`*_update_own` policies are dropped. A signed-in user hitting
+  the REST API cannot forge a source snapshot or hand-edit calculated nutrition.
+  The application writes those rows through `getSupabaseAdminClient()`
+  (`src/lib/supabase/admin.ts`), and every such write first verifies the session
+  (`getCurrentUser`), reads the affected rows with the request-scoped client
+  under RLS to confirm ownership, and validates the input with the Zod schemas in
+  `src/lib/tracker/schema.ts`. The `user_id` written is always the session id,
+  never a client-supplied value; composite FKs `(meal_id, user_id)` /
+  `(saved_meal_id, user_id)` still reject a mismatched owner even for a
+  privileged write.
+- **No client role has DELETE on any user-owned table.** Removal goes through
+  SECURITY DEFINER functions — `delete_meal_entry`, `delete_saved_meal_entry`,
+  `delete_saved_meal` — each of which re-derives the caller from
+  `auth.uid()` inside the function and deletes by `(id, user_id)`, returning the
+  number of rows removed (0 when the row is not the caller's). These stay
+  executable by `authenticated`: they cannot write nutrition, only remove the
+  caller's own rows.
+- **The rate limiter is service-role only.** `off_rate_limit_take(p_bucket)`
+  revokes EXECUTE from `public`, `anon` and `authenticated`; only
+  `service_role` (the privileged server client) can spend a token, and the
+  bucket CHECK means no caller can invent a bucket.
+- **The OFF caches have no ordinary-role path at all.** SELECT/INSERT/UPDATE
+  grants for `anon`/`authenticated` are revoked and the `USING (true)` policies
+  are dropped, so cached products and cached normalized search queries are
+  unreadable through the API. A search query is personal-interest data, so this
+  is a privacy boundary, not just an implementation detail.
+- `custom_food_id` on entries is a provenance pointer to
+  `public.custom_foods(id)` **without a foreign key**, on purpose: historical
+  entries must survive the source record becoming unavailable (`SET NULL`
+  would contradict the `food_source` CHECK, `CASCADE` would destroy history).
+  The engine never reads it back; the snapshots carry everything.
+
+### 9.4 Open Food Facts integration
+
+Two endpoints are used, both verified against the live services:
+
+- Product by barcode (v3 API):
+  `GET https://world.openfoodfacts.org/api/v3/product/<barcode>.json?fields=…`
+  — success shape `{ status: "success", result: { id: "product_found" }, product: { … } }`,
+  with `nutriments` carrying `<key>_100g` / `<key>_serving` values and
+  `nutrition_data_per` naming the basis.
+- Search (Search-a-licious):
+  `GET https://search.openfoodfacts.org/search?q=…&page_size=8&page=1&fields=…&langs=en,fr`
+  — shape `{ hits, count, page, page_size, page_count }`; a top-level
+  `errors` array means the query itself was malformed.
+
+The client (`src/lib/food/openfoodfacts.ts`) sends a descriptive
+`User-Agent` (`GainWell/0.1.0`, plus `OPENFOODFACTS_CONTACT` when configured)
+and normalizes products into the app's `Food` shape. When kcal is absent but
+kilojoules are present, kcal is derived (`kJ ÷ 4.184`) and flagged
+`estimated: true`; missing nutrients stay `null`. Products without a name or
+barcode are dropped; per-serving values are kept in their own basis, never
+converted to mass.
+
+**Rate limiting** (`src/lib/food/off-rate-limit.ts` + the `off_rate_limit`
+table): a fixed-window limiter shared across server instances via Postgres. The
+function is `off_rate_limit_take(p_bucket)` — **bucket only**. The limits and the
+window live inside the function (`supabase/migrations/0004`), not in the caller:
+`search` 6/min, `product` 10/min, a 60 s fixed window. The official per-IP maxima
+are 10 search / 15 product requests per minute, so GainWell stays under them with
+headroom for traffic sharing the same IP. One `INSERT … ON CONFLICT DO UPDATE …
+RETURNING` statement per take makes the spend atomic across instances; once a
+window is spent the `WHERE used < limit` clause updates nothing, so the counter
+stops at the limit instead of growing. Old windows are deleted by the function
+itself, so the table stays bounded.
+
+EXECUTE is granted to `service_role` alone — an `authenticated` session or an
+anonymous client cannot spend (or raise) the budget. The module fails closed:
+`true` is the only answer that permits an outbound request; `false`, `NULL`, an
+RPC error, a throw, or a missing privileged client all deny it, and the user sees
+a polite "try again soon".
+
+**Caching** (`src/lib/food/off-cache.ts`): product and search responses are
+cached 48 h in the two cache tables, keyed by barcode / sha-256 of the normalized
+query. Reads, writes and expired-row cleanup all go through
+`getSupabaseAdminClient()`; no ordinary role has any access path (§9.3), so the
+cache is backend state rather than a user-facing API. Without the secret key the
+cache read falls through to a live fetch and cache writes are skipped. Only
+normalized `Food` data is stored — never a raw OFF response — and each product row
+keeps its attribution URL.
+
+### 9.5 Licensing (Open Food Facts)
+
+- The database content is licensed **ODbL 1.0** (share-alike for derivative
+  databases). GainWell stores individual product records server-side, inside
+  its own backend, for the user's own later display; that is a private cache
+  within one application, not a redistribution of a derivative database, so
+  no share-alike obligation is triggered by the caching itself.
+- **Attribution**: entries sourced from Open Food Facts store and display the
+  per-product URL (`source_attribution`, shown as "View on Open Food
+  Facts ↗"). This is the attribution the license asks for.
+- Product **images** (CC BY-SA) are not used anywhere in Stage 4.
+- Note honestly: attribution alone is _not_ claimed as full legal compliance
+  review; if GainWell ever exports or republishes cached product data as a
+  database (bulk API, downloads), ODbL share-alike obligations would apply
+  and legal review would be required.

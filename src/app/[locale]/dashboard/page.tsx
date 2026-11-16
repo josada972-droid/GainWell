@@ -3,6 +3,7 @@ import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 
 import { AuthCard } from "@/components/auth/auth-card";
 import { RequireSignedIn } from "@/components/auth/session-gate";
+import { DashboardSummary } from "@/components/tracker/dashboard-summary";
 import { SectionHeading } from "@/components/section-heading";
 import { Link } from "@/i18n/navigation";
 import { signOutAction } from "@/lib/auth/actions";
@@ -83,6 +84,10 @@ async function DashboardPanel() {
       ) : (
         <AdultEstimate plan={plan} />
       )}
+
+      {/* What was actually logged today (Stage 4). Shown for everyone,
+          including minors — facts only, no targets or comparisons. */}
+      <DashboardSummary />
 
       <form action={signOutAction}>
         <input type="hidden" name="locale" value={locale} />

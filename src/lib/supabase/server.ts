@@ -2,6 +2,7 @@ import "server-only";
 
 import { createServerClient } from "@supabase/ssr";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { connection } from "next/server";
 import { cookies } from "next/headers";
 
 import { readSupabasePublicEnv, SupabaseConfigError } from "./env";
@@ -19,9 +20,12 @@ import type { Database } from "./types";
  * enforced by RLS (supabase/migrations), not by a shared secret.
  */
 export async function getSupabaseServerClient(): Promise<SupabaseClient<Database> | null> {
-  // cookies() first, deliberately: it is the dynamic read that keeps session
-  // checks per-request, even when no project is configured (otherwise the
-  // fail-closed path would let pages prerender their signed-in state).
+  // connection() first, deliberately: session checks read the clock (token
+  // expiry), which Next.js rejects inside a prerender pass — cookies() alone no
+  // longer opts a route out of prerendering in Next 16. This keeps every
+  // session check per-request, including the fail-closed path when no project
+  // is configured.
+  await connection();
   const cookieStore = await cookies();
   const env = readSupabasePublicEnv();
   if (!env) return null;

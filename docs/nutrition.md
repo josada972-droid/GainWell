@@ -192,7 +192,8 @@ cannot reach the engine or the database from either side alone.
 
 - No weight-loss targets, no BMI advice, no diagnoses, no diet prescription, no
   promised pace of gain, no micronutrients, no meal plans.
-- No food database, no Open Food Facts, no logging (Stage 4).
+- No food database, no Open Food Facts, no logging (Stage 4). See §10 for the
+  Stage 4 tracking engine's own rules.
 - Estimates are recalculated from the stored answers on every dashboard render;
   only the answers and the optional professional target are stored. A stored
   professional target is never overwritten by a recalculation.
@@ -216,3 +217,58 @@ cannot reach the engine or the database from either side alone.
   explain why 200 kcal/day is gradual; it is not a promise.
 
 No claim is made that these figures are individually validated for any user.
+
+## 10. Food representation and logged totals (Stage 4)
+
+Stage 4 adds a second, simpler engine (`src/lib/nutrition/food.ts` +
+`totals.ts`) that describes **foods as they are**, never what anyone should
+eat. It has no targets, no comparisons and no advice — only arithmetic and
+honest labeling of what is unknown.
+
+### 10.1 Food representation
+
+A `Food` is: `name`, optional `brand`, a `basis` (`per_100g`, `per_100ml`,
+`per_serving`), the nutrient values _on that basis_, an optional serving
+definition, an `estimated` flag, and a `source` — either an Open Food Facts
+product (barcode + attribution URL) or a user's custom food.
+
+Values always stay on their original basis. There is **no g↔ml conversion**
+and no per-serving↔per-100g conversion: inventing a density or a serving mass
+would fabricate data. A food described per 100 ml can only be quantified in
+ml; a per-serving food only in servings; a per-100g food only in grams.
+
+### 10.2 Quantity arithmetic
+
+`nutritionForQuantity(food, quantity, unit)` requires a positive, finite
+quantity and a unit matching the basis, then scales every nutrient linearly:
+
+- per 100 g/ml: `value × quantity ÷ 100` — a gram entry also reports
+  `calc_grams` (its own mass); ml entries report **no** gram mass.
+- per serving: `value × quantity` — servings never report a mass either.
+
+Missing nutrients stay missing: they propagate as `null`, never as zero, and
+the result carries `complete: false` when anything was unknown.
+
+### 10.3 Totals
+
+`sumEntries` reduces a list of entries per nutrient, independently:
+
+- every contributor known → the total is exact (`complete: true`);
+- some contributors unknown → the total is the sum of the known values,
+  labelled a lower bound ("At least …"), with a count of unknown contributors;
+- no contributor known → the total is unknown, **never zero**;
+- an empty meal is an exact zero (nothing was logged, which is fully known).
+
+Completeness is judged per nutrient: knowing kcal on both entries does not
+make their unknown protein known. The UI renders unknown values as "Unknown"
+and partial totals with the "At least" prefix, in both languages — the
+wording is factual, never judgmental, and minors see exactly the same neutral
+facts as adults, with no target comparison attached.
+
+### 10.4 What this engine does not do
+
+- No target lines, percentages, remaining budgets or "you are behind" copy.
+- No conversion between units or bases, and no nutrient estimation beyond the
+  single documented kJ→kcal derivation (flagged `estimated`).
+- No data retention promise beyond what the tracker stores; the per-entry
+  snapshots are immutable and described in `docs/supabase.md` §9.

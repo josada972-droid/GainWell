@@ -15,7 +15,8 @@
     "closeMenu": "Fermer le menu",
     "skipToContent": "Aller au contenu",
     "homeAria": "GainWell, retour à l'accueil",
-    "login": "Se connecter"
+    "login": "Se connecter",
+    "tracker": "Suivi des repas"
   },
   "lang": {
     "label": "Langue",
@@ -435,9 +436,15 @@
     "appetite": {
       "legend": "Appétit (facultatif)",
       "hint": "Votre appétit indique à GainWell combien de nourriture vous pouvez manger confortablement.",
-      "low": { "label": "Faible" },
-      "medium": { "label": "Moyen" },
-      "high": { "label": "Élevé" }
+      "low": {
+        "label": "Faible"
+      },
+      "medium": {
+        "label": "Moyen"
+      },
+      "high": {
+        "label": "Élevé"
+      }
     },
     "meals": {
       "label": "Repas habituels par jour (facultatif)",
@@ -515,6 +522,144 @@
       "invalidGoal": "Choisissez un objectif.",
       "invalidTargetWeight": "Indiquez un poids cible entre 25 et 300 kg.",
       "invalidProfessionalKcal": "Indiquez un nombre entier de kilocalories entre 800 et 8000."
+    }
+  },
+  "tracker": {
+    "title": "Suivi des repas",
+    "lead": "Notez ce que vous mangez, jour après jour. Des faits seulement — pas d'objectifs, pas de jugement.",
+    "sessionGate": "Connectez-vous pour utiliser le suivi des repas.",
+    "summary": {
+      "title": "Résumé du {date}",
+      "empty": "Rien de noté pour ce jour pour l'instant.",
+      "note": "Les totaux ne comptent que les valeurs connues. Les aliments incomplets affichent « Au moins », jamais un chiffre inventé.",
+      "today": "Repas du jour",
+      "todayEmpty": "Rien de noté aujourd'hui pour l'instant.",
+      "openTracker": "Ouvrir le suivi des repas"
+    },
+    "dateNav": {
+      "label": "Changer le jour sélectionné",
+      "prev": "← Jour précédent",
+      "today": "Aujourd'hui",
+      "next": "Jour suivant →"
+    },
+    "mealTypes": {
+      "breakfast": "Petit-déjeuner",
+      "lunch": "Déjeuner",
+      "dinner": "Dîner",
+      "snack": "Collations"
+    },
+    "meals": {
+      "empty": "Aucun aliment noté dans ce repas pour l'instant."
+    },
+    "add": {
+      "title": "Ajouter un aliment",
+      "heading": "Ajouter un aliment à {meal}",
+      "modeLabel": "Où GainWell doit-il chercher ?",
+      "modeOff": "Open Food Facts",
+      "modeCustom": "Mes aliments",
+      "searchLabel": "Rechercher des aliments",
+      "searchPlaceholderOff": "Chercher par nom, ou saisir un code-barres",
+      "searchPlaceholderCustom": "Chercher parmi vos aliments",
+      "submit": "Ajouter au repas",
+      "back": "Choisir un autre aliment",
+      "close": "Fermer"
+    },
+    "search": {
+      "loading": "Recherche…",
+      "empty": "Aucun aliment trouvé.",
+      "incomplete": "{count} valeur(s) inconnue(s)"
+    },
+    "basis": {
+      "per_100g": "pour 100 g",
+      "per_100ml": "pour 100 ml",
+      "per_serving": "par portion"
+    },
+    "units": {
+      "g": "g",
+      "ml": "ml",
+      "serving": "portions"
+    },
+    "totals": {
+      "atLeast": "Au moins {value}",
+      "unknown": "Inconnu",
+      "someUnknown": "Certaines valeurs sont inconnues",
+      "empty": "Rien de noté pour l'instant.",
+      "protein": "protéines",
+      "carbs": "glucides",
+      "fat": "lipides",
+      "fiber": "fibres",
+      "units": {
+        "kcal": "kcal",
+        "g": "g"
+      }
+    },
+    "entry": {
+      "quantityLabel": "Quantité",
+      "edit": "Modifier",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "sourceOff": "Données d'Open Food Facts",
+      "sourceCustom": "Votre aliment",
+      "sourceOffLink": "Voir sur Open Food Facts ↗"
+    },
+    "custom": {
+      "title": "Mes aliments",
+      "create": "Nouvel aliment",
+      "edit": "Modifier",
+      "save": "Enregistrer l'aliment",
+      "empty": "Vous n'avez pas encore créé d'aliment.",
+      "nameLabel": "Nom",
+      "brandLabel": "Marque (facultatif)",
+      "basisLabel": "Les valeurs ci-dessous décrivent…",
+      "optional": "Facultatif",
+      "kcal": "Calories",
+      "proteinG": "Protéines",
+      "carbsG": "Glucides",
+      "fatG": "Lipides",
+      "fiberG": "Fibres"
+    },
+    "saved": {
+      "title": "Repas enregistrés",
+      "empty": "Aucun repas enregistré. Notez un repas, puis utilisez « Enregistrer ce repas comme modèle ».",
+      "create": "Enregistrer ce repas comme modèle",
+      "saveAction": "Enregistrer le modèle",
+      "pickEntries": "Quelles entrées le modèle doit-il garder ?",
+      "pickEntryAria": "Entrée {index}",
+      "nameLabel": "Nom du modèle",
+      "descriptionLabel": "Description (facultatif)",
+      "apply": "Ajouter au repas",
+      "applyTo": "Ajouter à quel repas ?",
+      "rename": "Renommer",
+      "delete": "Supprimer",
+      "entryCount": "{count, plural, one {1 entrée} other {# entrées}}"
+    },
+    "errors": {
+      "sessionExpired": "Votre session a expiré. Veuillez vous reconnecter.",
+      "config": "La base de données de GainWell n'est pas encore configurée. Veuillez réessayer plus tard.",
+      "invalidInput": "Certaines valeurs n'ont pas pu être enregistrées. Vérifiez-les et réessayez.",
+      "quantity": "Veuillez saisir une quantité entre 0,001 et 100 000.",
+      "quantityUnit": "Cette unité n'est pas prise en charge.",
+      "mealDate": "Cette date n'est pas valide.",
+      "mealType": "Ce type de repas n'est pas valide.",
+      "entryNotFound": "Cette entrée n'existe plus.",
+      "notFound": "Cet aliment n'existe plus.",
+      "mealNotFound": "Ce repas n'existe plus.",
+      "invalidQuantity": "Cette quantité ne correspond pas aux unités de cet aliment.",
+      "savedMealNotFound": "Ce repas enregistré n'existe plus.",
+      "savedMealEmpty": "Un repas enregistré doit contenir au moins une entrée.",
+      "searchTooShort": "Saisissez au moins deux caractères pour rechercher.",
+      "noResults": "Aucun aliment trouvé.",
+      "rateLimited": "La recherche d'aliments fait une pause — veuillez réessayer dans un instant.",
+      "searchFailed": "La recherche d'aliments est indisponible pour le moment. Veuillez réessayer plus tard.",
+      "invalidBarcode": "Les codes-barres comptent 8 à 14 chiffres.",
+      "foodName": "Veuillez nommer l'aliment (120 caractères au plus).",
+      "brand": "Ce nom de marque est trop long.",
+      "nutritionBasis": "Veuillez choisir ce que décrivent les valeurs.",
+      "oneNutrient": "Veuillez saisir au moins une valeur nutritionnelle.",
+      "nutrientRange": "Les valeurs nutritionnelles doivent être des nombres entre 0 et 100 000.",
+      "savedMealName": "Veuillez nommer le modèle (120 caractères au plus).",
+      "savedMealDescription": "Cette description est trop longue."
     }
   }
 }

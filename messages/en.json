@@ -15,7 +15,8 @@
     "closeMenu": "Close menu",
     "skipToContent": "Skip to content",
     "homeAria": "GainWell, back to the homepage",
-    "login": "Log in"
+    "login": "Log in",
+    "tracker": "Meal tracker"
   },
   "lang": {
     "label": "Language",
@@ -435,9 +436,15 @@
     "appetite": {
       "legend": "Appetite (optional)",
       "hint": "Your appetite tells GainWell how much food you can comfortably eat.",
-      "low": { "label": "Low" },
-      "medium": { "label": "Medium" },
-      "high": { "label": "High" }
+      "low": {
+        "label": "Low"
+      },
+      "medium": {
+        "label": "Medium"
+      },
+      "high": {
+        "label": "High"
+      }
     },
     "meals": {
       "label": "Usual meals per day (optional)",
@@ -515,6 +522,144 @@
       "invalidGoal": "Choose a goal.",
       "invalidTargetWeight": "Enter a target weight between 25 and 300 kg.",
       "invalidProfessionalKcal": "Enter a whole number of kilocalories between 800 and 8000."
+    }
+  },
+  "tracker": {
+    "title": "Meal tracker",
+    "lead": "Log what you eat, day by day. Facts only — no targets, no judgment.",
+    "sessionGate": "Sign in to use the meal tracker.",
+    "summary": {
+      "title": "Summary for {date}",
+      "empty": "Nothing logged for this day yet.",
+      "note": "Totals count only the values that were known. Foods with missing data show “At least”, never a made-up number.",
+      "today": "Today's meals",
+      "todayEmpty": "Nothing logged today yet.",
+      "openTracker": "Open meal tracker"
+    },
+    "dateNav": {
+      "label": "Change the selected day",
+      "prev": "← Previous day",
+      "today": "Today",
+      "next": "Next day →"
+    },
+    "mealTypes": {
+      "breakfast": "Breakfast",
+      "lunch": "Lunch",
+      "dinner": "Dinner",
+      "snack": "Snacks"
+    },
+    "meals": {
+      "empty": "No food logged in this meal yet."
+    },
+    "add": {
+      "title": "Add food",
+      "heading": "Add food to {meal}",
+      "modeLabel": "Where should GainWell look?",
+      "modeOff": "Open Food Facts",
+      "modeCustom": "My foods",
+      "searchLabel": "Search foods",
+      "searchPlaceholderOff": "Search by name, or type a barcode",
+      "searchPlaceholderCustom": "Search your own foods",
+      "submit": "Add to meal",
+      "back": "Pick another food",
+      "close": "Close"
+    },
+    "search": {
+      "loading": "Searching…",
+      "empty": "No foods found.",
+      "incomplete": "{count} value(s) unknown"
+    },
+    "basis": {
+      "per_100g": "per 100 g",
+      "per_100ml": "per 100 ml",
+      "per_serving": "per serving"
+    },
+    "units": {
+      "g": "g",
+      "ml": "ml",
+      "serving": "servings"
+    },
+    "totals": {
+      "atLeast": "At least {value}",
+      "unknown": "Unknown",
+      "someUnknown": "Some values unknown",
+      "empty": "Nothing logged yet.",
+      "protein": "protein",
+      "carbs": "carbs",
+      "fat": "fat",
+      "fiber": "fiber",
+      "units": {
+        "kcal": "kcal",
+        "g": "g"
+      }
+    },
+    "entry": {
+      "quantityLabel": "Quantity",
+      "edit": "Edit",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "sourceOff": "Data from Open Food Facts",
+      "sourceCustom": "Your food",
+      "sourceOffLink": "View on Open Food Facts ↗"
+    },
+    "custom": {
+      "title": "My foods",
+      "create": "New food",
+      "edit": "Edit",
+      "save": "Save food",
+      "empty": "You have not created any foods yet.",
+      "nameLabel": "Name",
+      "brandLabel": "Brand (optional)",
+      "basisLabel": "The values below describe…",
+      "optional": "Optional",
+      "kcal": "Calories",
+      "proteinG": "Protein",
+      "carbsG": "Carbohydrate",
+      "fatG": "Fat",
+      "fiberG": "Fiber"
+    },
+    "saved": {
+      "title": "Saved meals",
+      "empty": "No saved meals yet. Log a meal, then use “Save this meal as a template”.",
+      "create": "Save this meal as a template",
+      "saveAction": "Save template",
+      "pickEntries": "Which entries should the template keep?",
+      "pickEntryAria": "Entry {index}",
+      "nameLabel": "Template name",
+      "descriptionLabel": "Description (optional)",
+      "apply": "Add to meal",
+      "applyTo": "Add to which meal?",
+      "rename": "Rename",
+      "delete": "Delete",
+      "entryCount": "{count, plural, one {1 entry} other {# entries}}"
+    },
+    "errors": {
+      "sessionExpired": "Your session ended. Please sign in again.",
+      "config": "GainWell's database is not configured yet. Please try again later.",
+      "invalidInput": "Some values could not be saved. Please check them and try again.",
+      "quantity": "Please enter a quantity between 0.001 and 100,000.",
+      "quantityUnit": "That unit is not supported.",
+      "mealDate": "That date is not valid.",
+      "mealType": "That meal type is not valid.",
+      "entryNotFound": "That entry no longer exists.",
+      "notFound": "That food no longer exists.",
+      "mealNotFound": "That meal no longer exists.",
+      "invalidQuantity": "That quantity does not fit this food's units.",
+      "savedMealNotFound": "That saved meal no longer exists.",
+      "savedMealEmpty": "A saved meal needs at least one entry.",
+      "searchTooShort": "Type at least two characters to search.",
+      "noResults": "No foods found.",
+      "rateLimited": "The food search is resting for a moment — please try again shortly.",
+      "searchFailed": "The food search is unavailable right now. Please try again later.",
+      "invalidBarcode": "Barcodes are 8 to 14 digits.",
+      "foodName": "Please give the food a name (up to 120 characters).",
+      "brand": "That brand name is too long.",
+      "nutritionBasis": "Please choose what the values describe.",
+      "oneNutrient": "Please enter at least one nutrient value.",
+      "nutrientRange": "Nutrient values must be numbers between 0 and 100,000.",
+      "savedMealName": "Please give the template a name (up to 120 characters).",
+      "savedMealDescription": "That description is too long."
     }
   }
 }

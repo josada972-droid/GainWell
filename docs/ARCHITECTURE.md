@@ -60,6 +60,7 @@ Import alias: `@/*` → `src/*`.
 - Message keys are looked up as **nested paths**, so a label plus its hint is an object (`"moderate": { "label": …, "hint": … }`). A flat key with a dot inside (`"moderate.hint"`) never resolves and logs `MISSING_MESSAGE` — never write dotted keys.
 - Dates and numbers use `useFormatter()` (Server Components: `getTranslations` + manual formatter); metric units by default.
 - Fixed dates only in prerendered pages: the legal pages read an `updatedDate` message key rather than `new Date()`, which fails prerendering under Cache Components.
+- Session pages opt out of prerendering explicitly: `getSupabaseServerClient()` awaits `connection()` (`next/server`) before reading cookies, because Supabase's session load reads the clock (token expiry) and Next 16 no longer treats `cookies()` alone as a dynamic bail-out. Without it every authenticated route logs `blocking-prerender-current-time` errors on each request.
 
 ## Design system
 

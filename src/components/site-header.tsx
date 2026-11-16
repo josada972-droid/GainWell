@@ -11,15 +11,18 @@ import { cn } from "@/lib/utils";
 const destinations = [
   { href: "/recipes", key: "recipes" },
   { href: "/guides", key: "guides" },
+  { href: "/tracker", key: "tracker" },
   { href: "/how-it-works", key: "howItWorks" },
   { href: "/about", key: "about" },
   { href: "/login", key: "login" },
 ] as const;
 
 /**
- * Three-part bar: wordmark, links, language selector. Below the tablet width the
- * links and the language stops move behind a menu button, which keeps the bar at
- * two items on a 320 px screen and every target at 44 px.
+ * Three-part bar: wordmark, links, language selector. Below the wide-desktop
+ * width (xl) the links and the language stops move behind a menu button, which
+ * keeps the bar at two items on a 320 px screen and every target at 44 px.
+ * Stage 4 added a sixth destination, so the six French labels no longer fit
+ * at lg (1024 px); xl (1280 px) is where the inline nav takes over.
  */
 export function SiteHeader() {
   const t = useTranslations("nav");
@@ -59,19 +62,19 @@ export function SiteHeader() {
         </Link>
 
         <nav
-          className="hidden items-center gap-(--space-2xs) lg:flex"
+          className="hidden items-center gap-(--space-2xs) xl:flex"
           aria-label={t("menu")}
         >
           {links}
         </nav>
 
         <div className="flex items-center gap-(--space-sm)">
-          <div className="hidden lg:block">
+          <div className="hidden xl:block">
             <LanguageSwitcher />
           </div>
           <button
             type="button"
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-(--radius-input) border border-(--color-muted) text-(--color-ink) lg:hidden"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-(--radius-input) border border-(--color-muted) text-(--color-ink) xl:hidden"
             aria-expanded={menuOpen}
             aria-controls="site-menu"
             onClick={() => setMenuOpen((open) => !open)}
@@ -91,7 +94,7 @@ export function SiteHeader() {
       {menuOpen ? (
         <div
           id="site-menu"
-          className="border-t border-(--color-rule) bg-(--color-paper-2) lg:hidden"
+          className="border-t border-(--color-rule) bg-(--color-paper-2) xl:hidden"
         >
           <nav
             className="container flex flex-col gap-(--space-2xs) py-(--space-sm)"

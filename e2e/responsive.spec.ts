@@ -68,8 +68,8 @@ test("the phone menu opens, navigates and stays touch-sized", async ({
   await expect(
     page.getByRole("button", { name: "Close menu" }),
   ).toHaveAttribute("aria-expanded", "true");
-  // Five destinations plus the two language stops the menu carries.
-  await expect(page.locator("#site-menu").getByRole("link")).toHaveCount(7);
+  // Six destinations plus the two language stops the menu carries.
+  await expect(page.locator("#site-menu").getByRole("link")).toHaveCount(8);
   await expect(
     page.locator("#site-menu").getByRole("group", { name: "Language" }),
   ).toBeVisible();
@@ -81,8 +81,10 @@ test("the phone menu opens, navigates and stays touch-sized", async ({
   await expect(page).toHaveURL("/en/recipes");
 });
 
-test("the inline nav replaces the menu at tablet width", async ({ page }) => {
-  await page.setViewportSize({ width: 1024, height: 900 });
+test("the inline nav replaces the menu at wide-desktop width", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/en");
 
   await expect(page.getByRole("button", { name: "Menu" })).toBeHidden();
