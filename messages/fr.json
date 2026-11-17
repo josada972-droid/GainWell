@@ -96,10 +96,23 @@
     "emptyTitle": "Aucune recette ne correspond à cette recherche",
     "emptyBody": "Essayez un mot plus court, comme avoine, lait ou riz, ou choisissez une catégorie.",
     "prepTime": "Préparation",
+    "cookTime": "Cuisson",
     "minutes": "{count} min",
     "kcal": "kcal",
     "grams": "g",
-    "servings": "{count, plural, one {# portion} other {# portions}}"
+    "servings": "{count, plural, one {# portion} other {# portions}}",
+    "favouritesLabel": "Favoris",
+    "onlyFavourites": "Enregistrées seulement",
+    "favouriteAdd": "Enregistrer dans les favoris",
+    "favouriteRemove": "Retirer des favoris",
+    "favouriteSignIn": "Se connecter pour enregistrer des favoris",
+    "tagsLabel": "Repères alimentaires",
+    "tags": {
+      "vegetarian": "Végétarien",
+      "highProtein": "Riche en protéines",
+      "quick": "15 min ou moins",
+      "noCook": "Sans cuisson"
+    }
   },
   "recipe": {
     "backToRecipes": "Toutes les recettes",
@@ -118,6 +131,7 @@
     "carbs": "Glucides",
     "fat": "Lipides",
     "tipHead": "Note de cuisine",
+    "source": "De la bibliothèque de recettes d'exemple GainWell",
     "updated": "Mise à jour le {date}",
     "notFoundTitle": "Cette recette n'existe pas",
     "notFoundBody": "La bibliothèque contient neuf recettes d'exemple. Choisissez-en une dans la liste."
@@ -307,6 +321,15 @@
       "minorTalkTo": "Si votre poids vous inquiète, parlez-en avec un parent ou un tuteur et un professionnel de santé de confiance. Ils pourront répondre d'une façon adaptée à votre corps et à votre âge.",
       "minorGuidesLink": "Lire les guides alimentaires",
       "minorRecipesLink": "Parcourir les recettes",
+      "progressTitle": "Progrès de poids",
+      "progressLatest": "Le plus récent : {weight} kg le {date}",
+      "progressCount": "{count, plural, one {# mesure enregistrée} other {# mesures enregistrées}}",
+      "progressEmpty": "Aucune mesure pour l'instant. Prendre son poids de temps en temps construit une vue sereine sur le long terme.",
+      "progressCta": "Ouvrir le progrès de poids",
+      "favoritesTitle": "Recettes favorites",
+      "favoritesCount": "{count, plural, one {# favori} other {# favoris}}",
+      "favoritesEmpty": "Les recettes que vous enregistrez depuis la bibliothèque se rassembleront ici.",
+      "favoritesCta": "Parcourir les recettes",
       "incompleteTitle": "Rien à afficher pour l'instant",
       "incompleteBody": "Votre profil nutrition n'est pas terminé, donc GainWell n'a rien sur quoi travailler. Il n'invente pas de chiffres.",
       "missingTitle": "Encore nécessaire",
@@ -660,6 +683,55 @@
       "nutrientRange": "Les valeurs nutritionnelles doivent être des nombres entre 0 et 100 000.",
       "savedMealName": "Veuillez nommer le modèle (120 caractères au plus).",
       "savedMealDescription": "Cette description est trop longue."
+    }
+  },
+  "progress": {
+    "title": "Progrès de poids",
+    "lead": "Un registre serein de vos propres mesures. Les semaines comptent plus qu'un jour quelconque.",
+    "sessionGate": "Connectez-vous pour enregistrer votre poids.",
+    "summary": {
+      "title": "Votre registre",
+      "entries": "{count, plural, one {# mesure} other {# mesures}}",
+      "latest": "Le plus récent : {weight} kg le {date}",
+      "fewEntries": "Une ou deux mesures ne disent pas grand-chose. Pesez-vous de temps en temps — l'image qui compte se construit sur des semaines.",
+      "fluctuation": "Le poids bouge d'un jour à l'autre — eau, repas, moment de la journée. Ce qui signifie quelque chose, c'est la direction sur plusieurs semaines, pas une seule lecture.",
+      "noTarget": "GainWell ne fixe pas de poids objectif ici. Votre registre reste le vôtre."
+    },
+    "form": {
+      "heading": "Enregistrer une mesure",
+      "weightLabel": "Poids (kg)",
+      "dateLabel": "Date",
+      "noteLabel": "Note (facultatif)",
+      "notePlaceholder": "p. ex. matin, à la maison",
+      "submit": "Enregistrer la mesure",
+      "save": "Enregistrer"
+    },
+    "history": {
+      "title": "Toutes les mesures",
+      "emptyTitle": "Aucune mesure pour l'instant",
+      "emptyBody": "Enregistrez la première avec le formulaire ci-dessus — une seule entrée suffit pour commencer.",
+      "edit": "Modifier",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "save": "Enregistrer"
+    },
+    "chart": {
+      "heading": "Tendance",
+      "week": "7 derniers jours",
+      "month": "30 derniers jours",
+      "empty": "Aucune mesure dans cette période pour l'instant.",
+      "description": "Chaque point est l'une de vos propres mesures ; la ligne ne fait que les relier dans l'ordre des dates. Rien n'est inventé entre les jours."
+    },
+    "errors": {
+      "sessionExpired": "Votre session a expiré. Veuillez vous reconnecter.",
+      "config": "La base de données de GainWell n'est pas encore configurée. Veuillez réessayer plus tard.",
+      "invalidInput": "Certaines valeurs n'ont pas pu être enregistrées. Vérifiez-les et réessayez.",
+      "weight": "Veuillez saisir un poids entre 25 et 300 kg, avec au plus une décimale.",
+      "date": "Cette date n'est pas valide.",
+      "futureDate": "La date ne peut pas être dans le futur.",
+      "note": "Cette note est trop longue (300 caractères au plus).",
+      "entryNotFound": "Cette mesure n'existe plus.",
+      "duplicateDate": "Il y a déjà une mesure pour cette date. Modifiez-la au lieu d'en ajouter une deuxième."
     }
   }
 }

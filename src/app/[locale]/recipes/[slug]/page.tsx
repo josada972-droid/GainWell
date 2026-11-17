@@ -1,13 +1,17 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
 import { Link } from "@/i18n/navigation";
 import { ActionLink } from "@/components/action-link";
-import { categoryKey } from "@/components/recipe-card";
+import { FavoriteButton } from "@/components/favorite-button";
+import { categoryKey, tagKey } from "@/components/recipe-card";
 import { RecipeServings } from "@/components/recipe-servings";
 import { routing } from "@/i18n/routing";
+import { getCurrentUser } from "@/lib/auth/session";
 import { getRecipe, recipeSlugs } from "@/lib/content/recipes";
+import { listFavoriteSlugs } from "@/lib/progress/store";
 import { currentLocale } from "@/lib/locale";
 
 export async function generateMetadata({
@@ -26,6 +30,27 @@ export async function generateMetadata({
 export function generateStaticParams() {
   return routing.locales.flatMap((locale) =>
     recipeSlugs.map((slug) => ({ locale, slug })),
+  );
+}
+
+/** The favourite toggle, resolved against the live session. */
+async function RecipeFavorite({
+  slug,
+  locale,
+}: {
+  slug: string;
+  locale: string;
+}) {
+  const user = await getCurrentUser();
+  const favoriteSlugs = user ? await listFavoriteSlugs(user.id) : [];
+
+  return (
+    <FavoriteButton
+      slug={slug}
+      isFavorite={favoriteSlugs.includes(slug)}
+      signedIn={Boolean(user)}
+      locale={locale}
+    />
   );
 }
 
@@ -63,6 +88,11 @@ export default async function RecipePage({
             <span>
               {tr("prepTime")} {tr("minutes", { count: recipe.prepMinutes })}
             </span>
+            {recipe.cookMinutes ? (
+              <span>
+                {tr("cookTime")} {tr("minutes", { count: recipe.cookMinutes })}
+              </span>
+            ) : null}
             <span>{tr("servings", { count: recipe.baseServings })}</span>
             <span>
               {t("updated", {
@@ -73,12 +103,39 @@ export default async function RecipePage({
             </span>
           </div>
 
+          {recipe.tags.length > 0 ? (
+            <ul
+              aria-label={tr("tagsLabel")}
+              className="mt-(--space-md) flex list-none flex-wrap gap-(--space-2xs)"
+            >
+              {recipe.tags.map((tag) => (
+                <li
+                  key={tag}
+                  className="rounded-(--radius-pill) bg-(--color-sage) px-(--space-sm) py-(--space-2xs) text-sm text-(--color-accent-ink)"
+                >
+                  {tr(`tags.${tagKey[tag]}`)}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+
+          <div className="mt-(--space-lg)">
+            {/* The session read (favourite state) is the only dynamic part
+                of this page. */}
+            <Suspense fallback={null}>
+              <RecipeFavorite slug={recipe.slug} locale={locale} />
+            </Suspense>
+          </div>
+
           <p className="mt-(--space-lg) inline-flex items-start gap-(--space-xs) text-sm leading-relaxed text-(--color-ink-2)">
             <TriangleAlert
               aria-hidden="true"
               className="mt-px size-4 shrink-0 text-(--color-green)"
             />
             {t("sampleNotice")}
+          </p>
+          <p className="mt-(--space-xs) text-sm text-(--color-muted)">
+            {t("source")}
           </p>
         </div>
       </section>

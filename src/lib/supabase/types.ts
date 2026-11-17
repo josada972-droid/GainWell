@@ -480,6 +480,73 @@ export type Database = {
         };
         Relationships: [];
       };
+      recipe_favorites: {
+        Row: {
+          id: string;
+          user_id: string;
+          recipe_slug: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          recipe_slug: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          recipe_slug?: string;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "recipe_favorites_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      weight_entries: {
+        Row: {
+          id: string;
+          user_id: string;
+          measured_on: string;
+          weight_kg: number;
+          note: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          measured_on: string;
+          weight_kg: number;
+          note?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          measured_on?: string;
+          weight_kg?: number;
+          note?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "weight_entries_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {

@@ -1,4 +1,4 @@
-# Supabase backend (Stages 2-4)
+# Supabase backend (Stages 2-5)
 
 How the GainWell app talks to Supabase, and exactly what you must configure by
 hand. No credentials exist in this repository and none were used while building
@@ -398,3 +398,66 @@ keeps its attribution URL.
   review; if GainWell ever exports or republishes cached product data as a
   database (bulk API, downloads), ODbL share-alike obligations would apply
   and legal review would be required.
+
+## 10. Recipes and progress (Stage 5)
+
+### 10.1 Migration 0005 (`0005_recipes_progress.sql`)
+
+Forward-only, adds two fully user-owned tables. Nothing existing changes.
+
+- `recipe_favorites` — `(id, user_id, recipe_slug, created_at)`.
+  - `user_id → auth.users` on delete cascade; `recipe_slug` CHECKed for
+    shape (`^[a-z0-9-]+$`, ≤ 80 chars); `UNIQUE (user_id, recipe_slug)`,
+    which doubles as the index the "list my favourites" query uses.
+  - The recipes themselves are **not** stored in the database: the
+    catalogue is static bilingual content (`src/lib/content/recipes.ts`,
+    hand-written, marked as estimates). Favourites reference the stable
+    slug only, so there is no second copy of the catalogue to keep in sync.
+    The app additionally allowlists slugs against the real recipe list
+    before writing — the DB checks the shape, the app checks the catalogue.
+- `weight_entries` — `(id, user_id, measured_on, weight_kg, note,
+created_at, updated_at)`.
+  - Kilograms only, `numeric(5,1)`, CHECK 25–300 (the same plausible range
+    the onboarding engine accepts). `measured_on` CHECKed against
+    `current_date` (no future entries). `note` optional, ≤ 300 chars.
+  - `UNIQUE (user_id, measured_on)` — one measurement per day; the app
+    never upserts (a duplicate is a friendly error, not a silent overwrite).
+  - `touch_updated_at` trigger, like every other user table.
+
+### 10.2 Row Level Security and grants
+
+Every policy pins rows to `auth.uid()`; no policy grants anything to
+`anon` (SELECT is revoked outright on both tables — a new table's default
+grants would otherwise leave an empty-200 hole, the Stage 4 lesson).
+
+| Table              | SELECT   | INSERT                  | UPDATE                            | DELETE   |
+| ------------------ | -------- | ----------------------- | --------------------------------- | -------- |
+| `recipe_favorites` | own rows | own rows (`with check`) | **no policy**                     | own rows |
+| `weight_entries`   | own rows | own rows (`with check`) | own rows (`using` + `with check`) | own rows |
+
+- `recipe_favorites` has **no UPDATE policy on purpose**: a favourite
+  points at one fixed recipe; changing it means remove + re-add.
+- Column grants follow Stage 4's pattern: `authenticated` may insert
+  `(user_id, measured_on, weight_kg, note)` and update
+  `(measured_on, weight_kg, note)` on `weight_entries` — `user_id`,
+  `created_at` and `updated_at` are never client-writable, so ownership is
+  immutable (the Postgres-level `42501` is covered by a live test).
+- **No privileged client anywhere in Stage 5.** All writes (favourites,
+  weight entries) go through the request-scoped client with RLS. The admin
+  client is only used by the test suites for cleanup.
+
+### 10.3 Application behavior
+
+- Favourites: the Server Action validates the slug against
+  `recipeSlugs`, derives the user from the session, and treats a duplicate
+  (23505) as success — the favourite exists either way. Anonymous visitors
+  browse everything but their "save" button is a link to login with the
+  current page as the return path.
+- Weight entries: Zod schemas mirror the DB CHECKs (25–300 kg, one
+  decimal, real date, ≤ 300-char note) and add the future-date rule with a
+  specific error key. Server Actions always take the user from
+  `getCurrentUser()`; error responses are message keys
+  (`progress.errors.*`), never database text.
+- Views show only recorded measurements — no interpolation, no targets,
+  no goal inference from onboarding (the progress page says this in plain
+  words).

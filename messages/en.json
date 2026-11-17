@@ -96,10 +96,23 @@
     "emptyTitle": "No recipe matches that search",
     "emptyBody": "Try a shorter word, like oats, milk or rice, or pick a category.",
     "prepTime": "Preparation",
+    "cookTime": "Cooking",
     "minutes": "{count} min",
     "kcal": "kcal",
     "grams": "g",
-    "servings": "{count, plural, one {# serving} other {# servings}}"
+    "servings": "{count, plural, one {# serving} other {# servings}}",
+    "favouritesLabel": "Favourites",
+    "onlyFavourites": "Saved only",
+    "favouriteAdd": "Save to favourites",
+    "favouriteRemove": "Remove from favourites",
+    "favouriteSignIn": "Sign in to save favourites",
+    "tagsLabel": "Dietary tags",
+    "tags": {
+      "vegetarian": "Vegetarian",
+      "highProtein": "High in protein",
+      "quick": "15 min or less",
+      "noCook": "No cooking"
+    }
   },
   "recipe": {
     "backToRecipes": "All recipes",
@@ -118,6 +131,7 @@
     "carbs": "Carbohydrates",
     "fat": "Fat",
     "tipHead": "Kitchen note",
+    "source": "From the GainWell sample recipe library",
     "updated": "Updated {date}",
     "notFoundTitle": "That recipe does not exist",
     "notFoundBody": "The recipe library has nine sample recipes. Pick one from the list."
@@ -307,6 +321,15 @@
       "minorTalkTo": "If you are worried about your weight, talk with a parent or guardian and a healthcare professional you trust. They can answer in a way that fits your body and your age.",
       "minorGuidesLink": "Read the eating guides",
       "minorRecipesLink": "Browse recipes",
+      "progressTitle": "Weight progress",
+      "progressLatest": "Most recent: {weight} kg on {date}",
+      "progressCount": "{count, plural, one {# measurement recorded} other {# measurements recorded}}",
+      "progressEmpty": "No measurements yet. Recording your weight now and then builds a calm long-term view.",
+      "progressCta": "Open weight progress",
+      "favoritesTitle": "Favourite recipes",
+      "favoritesCount": "{count, plural, one {# favourite} other {# favourites}}",
+      "favoritesEmpty": "Recipes you save from the library will collect here.",
+      "favoritesCta": "Browse recipes",
       "incompleteTitle": "Nothing to show yet",
       "incompleteBody": "Your nutrition profile is not finished, so GainWell has no answers to work from. It will not invent numbers.",
       "missingTitle": "Still needed",
@@ -660,6 +683,55 @@
       "nutrientRange": "Nutrient values must be numbers between 0 and 100,000.",
       "savedMealName": "Please give the template a name (up to 120 characters).",
       "savedMealDescription": "That description is too long."
+    }
+  },
+  "progress": {
+    "title": "Weight progress",
+    "lead": "A calm record of your own measurements. Weeks matter more than any single day.",
+    "sessionGate": "Sign in to record your weight.",
+    "summary": {
+      "title": "Your record",
+      "entries": "{count, plural, one {# measurement} other {# measurements}}",
+      "latest": "Most recent: {weight} kg on {date}",
+      "fewEntries": "One or two measurements say very little. Weigh in now and then — the picture that matters builds over weeks.",
+      "fluctuation": "Weight moves around day to day — water, meals, timing. What means something is the direction across weeks, not one reading.",
+      "noTarget": "GainWell does not set a goal weight here. Your record stays yours."
+    },
+    "form": {
+      "heading": "Record a measurement",
+      "weightLabel": "Weight (kg)",
+      "dateLabel": "Date",
+      "noteLabel": "Note (optional)",
+      "notePlaceholder": "e.g. morning, at home",
+      "submit": "Save measurement",
+      "save": "Save"
+    },
+    "history": {
+      "title": "All measurements",
+      "emptyTitle": "No measurements yet",
+      "emptyBody": "Record your first one with the form above — one entry is enough to start.",
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "save": "Save"
+    },
+    "chart": {
+      "heading": "Trend",
+      "week": "Last 7 days",
+      "month": "Last 30 days",
+      "empty": "No measurements in this period yet.",
+      "description": "Each point is one of your own measurements; the line only connects them in date order. Nothing is invented between days."
+    },
+    "errors": {
+      "sessionExpired": "Your session ended. Please sign in again.",
+      "config": "GainWell's database is not configured yet. Please try again later.",
+      "invalidInput": "Some values could not be saved. Please check them and try again.",
+      "weight": "Please enter a weight between 25 and 300 kg, with at most one decimal.",
+      "date": "That date is not valid.",
+      "futureDate": "The date cannot be in the future.",
+      "note": "That note is too long (300 characters at most).",
+      "entryNotFound": "That measurement no longer exists.",
+      "duplicateDate": "There is already a measurement for that date. Edit it instead of adding a second one."
     }
   }
 }

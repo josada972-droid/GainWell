@@ -1,14 +1,17 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { Heart, Search } from "lucide-react";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
-import { RecipeRow, categoryKey } from "@/components/recipe-card";
+import { FavoriteButton } from "@/components/favorite-button";
+import { RecipeRow, categoryKey, tagKey } from "@/components/recipe-card";
 import {
   recipeCategories,
+  recipeTags,
   type Recipe,
   type RecipeCategory,
+  type RecipeTag,
 } from "@/lib/content/recipes";
 
 type Filter = "all" | RecipeCategory;
@@ -31,16 +34,44 @@ function matches(recipe: Recipe, query: string) {
   );
 }
 
-/** Search and category filters over the local seed list. No server call. */
-export function RecipeBrowser({ recipes }: { recipes: Recipe[] }) {
+/**
+ * Search, category and dietary-tag filters over the local seed list, plus the
+ * signed-in member's favourites (Stage 5). Filtering stays client-side — the
+ * catalogue is static content. `favoriteSlugs` arrives server-rendered, and
+ * the toggle buttons revalidate it after each change.
+ */
+export function RecipeBrowser({
+  recipes,
+  favoriteSlugs,
+  signedIn,
+  locale,
+}: {
+  recipes: Recipe[];
+  favoriteSlugs: string[];
+  signedIn: boolean;
+  locale: string;
+}) {
   const t = useTranslations("recipes");
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<Filter>("all");
+  const [tags, setTags] = useState<Set<RecipeTag>>(new Set());
+  const [onlyFavorites, setOnlyFavorites] = useState(false);
+
+  const toggleTag = (tag: RecipeTag) => {
+    setTags((current) => {
+      const next = new Set(current);
+      if (next.has(tag)) next.delete(tag);
+      else next.add(tag);
+      return next;
+    });
+  };
 
   const visible = recipes.filter(
     (recipe) =>
       (category === "all" || recipe.category === category) &&
-      matches(recipe, query),
+      matches(recipe, query) &&
+      [...tags].every((tag) => recipe.tags.includes(tag)) &&
+      (!onlyFavorites || favoriteSlugs.includes(recipe.slug)),
   );
 
   return (
@@ -78,6 +109,34 @@ export function RecipeBrowser({ recipes }: { recipes: Recipe[] }) {
         ))}
       </div>
 
+      <div
+        role="group"
+        aria-label={t("tagsLabel")}
+        className="groove mt-(--space-sm) flex-wrap"
+      >
+        {recipeTags.map((tag) => (
+          <button
+            key={tag}
+            type="button"
+            className="groove__stop"
+            aria-pressed={tags.has(tag)}
+            onClick={() => toggleTag(tag)}
+          >
+            {t(`tags.${tagKey[tag]}`)}
+          </button>
+        ))}
+        <button
+          type="button"
+          className="groove__stop inline-flex items-center gap-(--space-2xs)"
+          aria-pressed={onlyFavorites}
+          disabled={!signedIn}
+          onClick={() => setOnlyFavorites((value) => !value)}
+        >
+          <Heart aria-hidden="true" className="size-4" />
+          {t("onlyFavourites")}
+        </button>
+      </div>
+
       <p
         aria-live="polite"
         className="num mt-(--space-md) text-sm text-(--color-muted)"
@@ -88,7 +147,19 @@ export function RecipeBrowser({ recipes }: { recipes: Recipe[] }) {
       {visible.length > 0 ? (
         <ul className="mt-(--space-xs) list-none">
           {visible.map((recipe) => (
-            <RecipeRow key={recipe.slug} recipe={recipe} />
+            <RecipeRow
+              key={recipe.slug}
+              recipe={recipe}
+              actions={
+                <FavoriteButton
+                  slug={recipe.slug}
+                  isFavorite={favoriteSlugs.includes(recipe.slug)}
+                  signedIn={signedIn}
+                  locale={locale}
+                  compact
+                />
+              }
+            />
           ))}
         </ul>
       ) : (

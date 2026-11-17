@@ -6,10 +6,27 @@ import type { Locale } from "@/i18n/routing";
  * estimates, and every page that shows them says so. Replaced by Supabase rows
  * (Stage 2 tables, Stage 4 food database); the shape below mirrors what a
  * database row will need, so pages keep working when the source changes.
+ *
+ * Stage 5: favourites reference these slugs (public.recipe_favorites), so the
+ * slug is a stable identifier — never rename one without migrating rows.
  */
 
 export type RecipeCategory =
   "smoothie" | "breakfast" | "lunch" | "dinner" | "snack";
+
+/**
+ * Dietary tags (Stage 5). A small closed set with translated labels
+ * (`recipes.tags.*`); EN and FR recipes carry the same tag per slug, which
+ * tests/recipe-content.test.ts enforces.
+ */
+export type RecipeTag = "vegetarian" | "highProtein" | "quick" | "noCook";
+
+export const recipeTags: RecipeTag[] = [
+  "vegetarian",
+  "highProtein",
+  "quick",
+  "noCook",
+];
 
 export type Nutrition = {
   kcal: number;
@@ -24,10 +41,14 @@ export type Recipe = {
   title: string;
   summary: string;
   prepMinutes: number;
+  /** Pan/stove time stated by the steps, when the recipe cooks at all. */
+  cookMinutes?: number;
   /** Servings the ingredient list is written for. */
   baseServings: number;
   /** Values for one serving. */
   perServing: Nutrition;
+  /** Dietary tags, same set per slug in both languages. */
+  tags: RecipeTag[];
   ingredients: string[];
   steps: string[];
   tip: string;
@@ -52,6 +73,7 @@ const en: Recipe[] = [
     prepMinutes: 5,
     baseServings: 1,
     perServing: { kcal: 520, proteinG: 22, carbsG: 78, fatG: 14 },
+    tags: ["vegetarian", "quick", "noCook"],
     ingredients: [
       "350 ml whole milk",
       "1 banana",
@@ -76,6 +98,7 @@ const en: Recipe[] = [
     prepMinutes: 5,
     baseServings: 1,
     perServing: { kcal: 610, proteinG: 28, carbsG: 62, fatG: 30 },
+    tags: ["vegetarian", "highProtein", "quick", "noCook"],
     ingredients: [
       "200 g plain yogurt",
       "30 g peanut butter",
@@ -98,8 +121,10 @@ const en: Recipe[] = [
     summary:
       "Two stacked pancakes, not one thin one. Wheat flour makes them heavier.",
     prepMinutes: 20,
+    cookMinutes: 10,
     baseServings: 2,
     perServing: { kcal: 540, proteinG: 16, carbsG: 72, fatG: 20 },
+    tags: ["vegetarian"],
     ingredients: [
       "180 g whole wheat flour",
       "3 eggs",
@@ -124,8 +149,10 @@ const en: Recipe[] = [
     summary:
       "Fast, savoury, and easy to eat when a sweet breakfast feels heavy.",
     prepMinutes: 12,
+    cookMinutes: 5,
     baseServings: 1,
     perServing: { kcal: 480, proteinG: 26, carbsG: 22, fatG: 30 },
+    tags: ["highProtein", "quick"],
     ingredients: [
       "3 eggs",
       "60 g cheddar",
@@ -150,6 +177,7 @@ const en: Recipe[] = [
     prepMinutes: 15,
     baseServings: 1,
     perServing: { kcal: 620, proteinG: 34, carbsG: 70, fatG: 22 },
+    tags: ["highProtein", "quick", "noCook"],
     ingredients: [
       "150 g cooked rice",
       "120 g canned tuna",
@@ -174,8 +202,10 @@ const en: Recipe[] = [
     summary:
       "Bean pasta keeps more protein than wheat pasta, and pesto keeps the calories up.",
     prepMinutes: 20,
+    cookMinutes: 10,
     baseServings: 2,
     perServing: { kcal: 640, proteinG: 28, carbsG: 74, fatG: 26 },
+    tags: ["vegetarian", "highProtein"],
     ingredients: [
       "250 g chickpea pasta",
       "60 g pesto",
@@ -199,8 +229,10 @@ const en: Recipe[] = [
     summary:
       "One pan, two servings, and a sauce that makes the rice go down easily.",
     prepMinutes: 35,
+    cookMinutes: 25,
     baseServings: 2,
     perServing: { kcal: 680, proteinG: 40, carbsG: 66, fatG: 28 },
+    tags: ["highProtein"],
     ingredients: [
       "300 g chicken thigh",
       "250 g cooked rice",
@@ -224,8 +256,10 @@ const en: Recipe[] = [
     title: "Beef ragu with pasta",
     summary: "A pot that keeps for two dinners, so cooking happens once.",
     prepMinutes: 40,
+    cookMinutes: 30,
     baseServings: 3,
     perServing: { kcal: 700, proteinG: 36, carbsG: 78, fatG: 28 },
+    tags: ["highProtein"],
     ingredients: [
       "400 g beef mince",
       "400 g tomato passata",
@@ -253,6 +287,7 @@ const en: Recipe[] = [
     prepMinutes: 15,
     baseServings: 4,
     perServing: { kcal: 260, proteinG: 12, carbsG: 30, fatG: 12 },
+    tags: ["vegetarian", "quick", "noCook"],
     ingredients: [
       "120 g rolled oats",
       "90 g peanut butter",
@@ -281,6 +316,7 @@ const fr: Recipe[] = [
     prepMinutes: 5,
     baseServings: 1,
     perServing: { kcal: 520, proteinG: 22, carbsG: 78, fatG: 14 },
+    tags: ["vegetarian", "quick", "noCook"],
     ingredients: [
       "350 ml de lait entier",
       "1 banane",
@@ -305,6 +341,7 @@ const fr: Recipe[] = [
     prepMinutes: 5,
     baseServings: 1,
     perServing: { kcal: 610, proteinG: 28, carbsG: 62, fatG: 30 },
+    tags: ["vegetarian", "highProtein", "quick", "noCook"],
     ingredients: [
       "200 g de yaourt nature",
       "30 g de beurre de cacahuète",
@@ -327,8 +364,10 @@ const fr: Recipe[] = [
     summary:
       "Deux crêpes empilées, pas une seule fine. La farine de blé les rend plus lourdes.",
     prepMinutes: 20,
+    cookMinutes: 10,
     baseServings: 2,
     perServing: { kcal: 540, proteinG: 16, carbsG: 72, fatG: 20 },
+    tags: ["vegetarian"],
     ingredients: [
       "180 g de farine de blé complet",
       "3 œufs",
@@ -353,8 +392,10 @@ const fr: Recipe[] = [
     summary:
       "Rapide, salé, facile à manger quand un petit-déjeuner sucré paraît lourd.",
     prepMinutes: 12,
+    cookMinutes: 5,
     baseServings: 1,
     perServing: { kcal: 480, proteinG: 26, carbsG: 22, fatG: 30 },
+    tags: ["highProtein", "quick"],
     ingredients: [
       "3 œufs",
       "60 g de cheddar",
@@ -380,6 +421,7 @@ const fr: Recipe[] = [
     prepMinutes: 15,
     baseServings: 1,
     perServing: { kcal: 620, proteinG: 34, carbsG: 70, fatG: 22 },
+    tags: ["highProtein", "quick", "noCook"],
     ingredients: [
       "150 g de riz cuit",
       "120 g de thon en conserve",
@@ -404,8 +446,10 @@ const fr: Recipe[] = [
     summary:
       "Les pâtes de légumineuses gardent plus de protéines que le blé, et le pesto tient les calories.",
     prepMinutes: 20,
+    cookMinutes: 10,
     baseServings: 2,
     perServing: { kcal: 640, proteinG: 28, carbsG: 74, fatG: 26 },
+    tags: ["vegetarian", "highProtein"],
     ingredients: [
       "250 g de pâtes de pois chiche",
       "60 g de pesto",
@@ -429,8 +473,10 @@ const fr: Recipe[] = [
     summary:
       "Une seule poêle, deux portions, et une sauce qui fait passer le riz facilement.",
     prepMinutes: 35,
+    cookMinutes: 25,
     baseServings: 2,
     perServing: { kcal: 680, proteinG: 40, carbsG: 66, fatG: 28 },
+    tags: ["highProtein"],
     ingredients: [
       "300 g de cuisse de poulet",
       "250 g de riz cuit",
@@ -455,8 +501,10 @@ const fr: Recipe[] = [
     summary:
       "Une marmite qui tient deux dîners, donc la cuisson se fait une fois.",
     prepMinutes: 40,
+    cookMinutes: 30,
     baseServings: 3,
     perServing: { kcal: 700, proteinG: 36, carbsG: 78, fatG: 28 },
+    tags: ["highProtein"],
     ingredients: [
       "400 g de bœuf haché",
       "400 g de passata de tomate",
@@ -484,6 +532,7 @@ const fr: Recipe[] = [
     prepMinutes: 15,
     baseServings: 4,
     perServing: { kcal: 260, proteinG: 12, carbsG: 30, fatG: 12 },
+    tags: ["vegetarian", "quick", "noCook"],
     ingredients: [
       "120 g de flocons d'avoine",
       "90 g de beurre de cacahuète",
