@@ -8,7 +8,7 @@ import { LanguageSwitcher } from "@/components/language-switcher";
 import { cn } from "@/lib/utils";
 
 /** The real destinations of the public site, in reading order. */
-const destinations = [
+const navDestinations = [
   { href: "/recipes", key: "recipes" },
   { href: "/guides", key: "guides" },
   { href: "/tracker", key: "tracker" },
@@ -23,12 +23,26 @@ const destinations = [
  * keeps the bar at two items on a 320 px screen and every target at 44 px.
  * Stage 4 added a sixth destination, so the six French labels no longer fit
  * at lg (1024 px); xl (1280 px) is where the inline nav takes over.
+ *
+ * `signedIn` comes from the layout's session read: the last destination is
+ * "Log in" for a visitor and "Dashboard" for a signed-in member, so the bar
+ * never offers a login page to someone who is already logged in.
  */
-export function SiteHeader() {
+export function SiteHeader({ signedIn = false }: { signedIn?: boolean }) {
   const t = useTranslations("nav");
   const tBrand = useTranslations("brand");
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const destinations = (
+    signedIn
+      ? navDestinations.map((destination) =>
+          destination.key === "login"
+            ? { href: "/dashboard", key: "dashboard" }
+            : destination,
+        )
+      : navDestinations
+  ) as ReadonlyArray<{ href: string; key: string }>;
 
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(`${href}/`);

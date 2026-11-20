@@ -92,6 +92,11 @@ test("signup lands on the dashboard, signout returns home, signin works again", 
   ).toBeVisible();
   await expect(page.getByText("You are signed in.")).toBeVisible();
 
+  // The bar must swap "Log in" for "Dashboard" once the member is signed in.
+  const nav = page.getByRole("navigation").first();
+  await expect(nav.getByRole("link", { name: "Dashboard" })).toBeVisible();
+  await expect(nav.getByRole("link", { name: "Log in" })).toHaveCount(0);
+
   // Session persists across a hard reload.
   await page.reload();
   await expect(page).toHaveURL(/\/en\/dashboard$/);

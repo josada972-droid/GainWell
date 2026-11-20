@@ -1,9 +1,11 @@
+import { Suspense } from "react";
 import { Inter, Nunito } from "next/font/google";
 import { getLocale, getTranslations } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { getCurrentUser } from "@/lib/auth/session";
 import { routing } from "@/i18n/routing";
 
 import "@/app/globals.css";
@@ -52,7 +54,9 @@ export default async function RootLayout({
           >
             {t("skipToContent")}
           </a>
-          <SiteHeader />
+          <Suspense fallback={<SiteHeader />}>
+            <SessionHeader />
+          </Suspense>
           <main id="main">{children}</main>
           <SiteFooter />
         </NextIntlClientProvider>
@@ -65,4 +69,15 @@ export default async function RootLayout({
 // pre-rendered. Locale detection and redirects happen in src/proxy.ts.
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
+}
+
+/**
+ * The header's session read, in its own boundary so the static shell still
+ * prerenders the anonymous bar and the signed-in variant streams in — the same
+ * pattern the dashboard uses (`RequireSignedIn`). Without this the bar kept
+ * offering "Log in" to members, because nothing in it read the session.
+ */
+async function SessionHeader() {
+  const user = await getCurrentUser();
+  return <SiteHeader signedIn={Boolean(user)} />;
 }

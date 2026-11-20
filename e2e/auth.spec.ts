@@ -12,6 +12,21 @@ guardConsole();
 const locales = ["en", "fr"] as const;
 
 for (const locale of locales) {
+  test(`${locale} bar offers "log in" to a visitor`, async ({ page }) => {
+    await page.goto(`/${locale}`);
+    const nav = page.getByRole("navigation").first();
+    await expect(
+      nav.getByRole("link", {
+        name: locale === "en" ? "Log in" : "Se connecter",
+      }),
+    ).toBeVisible();
+    await expect(
+      nav.getByRole("link", {
+        name: locale === "en" ? "Dashboard" : "Tableau de bord",
+      }),
+    ).toHaveCount(0);
+  });
+
   test(`${locale} login page renders the sign-in form`, async ({ page }) => {
     await page.goto(`/${locale}/login`);
     await expect(

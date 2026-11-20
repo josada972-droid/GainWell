@@ -30,6 +30,10 @@ test.describe("tracker routing (always on)", () => {
     }) => {
       await page.setViewportSize({ width, height: 900 });
       await page.goto("/en/dashboard");
+      // Unsigned visitors land on the login page; the sign-in gate now streams,
+      // so wait for that redirect before measuring (otherwise evaluate() races
+      // the navigation and the context is destroyed).
+      await page.waitForURL(/\/(en|fr)\/login/, { timeout: 30_000 });
       const result = await page.evaluate(() => ({
         scrollWidth: document.documentElement.scrollWidth,
         clientWidth: document.documentElement.clientWidth,
