@@ -539,3 +539,18 @@ for (const width of [320, 375, 768, 1440]) {
     ).toBeVisible();
   });
 }
+
+// The incomplete dashboard is a different layout: it carries the "set up your
+// nutrition profile" call to action, whose label used to force a 289 px column
+// inside a 240 px card and get clipped on a 320 px phone.
+test("the incomplete dashboard fits the narrowest phone", async ({ page }) => {
+  test.setTimeout(60_000);
+  await createAccount(page, "en", emailFor("incomplete-fit"));
+  await page.setViewportSize({ width: 320, height: 900 });
+  await page.goto("/en/dashboard");
+
+  expect(await noOverflow(page)).toEqual([]);
+  await expect(
+    page.getByRole("link", { name: /set up your nutrition profile/i }),
+  ).toBeVisible();
+});

@@ -73,7 +73,13 @@
   padding-inline: var(--space-lg);
   border-radius: var(--radius-stock);
   font-weight: 500;
-  white-space: nowrap;
+  /* Long labels (French especially) must wrap rather than force their grid
+     column wider than the phone: at 320 px a nowrap "Se connecter pour
+     enregistrer des favoris" is 392 px wide and gets clipped. */
+  max-width: 100%;
+  min-width: 0;
+  white-space: normal;
+  text-align: center;
   text-decoration: none;
   transition:
     background-color var(--dur-short) var(--ease-out),
@@ -201,6 +207,17 @@
 .groove__stop[aria-pressed="true"] {
   background-color: var(--color-sage);
   color: var(--color-accent-ink);
+}
+
+/* When the stops wrap onto several rows (the recipe filters do below about
+   1280 px) the stadium ends up as a tall oval with two useless curved ends.
+   Measured: the tag row is 86 px tall (two rows) from 320 to 1279 px, and 44 px
+   (one row) from 1280 px up, so below that width a card-radius keeps the
+   pressed-in look without the blob. */
+@media (max-width: 1279px) {
+  .groove {
+    border-radius: var(--radius-card);
+  }
 }
 
 /* The dashboard preview: the product's own screen, built at full size, sample values. */

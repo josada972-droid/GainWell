@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  getRecipe,
+  getRecipeList,
   getRecipes,
   recipeCategories,
   recipeTags,
@@ -116,6 +118,29 @@ describe("recipe catalogue", () => {
           expect(recipeTags).toContain(tag);
         }
       }
+    }
+  });
+
+  it("sends only listing fields to the browser", () => {
+    for (const locale of LOCALES) {
+      const list = getRecipeList(locale);
+      expect(list).toHaveLength(getRecipes(locale).length);
+
+      for (const item of list) {
+        // Detail-only prose must never ship with the listing payload.
+        expect("steps" in item).toBe(false);
+        expect("tip" in item).toBe(false);
+        expect("updatedAt" in item).toBe(false);
+        // Search and filtering still need these.
+        expect(item.ingredients.length).toBeGreaterThan(0);
+        expect(item.title.length).toBeGreaterThan(0);
+        expect(recipeCategories).toContain(item.category);
+      }
+
+      // The detail page still gets the full recipe by slug.
+      const full = getRecipe(locale, list[0].slug);
+      expect(full?.steps.length).toBeGreaterThan(0);
+      expect(full?.tip.length).toBeGreaterThan(0);
     }
   });
 });

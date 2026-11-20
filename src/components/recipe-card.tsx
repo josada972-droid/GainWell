@@ -11,7 +11,11 @@ import type { LucideIcon } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/navigation";
-import type { Recipe, RecipeCategory, RecipeTag } from "@/lib/content/recipes";
+import type {
+  RecipeCategory,
+  RecipeListItem,
+  RecipeTag,
+} from "@/lib/content/recipes";
 
 export const categoryKey: Record<RecipeCategory, string> = {
   smoothie: "filterSmoothie",
@@ -48,7 +52,7 @@ export function RecipeRow({
   recipe,
   actions,
 }: {
-  recipe: Recipe;
+  recipe: RecipeListItem;
   /** Extra row control (the favourite toggle), placed at the end. */
   actions?: React.ReactNode;
 }) {

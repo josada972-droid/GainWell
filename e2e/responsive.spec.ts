@@ -4,12 +4,16 @@ import { guardConsole } from "./console-guard";
 
 guardConsole();
 
-const widths = [320, 375, 533, 768, 1024, 1440];
+const widths = [320, 375, 390, 414, 533, 768, 1024, 1440];
 const pages = [
   "/en",
   "/fr",
+  "/en/recipes",
   "/fr/recipes",
   "/en/recipes/beef-ragu-pasta",
+  // The French CTA is the longest label in the app; it used to force the
+  // detail page 88 px wider than a 320 px phone.
+  "/fr/recipes/accras",
   "/fr/guides/weight-gain-basics",
   "/en/how-it-works",
 ];

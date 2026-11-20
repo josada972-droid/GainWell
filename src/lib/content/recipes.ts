@@ -571,3 +571,43 @@ export function getRecipes(locale: Locale): Recipe[] {
 export function getRecipe(locale: Locale, slug: string): Recipe | undefined {
   return recipesByLocale[locale].find((recipe) => recipe.slug === slug);
 }
+
+/**
+ * What a listing row and the client-side search/filters actually need. The
+ * browser used to receive whole recipes — steps, tip and timestamp included —
+ * for all 102 entries, which is most of the payload and none of it is shown
+ * in the list. Detail pages still read the full recipe by slug.
+ */
+export type RecipeListItem = Omit<Recipe, "steps" | "tip" | "updatedAt">;
+
+export function toListItem(recipe: Recipe): RecipeListItem {
+  const {
+    slug,
+    category,
+    title,
+    summary,
+    prepMinutes,
+    cookMinutes,
+    baseServings,
+    perServing,
+    tags,
+    ingredients,
+  } = recipe;
+  return {
+    slug,
+    category,
+    title,
+    summary,
+    prepMinutes,
+    cookMinutes,
+    baseServings,
+    perServing,
+    tags,
+    ingredients,
+  };
+}
+
+/** The catalogue as listing items, for pages that do not render detail fields. */
+export function getRecipeList(locale: Locale): RecipeListItem[] {
+  return recipesByLocale[locale].map(toListItem);
+}

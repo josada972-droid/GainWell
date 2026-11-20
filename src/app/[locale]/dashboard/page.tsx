@@ -58,7 +58,7 @@ async function DashboardPanel() {
   return (
     <div className="grid gap-(--space-md)">
       <p
-        data-slot="dashboard-signed-in-as"
+        data-testid="dashboard-signed-in-as"
         className="text-sm text-(--color-ink-2)"
       >
         {profile?.display_name

@@ -82,7 +82,7 @@
   },
   "recipes": {
     "title": "Recipes for eating more",
-    "lead": "Nine sample recipes across smoothies, breakfasts, lunches, dinners and snacks. Values are estimates, written by hand.",
+    "lead": "{count, plural, one {# sample recipe} other {# sample recipes}} across smoothies, breakfasts, lunches, dinners and snacks. Values are estimates, written by hand.",
     "searchLabel": "Search recipes",
     "searchPlaceholder": "Search by name or ingredient",
     "filtersLabel": "Category",
@@ -136,7 +136,7 @@
     "source": "From the GainWell sample recipe library",
     "updated": "Updated {date}",
     "notFoundTitle": "That recipe does not exist",
-    "notFoundBody": "The recipe library has nine sample recipes. Pick one from the list."
+    "notFoundBody": "This recipe does not exist, or its address has changed. Pick one from the list."
   },
   "guides": {
     "title": "Guides for healthy weight gain",

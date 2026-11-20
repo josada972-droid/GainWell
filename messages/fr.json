@@ -82,7 +82,7 @@
   },
   "recipes": {
     "title": "Des recettes pour manger plus",
-    "lead": "Neuf recettes d'exemple : smoothies, petits-déjeuners, midis, dîners et collations. Les valeurs sont des estimations écrites à la main.",
+    "lead": "{count, plural, one {# recette d'exemple} other {# recettes d'exemple}} : smoothies, petits-déjeuners, midis, dîners et collations. Les valeurs sont des estimations, rédigées à la main.",
     "searchLabel": "Rechercher une recette",
     "searchPlaceholder": "Par nom ou par ingrédient",
     "filtersLabel": "Catégorie",
@@ -136,7 +136,7 @@
     "source": "De la bibliothèque de recettes d'exemple GainWell",
     "updated": "Mise à jour le {date}",
     "notFoundTitle": "Cette recette n'existe pas",
-    "notFoundBody": "La bibliothèque contient neuf recettes d'exemple. Choisissez-en une dans la liste."
+    "notFoundBody": "Cette recette n'existe pas, ou son adresse a changé. Choisissez-en une dans la liste."
   },
   "guides": {
     "title": "Guides pour une prise de poids saine",

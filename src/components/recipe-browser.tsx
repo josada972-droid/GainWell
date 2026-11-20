@@ -9,8 +9,8 @@ import { RecipeRow, categoryKey, tagKey } from "@/components/recipe-card";
 import {
   recipeCategories,
   recipeTags,
-  type Recipe,
   type RecipeCategory,
+  type RecipeListItem,
   type RecipeTag,
 } from "@/lib/content/recipes";
 
@@ -26,7 +26,7 @@ const fold = (value: string) =>
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "");
 
-function matches(recipe: Recipe, query: string) {
+function matches(recipe: RecipeListItem, query: string) {
   if (!query) return true;
   const needle = fold(query);
   return [recipe.title, recipe.summary, ...recipe.ingredients].some((line) =>
@@ -46,7 +46,7 @@ export function RecipeBrowser({
   signedIn,
   locale,
 }: {
-  recipes: Recipe[];
+  recipes: RecipeListItem[];
   favoriteSlugs: string[];
   signedIn: boolean;
   locale: string;
