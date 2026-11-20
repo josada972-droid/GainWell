@@ -21,7 +21,7 @@ export async function FavoritesCard(): Promise<React.ReactNode> {
   return (
     <div className="well hairline grid gap-(--space-3xs) p-(--space-md)">
       <div className="flex flex-wrap items-center justify-between gap-(--space-3xs)">
-        <h3 className="font-medium">{t("favoritesTitle")}</h3>
+        <h2 className="font-medium text-title">{t("favoritesTitle")}</h2>
         <Link href="/recipes" className="btn btn--quiet">
           {t("favoritesCta")}
         </Link>

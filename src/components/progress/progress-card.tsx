@@ -22,7 +22,7 @@ export async function ProgressCard(): Promise<React.ReactNode> {
   return (
     <div className="well hairline grid gap-(--space-3xs) p-(--space-md)">
       <div className="flex flex-wrap items-center justify-between gap-(--space-3xs)">
-        <h3 className="font-medium">{t("progressTitle")}</h3>
+        <h2 className="font-medium text-title">{t("progressTitle")}</h2>
         <Link href="/progress" className="btn btn--quiet">
           {t("progressCta")}
         </Link>

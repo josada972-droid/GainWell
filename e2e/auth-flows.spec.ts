@@ -1,5 +1,6 @@
 import { expect, test, type APIRequestContext } from "@playwright/test";
 
+import { cleanupRunUsers } from "./test-cleanup";
 import { guardConsole } from "./console-guard";
 
 /**
@@ -31,6 +32,10 @@ test.skip(
 test.describe.configure({ mode: "serial" });
 
 const stamp = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
+test.afterAll(async () => {
+  await cleanupRunUsers(stamp);
+});
 const email = `e2e-${stamp}@example.com`;
 const password = "correct-horse-battery";
 const newPassword = "better-horse-battery-2";

@@ -38,7 +38,9 @@ export async function DashboardSummary(): Promise<React.ReactNode> {
   return (
     <div className="well hairline grid gap-(--space-3xs) p-(--space-md)">
       <div className="flex flex-wrap items-center justify-between gap-(--space-3xs)">
-        <h3 className="font-medium">{t("summary.today")}</h3>
+        {/* h2 (title-sized via the utility): the dashboard h1 must not skip
+            straight to an h3 card. */}
+        <h2 className="font-medium text-title">{t("summary.today")}</h2>
         <Link href="/tracker" className="btn btn--quiet">
           {t("summary.openTracker")}
         </Link>
