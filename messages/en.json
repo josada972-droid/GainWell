@@ -111,7 +111,9 @@
       "vegetarian": "Vegetarian",
       "highProtein": "High in protein",
       "quick": "15 min or less",
-      "noCook": "No cooking"
+      "noCook": "No cooking",
+      "budget": "Budget friendly",
+      "caribbean": "Caribbean"
     }
   },
   "recipe": {

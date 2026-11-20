@@ -6,7 +6,7 @@ guardConsole();
 
 test("the library lists every recipe", async ({ page }) => {
   await page.goto("/en/recipes");
-  await expect(page.getByText(/^9 recipes$/)).toBeVisible();
+  await expect(page.getByText(/^102 recipes$/)).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Beef ragu with pasta" }),
   ).toBeVisible();
@@ -15,7 +15,7 @@ test("the library lists every recipe", async ({ page }) => {
 test("search narrows the list by name or ingredient", async ({ page }) => {
   await page.goto("/en/recipes");
   await page.getByLabel("Search recipes").fill("oats");
-  await expect(page.getByText(/^3 recipes$/)).toBeVisible();
+  await expect(page.getByText(/^14 recipes$/)).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Banana and oat smoothie" }),
   ).toBeVisible();
@@ -29,13 +29,13 @@ test("accents are folded so a plain query still matches French text", async ({
 }) => {
   await page.goto("/fr/recipes");
   await page.getByLabel("Rechercher une recette").fill("cacahuete");
-  await expect(page.getByText(/^2 recettes$/)).toBeVisible();
+  await expect(page.getByText(/^8 recettes$/)).toBeVisible();
 });
 
 test("category chips filter the list", async ({ page }) => {
   await page.goto("/en/recipes");
   await page.getByRole("button", { name: "Dinners" }).click();
-  await expect(page.getByText(/^2 recipes$/)).toBeVisible();
+  await expect(page.getByText(/^30 recipes$/)).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Creamy chicken with rice" }),
   ).toBeVisible();
@@ -44,7 +44,28 @@ test("category chips filter the list", async ({ page }) => {
   ).toHaveCount(0);
 
   await page.getByRole("button", { name: "All" }).click();
-  await expect(page.getByText(/^9 recipes$/)).toBeVisible();
+  await expect(page.getByText(/^102 recipes$/)).toBeVisible();
+});
+
+test("the dietary tags introduced with the expansion filter the library", async ({
+  page,
+}) => {
+  await page.goto("/en/recipes");
+  await page.getByRole("button", { name: "Caribbean" }).click();
+  await expect(page.getByText(/^14 recipes$/)).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Poulet colombo with rice" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Caribbean" }).click();
+
+  await page.getByRole("button", { name: "Budget friendly" }).click();
+  await expect(page.getByText(/^46 recipes$/)).toBeVisible();
+
+  // The labels are translated, and the same filter works in French.
+  await page.goto("/fr/recipes");
+  await expect(page.getByText(/^102 recettes$/)).toBeVisible();
+  await page.getByRole("button", { name: "Antillais" }).click();
+  await expect(page.getByText(/^14 recettes$/)).toBeVisible();
 });
 
 test("a search with no match says so", async ({ page }) => {

@@ -1,5 +1,7 @@
 import type { Locale } from "@/i18n/routing";
 
+import { expansionByLocale } from "./recipes-expansion";
+
 /**
  * SAMPLE SEED DATA, not production data. Written by hand for Stage 1 so the
  * public recipe library has real content to browse. Nutrition figures are
@@ -19,13 +21,16 @@ export type RecipeCategory =
  * (`recipes.tags.*`); EN and FR recipes carry the same tag per slug, which
  * tests/recipe-content.test.ts enforces.
  */
-export type RecipeTag = "vegetarian" | "highProtein" | "quick" | "noCook";
+export type RecipeTag =
+  "vegetarian" | "highProtein" | "quick" | "noCook" | "budget" | "caribbean";
 
 export const recipeTags: RecipeTag[] = [
   "vegetarian",
   "highProtein",
   "quick",
   "noCook",
+  "budget",
+  "caribbean",
 ];
 
 export type Nutrition = {
@@ -63,7 +68,7 @@ export const recipeCategories: RecipeCategory[] = [
   "snack",
 ];
 
-const en: Recipe[] = [
+const baseEn: Recipe[] = [
   {
     slug: "banana-oat-smoothie",
     category: "smoothie",
@@ -306,7 +311,7 @@ const en: Recipe[] = [
   },
 ];
 
-const fr: Recipe[] = [
+const baseFr: Recipe[] = [
   {
     slug: "banana-oat-smoothie",
     category: "smoothie",
@@ -550,6 +555,9 @@ const fr: Recipe[] = [
     updatedAt: "2026-10-14",
   },
 ];
+
+const en: Recipe[] = [...baseEn, ...expansionByLocale.en];
+const fr: Recipe[] = [...baseFr, ...expansionByLocale.fr];
 
 export const recipesByLocale: Record<Locale, Recipe[]> = { en, fr };
 

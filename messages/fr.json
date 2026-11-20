@@ -111,7 +111,9 @@
       "vegetarian": "Végétarien",
       "highProtein": "Riche en protéines",
       "quick": "15 min ou moins",
-      "noCook": "Sans cuisson"
+      "noCook": "Sans cuisson",
+      "budget": "Bon marché",
+      "caribbean": "Antillais"
     }
   },
   "recipe": {

@@ -27,6 +27,8 @@ export const tagKey: Record<RecipeTag, string> = {
   highProtein: "highProtein",
   quick: "quick",
   noCook: "noCook",
+  budget: "budget",
+  caribbean: "caribbean",
 };
 
 /** Drawn food marks instead of photographs: one icon per category. */
