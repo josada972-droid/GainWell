@@ -185,7 +185,7 @@ all (no numbers exist to split).
 12–60: the numbers exist but the combination is nonsense, so the result is
 `incomplete` with `implausible: true` and no estimate. Ranges come from Zod at
 the Server Action boundary (`src/lib/onboarding/schema.ts`) and from CHECK
-constraints in `supabase/migrations/0002_nutrition_profiles.sql`, so a value
+constraints in `supabase/migrations/20251117000002_nutrition_profiles.sql`, so a value
 cannot reach the engine or the database from either side alone.
 
 ## 8. What the engine does not do

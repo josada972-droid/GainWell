@@ -7,7 +7,7 @@
 -- inferred from anything else. Allergies/avoidance text is free text the user
 -- writes about themselves, capped and nullable.
 --
--- Security model, same conventions as 0001_profiles.sql (docs/supabase.md):
+-- Security model, same conventions as 20251117000001_profiles.sql (docs/supabase.md):
 -- * `user_id` IS the owner, a FK to auth.users on delete cascade.
 -- * RLS restricts select/insert/update to auth.uid() = user_id.
 -- * No DELETE policy: account deletion is a future server-side flow.

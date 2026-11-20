@@ -196,7 +196,7 @@ describe("onboarding step validation", () => {
 
 /**
  * The names the storage layer writes with. These are the column names from
- * `supabase/migrations/0002_nutrition_profiles.sql`; a rename in either place
+ * `supabase/migrations/20251117000002_nutrition_profiles.sql`; a rename in either place
  * fails here before it fails against the database.
  */
 describe("answers → table columns", () => {

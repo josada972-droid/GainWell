@@ -48,7 +48,7 @@ returns `null`, those privileged operations fail closed, and tracker entry
 writes surface the translated `config` error instead of silently falling back
 to an insecure client.
 
-`supabase/migrations/0001_profiles.sql` creates:
+`supabase/migrations/20251117000001_profiles.sql` creates:
 
 - `public.profiles` — `id` (uuid, FK to `auth.users(id)` on delete cascade),
   `display_name` (nullable, ≤ 60 chars), `preferred_language` (`en` default,
@@ -59,7 +59,7 @@ to an insecure client.
   names, and only reads `raw_user_meta_data` keys that the app itself sets
   (`display_name`, `preferred_language`); values are coerced to safe literals.
 
-`supabase/migrations/0002_nutrition_profiles.sql` creates:
+`supabase/migrations/20251117000002_nutrition_profiles.sql` creates:
 
 - `public.nutrition_profiles` — the onboarding answers, in its own table so
   `public.profiles` stays about account identity and language. `user_id` is the
@@ -74,8 +74,8 @@ to an insecure client.
 - `nutrition_profiles_touch_updated_at` — the same `touch_updated_at` trigger as
   `profiles`; clients cannot write the timestamps.
 
-`supabase/migrations/0003_meal_tracking.sql` and
-`supabase/migrations/0004_stage4_security_hardening.sql` build the Stage 4 schema
+`supabase/migrations/20251117000003_meal_tracking.sql` and
+`supabase/migrations/20251117000004_stage4_security_hardening.sql` build the Stage 4 schema
 (§9). 0004 is **forward-only**: 0003 stays as applied and 0004 changes grants,
 policies, constraints and functions on top of it, so an existing database is
 hardened without rewriting any row.
@@ -231,8 +231,8 @@ npx supabase gen types typescript --linked > src/lib/supabase/types.ts  # hosted
 
 ### 9.1 Schema
 
-Migration `0003_meal_tracking.sql` adds five user-owned tables and one
-service-owned table; `0004_stage4_security_hardening.sql` hardens their
+Migration `20251117000003_meal_tracking.sql` adds five user-owned tables and one
+service-owned table; `20251117000004_stage4_security_hardening.sql` hardens their
 permissions and integrity without changing the shape:
 
 | Table                | Purpose                                                                                                                 |
@@ -359,7 +359,8 @@ converted to mass.
 **Rate limiting** (`src/lib/food/off-rate-limit.ts` + the `off_rate_limit`
 table): a fixed-window limiter shared across server instances via Postgres. The
 function is `off_rate_limit_take(p_bucket)` — **bucket only**. The limits and the
-window live inside the function (`supabase/migrations/0004`), not in the caller:
+window live inside the function (migration `20251117000004_stage4_security_hardening.sql`),
+not in the caller:
 `search` 6/min, `product` 10/min, a 60 s fixed window. The official per-IP maxima
 are 10 search / 15 product requests per minute, so GainWell stays under them with
 headroom for traffic sharing the same IP. One `INSERT … ON CONFLICT DO UPDATE …
@@ -401,7 +402,7 @@ keeps its attribution URL.
 
 ## 10. Recipes and progress (Stage 5)
 
-### 10.1 Migration 0005 (`0005_recipes_progress.sql`)
+### 10.1 Migration 0005 (`20251117000005_recipes_progress.sql`)
 
 Forward-only, adds two fully user-owned tables. Nothing existing changes.
 
@@ -461,3 +462,36 @@ grants would otherwise leave an empty-200 hole, the Stage 4 lesson).
 - Views show only recorded measurements — no interpolation, no targets,
   no goal inference from onboarding (the progress page says this in plain
   words).
+
+### 10.4 Known limitations (verified in Stage 6; TRUNCATE closed in Stage 7A)
+
+- **Project-wide default `TRUNCATE` grant — resolved by migration
+  `20251117000006_truncate_hardening.sql`.** Supabase's project-default
+  privileges grant `TRUNCATE` (and inert `REFERENCES`/`TRIGGER`) on every
+  `public` table to `anon` and `authenticated` — including all GainWell
+  tables. This is pre-existing platform behavior, not something a migration
+  added. RLS does not apply to `TRUNCATE` (it is table-level), but it is
+  **not reachable**: PostgREST exposes no TRUNCATE verb, and no
+  rpc-accessible function truncates anything (verified against the live
+  local DB in Stage 6). Stage 7A investigated the origin — two
+  `ALTER DEFAULT PRIVILEGES` entries set at project initialization (one for
+  tables created by `postgres`, one for `supabase_admin`) — and added
+  migration `0006`, which revokes `TRUNCATE, REFERENCES, TRIGGER` on all
+  `public` tables from `anon`/`authenticated` and rewrites the `postgres`
+  default-privilege entry so future tables do not regain the privilege.
+  `service_role` and migration-owner operations are untouched; applied and
+  verified on the local database (browser roles can no longer TRUNCATE; a
+  newly created table inherits no `TRUNCATE`/`REFERENCES`/`TRIGGER` grants;
+  the RLS and security suites all still pass). One residual: `postgres`
+  cannot rewrite `supabase_admin`'s default privileges (permission denied,
+  verified locally), so tables created _by supabase_admin in `public`_ would
+  still inherit the grant. GainWell never creates tables that way —
+  `supabase db push` and Studio's table editor both run as `postgres` — so
+  this is dormant; the deployment guide's post-deploy verification query
+  checks both entries and says what to do if that ever changes.
+- **Favourites trust the app-level catalogue.** Direct REST clients can
+  insert a well-shaped but nonexistent slug (DB checks shape, the app
+  checks the catalogue — §10.1). Accepted in the Stage 5 audit: impact is
+  self-scoped (an inflated dashboard count), with no broken UI and no
+  cross-user reach. A catalogue table + FK would close it but duplicates
+  static translated content in the database; not justified today.
