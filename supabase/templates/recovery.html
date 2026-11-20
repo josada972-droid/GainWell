@@ -1,7 +1,218 @@
-<p>Reset your GainWell password by clicking the link below.</p>
-<p>
-  <a
-    href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery"
-    >Choose a new password</a
-  >
-</p>
+<!doctype html>
+<html lang="en">
+  <body style="margin: 0; padding: 0; background: #f4e9d7">
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      style="background: #f4e9d7; padding: 24px 12px"
+    >
+      <tr>
+        <td align="center">
+          <table
+            role="presentation"
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+            style="
+              max-width: 600px;
+              background: #fffdf9;
+              border: 1px solid #e7dcc8;
+              border-radius: 16px;
+              overflow: hidden;
+              font-family:
+                Inter,
+                -apple-system,
+                &quot;Segoe UI&quot;,
+                Helvetica,
+                Arial,
+                sans-serif;
+              color: #2b2b26;
+            "
+          >
+            <tr>
+              <td style="background: #477b5c; padding: 20px 28px">
+                <span
+                  style="
+                    display: inline-block;
+                    font-family:
+                      Nunito,
+                      -apple-system,
+                      &quot;Segoe UI&quot;,
+                      Helvetica,
+                      Arial,
+                      sans-serif;
+                    font-size: 22px;
+                    font-weight: 700;
+                    color: #f4e9d7;
+                    letter-spacing: 0.2px;
+                  "
+                  >GainWell</span
+                >
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 28px">
+                <h1
+                  style="
+                    margin: 0 0 12px;
+                    font-family:
+                      Nunito,
+                      -apple-system,
+                      &quot;Segoe UI&quot;,
+                      Helvetica,
+                      Arial,
+                      sans-serif;
+                    font-size: 22px;
+                    line-height: 1.25;
+                    color: #2b2b26;
+                  "
+                >
+                  Choose a new password
+                </h1>
+                <p style="margin: 0 0 20px; font-size: 16px; line-height: 1.6">
+                  Someone asked to reset the password for your GainWell account.
+                  Use the button below to set a new one. If that was not you, no
+                  action is needed and your password stays the same.
+                </p>
+                <table
+                  role="presentation"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="margin: 0 0 20px"
+                >
+                  <tr>
+                    <td style="background: #477b5c; border-radius: 999px">
+                      <a
+                        href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/en/reset-password"
+                        style="
+                          display: inline-block;
+                          padding: 14px 28px;
+                          font-size: 16px;
+                          font-weight: 600;
+                          color: #fffdf9;
+                          text-decoration: none;
+                        "
+                        >Set a new password</a
+                      >
+                    </td>
+                  </tr>
+                </table>
+                <p
+                  style="
+                    margin: 0 0 24px;
+                    font-size: 14px;
+                    line-height: 1.6;
+                    color: #5b5b52;
+                  "
+                >
+                  This link can be used once and expires. If the button does not
+                  work, copy this link into your browser:<br /><span
+                    style="word-break: break-all; color: #477b5c"
+                    >{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash
+                    }}&type=recovery&next=/en/reset-password</span
+                  >
+                </p>
+                <hr
+                  style="
+                    border: 0;
+                    border-top: 1px solid #e7dcc8;
+                    margin: 0 0 24px;
+                  "
+                />
+                <h1
+                  style="
+                    margin: 0 0 12px;
+                    font-family:
+                      Nunito,
+                      -apple-system,
+                      &quot;Segoe UI&quot;,
+                      Helvetica,
+                      Arial,
+                      sans-serif;
+                    font-size: 22px;
+                    line-height: 1.25;
+                    color: #2b2b26;
+                  "
+                >
+                  Choisissez un nouveau mot de passe
+                </h1>
+                <p style="margin: 0 0 20px; font-size: 16px; line-height: 1.6">
+                  Quelqu'un a demand&eacute; &agrave; r&eacute;initialiser le
+                  mot de passe de votre compte GainWell. Utilisez le bouton
+                  ci-dessous pour en d&eacute;finir un nouveau. Si ce n'est pas
+                  vous, aucune action n'est n&eacute;cessaire et votre mot de
+                  passe reste inchang&eacute;.
+                </p>
+                <table
+                  role="presentation"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="margin: 0 0 20px"
+                >
+                  <tr>
+                    <td style="background: #477b5c; border-radius: 999px">
+                      <a
+                        href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/fr/reset-password"
+                        style="
+                          display: inline-block;
+                          padding: 14px 28px;
+                          font-size: 16px;
+                          font-weight: 600;
+                          color: #fffdf9;
+                          text-decoration: none;
+                        "
+                        >D&eacute;finir un nouveau mot de passe</a
+                      >
+                    </td>
+                  </tr>
+                </table>
+                <p
+                  style="
+                    margin: 0 0 8px;
+                    font-size: 14px;
+                    line-height: 1.6;
+                    color: #5b5b52;
+                  "
+                >
+                  Ce lien ne peut &ecirc;tre utilis&eacute; qu'une fois et
+                  expire. Si le bouton ne fonctionne pas, copiez ce lien dans
+                  votre navigateur&nbsp;:<br /><span
+                    style="word-break: break-all; color: #477b5c"
+                    >{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash
+                    }}&type=recovery&next=/fr/reset-password</span
+                  >
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  padding: 20px 28px;
+                  background: #f4e9d7;
+                  font-size: 13px;
+                  line-height: 1.6;
+                  color: #5b5b52;
+                "
+              >
+                <p style="margin: 0 0 6px">
+                  GainWell will never ask for your password by email. This link
+                  only lets you set a new one.
+                </p>
+                <p style="margin: 0">
+                  GainWell ne vous demandera jamais votre mot de passe par
+                  e-mail. Ce lien sert uniquement &agrave; en d&eacute;finir un
+                  nouveau.
+                </p>
+                <p style="margin: 12px 0 0; color: #477b5c; font-weight: 600">
+                  GainWell &mdash; A healthier way to grow.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

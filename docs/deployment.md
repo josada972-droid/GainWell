@@ -120,25 +120,47 @@ check what created the table).
 
 ## 3. Configure Supabase Auth [dashboard]
 
-Authentication → **URL Configuration**:
+**Applied to production on 2026-11-20** (Stage 7E, via the Management API — the
+dashboard shows the same values):
 
-| Setting           | Value                                                                                            |
-| ----------------- | ------------------------------------------------------------------------------------------------ |
-| **Site URL**      | the production origin, e.g. `https://<vercel-project>.vercel.app` (later: your domain)           |
-| **Redirect URLs** | `https://<vercel-project>.vercel.app/auth/confirm`                                               |
-|                   | `http://localhost:3000/auth/confirm` (local development)                                         |
-|                   | preview pattern, only if you will test auth on previews: `https://*-<vercel-team>.vercel.app/**` |
+| Setting           | Production value                           |
+| ----------------- | ------------------------------------------ |
+| **Site URL**      | `https://gainwell.vercel.app`              |
+| **Redirect URLs** | `https://gainwell.vercel.app/auth/confirm` |
+| **Confirm email** | ON (`mailer_autoconfirm = false`)          |
+| Email OTP expiry  | 3600 s                                     |
 
-Authentication → **Emails** — set both templates to the PKCE token-hash links
-the app's `/auth/confirm` route expects:
+Deliberate omissions: no `localhost` entry (production auth is not exercised
+from a developer machine) and no wildcard pattern — the allowlist holds exactly
+the one callback the application uses. Signed-in redirects after recovery are
+built by the app from `?next=` and whitelisted in `src/lib/auth/redirect.ts`, so
+an allowed callback can never forward a session to another site.
 
-```
-Confirmation: {{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email
-Recovery:     {{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/en/reset-password
-```
+### Link shapes the app accepts
 
-(The equivalents live in `supabase/templates/*.html` for the local stack; copy
-their markup into the dashboard templates to keep the styling identical.)
+Supabase links land on `/auth/confirm` in one of two shapes:
+
+1. **`?code=...`** — what the **default** email templates produce. The template
+   links to `{{ .ConfirmationURL }}`, GoTrue verifies it and redirects to the
+   app with a single-use PKCE code, which the route exchanges server-side. This
+   needs the code-verifier cookie from the browser that started the flow, so the
+   link must be opened in the **same browser** as the signup or reset request.
+2. **`?token_hash=...&type=email|recovery`** — what the templates in
+   `supabase/templates/*.html` produce. Works from any device, including a phone.
+
+Both are verified server-side; no token is ever read by client JavaScript.
+Refused or expired links (including GoTrue's own `?error=...` reports) render the
+localized "that link is no longer valid" page instead of a raw error.
+
+### Why the templates in this repo are not the ones production sends
+
+Editing email templates requires a custom SMTP provider or a paid plan: on the
+free tier with the built-in mailer the API answers
+`400 entitlement_required` (`auth.email_templates`). Production therefore sends
+Supabase's default templates, and the app's `?code=` support (shape 1) is what
+makes confirmation and recovery work today. Once custom SMTP exists, upload the
+bilingual templates from `supabase/templates/` (they use `{{ .TokenHash }}`) to
+get branding **and** cross-device links.
 
 Authentication → **Providers → Email**: keep **Confirm email** enabled in
 production. Local development turns it off (`supabase/config.toml`), which is
@@ -146,20 +168,25 @@ why local E2E tests can sign in immediately.
 
 ### Email delivery
 
-- The built-in Supabase email service is **rate-limited and not intended for
-  production use**. It is enough to smoke-test a handful of signups.
-- For real users, configure **custom SMTP** (Authentication → Emails → SMTP
-  settings) with a transactional provider (e.g. Resend, SendGrid, Postmark) and
-  a verified sender domain. This needs a domain; until one exists, keep the
-  built-in service and expect small hourly limits.
-- The app already surfaces `over_email_send_rate_limit` politely.
+- Production currently uses the **built-in Supabase mailer**: no custom SMTP,
+  and a hard limit of **2 emails per hour** (`rate_limit_email_sent = 2`).
+  Enough to prove the flows; not enough for real users.
+- Custom SMTP (Resend, SendGrid, Postmark, …) needs a **verified sender domain**.
+  That is a Stage 7E/7F dependency, not something the app can work around.
+- The app surfaces `over_email_send_rate_limit` as a polite localized message;
+  it never fakes a successful send.
+- The default emails are unbranded English text. That is a known cosmetic
+  limitation until SMTP is configured (see above), not a functional one.
 
 ### Session handling notes
 
 No additional configuration is needed: cookies are managed by `@supabase/ssr`,
-`src/proxy.ts` refreshes claims per request, and `/auth/confirm` is excluded
-from locale rewriting. Protected routes always re-verify with `auth.getUser()`
-server-side.
+`src/proxy.ts` refreshes claims per request, `/auth/confirm` is excluded from
+locale rewriting, and protected routes always re-verify with `auth.getUser()`
+server-side. Note that `@supabase/ssr` sets its auth cookie with
+`httpOnly: false` and `secure: false` by default; the app never reads it from
+client JavaScript and ships no `dangerouslySetInnerHTML`, but tightening those
+flags (plus a CSP) is a sensible hardening follow-up.
 
 ---
 
@@ -401,17 +428,21 @@ version with matching local and remote entries.
 
 **Local vs production**
 
-| Concern    | Local                               | Production                                                      |
-| ---------- | ----------------------------------- | --------------------------------------------------------------- |
-| CLI target | `npx supabase start / stop / reset` | `--linked` commands target `utlzbbwjusjwlermamfr`               |
-| Env file   | `.env.local`                        | `.env.production.local` (gitignored) until Vercel env is set up |
-| Link state | not linked                          | `supabase/.temp/project-ref` (gitignored, machine-local)        |
+| Concern    | Local                               | Production                                                     |
+| ---------- | ----------------------------------- | -------------------------------------------------------------- |
+| CLI target | `npx supabase start / stop / reset` | `--linked` commands target `utlzbbwjusjwlermamfr`              |
+| Env file   | `.env.local`                        | Vercel env vars; local copy in `supabase/.temp/production.env` |
+| Link state | not linked                          | `supabase/.temp/project-ref` (gitignored, machine-local)       |
 
 - The CLI link lives in `supabase/.temp/`, which is gitignored: a fresh clone
   is unlinked until `npx supabase link` runs again.
-- `.env.production.local` holds the production URL, publishable key and secret
-  key for Stage 7D. Confirm it stays ignored with
-  `git check-ignore .env.production.local`.
+- **Production values must not live in a file Next.js auto-loads.** They sit in
+  `supabase/.temp/production.env` (gitignored) precisely because
+  `.env.production.local` is read by `next start` **and inlined at build time**
+  for every `NEXT_PUBLIC_*` value. An earlier copy of that file made local
+  production-mode runs talk to the production database and poisoned the build
+  with the production URL — that is why E2E looked "rate limited". Never name a
+  local production-secrets file `.env*`.
 - The production database password is deliberately not stored anywhere; the
   CLI connects with short-lived roles. Reset it in the dashboard
   (Project Settings -> Database) if direct `psql` access is ever needed.
@@ -433,3 +464,49 @@ version with matching local and remote entries.
 **Never run against this project**: `db reset`, seeding, importing local rows,
 the E2E suites, or cleanup scripts. The gated suites read `.env.local` values
 on purpose, so they cannot reach production by accident.
+
+---
+
+## 13. Reproducing the production auth checks
+
+Two layers, so the email budget is never wasted on things the API can prove.
+
+### 1. Admin-API layer (no email sent)
+
+Uses the project secret key from `supabase/.temp/production.env`; never commit or
+paste that file.
+
+- **Create accounts**: `POST {url}/auth/v1/admin/users` with
+  `{ email, password, email_confirm: true|false }`. An unconfirmed account
+  proves the "confirm your email first" path; a confirmed one proves login,
+  sessions, logout, protected routes and isolation without spending an email.
+- **Sign in for a session**: `POST {url}/auth/v1/token?grant_type=password`.
+- **Prove isolation with REST**: read the own `profiles` row (1 row), read
+  another user's id (`[]`), insert with a forged `user_id` (`403`, `42501`).
+- **Prove link handling without an inbox**: `/auth/confirm?type=email&code=bogus`
+  and `/auth/confirm?type=email&error_code=otp_expired` must both land on the
+  localized failure page (`/en/login?confirm=failed`).
+
+### 2. Inbox layer (manual, 2 emails/hour)
+
+Use a mailbox you control with a `+tag` address, so accounts are clearly
+identifiable. The `?code=` link only works in the browser that started the flow,
+so sign up and click the email in the **same** browser.
+
+1. Sign up at `/en/signup` → confirmation email → click → dashboard.
+2. Sign out, request a reset at `/en/forgot-password` → recovery email → click
+   → `/en/reset-password` → set a new password → dashboard.
+3. Log out, log in with the new password; the old one must fail.
+
+If the app answers "Too many attempts", the hourly email budget is spent — wait
+for the window to pass rather than disabling confirmation.
+
+### Cleanup
+
+Delete test accounts with `DELETE {url}/auth/v1/admin/users/{id}` (the cascade
+removes their rows). Delete only accounts you created; never touch real ones.
+Count them with `GET {url}/auth/v1/admin/users?per_page=200`.
+
+Stage 7E created and removed: one `@example.com` link probe and three
+`gw-stage7e-*@example.com` self-serve accounts. The production database holds no
+test rows.
