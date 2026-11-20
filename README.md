@@ -65,6 +65,9 @@ deployed yet; no production credentials exist in this repository.
 Stages 0–6 complete: branding and public pages, Supabase auth with RLS,
 onboarding and the nutrition engine, meal tracking with Open Food Facts,
 recipes with favourites, weight progress, and the Stage 6 integration,
-accessibility and polish pass. Stage 7A (production readiness) prepared the
-deployment plan and the `0006` privilege-hardening migration; the actual cloud
-deployment has not been performed. Content is clearly labelled sample.
+accessibility and polish pass. Stage 7A prepared the deployment plan and the
+`0006` privilege-hardening migration. Stage 7C provisioned the production
+infrastructure: a dedicated `GainWell Production` Supabase project (all six
+migrations applied and verified, empty database) and this private GitHub
+repository. Vercel deployment is Stage 7D, so the public site is not live yet.
+Content is clearly labelled sample.

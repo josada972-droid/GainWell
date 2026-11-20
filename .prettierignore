@@ -3,3 +3,6 @@ AGENTS.md
 
 # Hallmark's own artifacts (theme log, captured screenshots); written by its scripts.
 .hallmark/
+
+# Supabase CLI working files (linked-project.json etc.), written by `supabase link`.
+supabase/.temp/

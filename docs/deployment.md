@@ -6,12 +6,15 @@ recorded here and no domain is assumed.
 
 **Current infrastructure state**
 
-| Piece               | Value                                                                                 |
-| ------------------- | ------------------------------------------------------------------------------------- |
-| Source repository   | `https://github.com/josada972-droid/GainWell` (private, branch `main`)                |
-| Production Supabase | dedicated `GainWell Production` project — see §12 for its project ID once provisioned |
-| Vercel              | not connected yet (Stage 7D)                                                          |
-| Domain              | none chosen yet                                                                       |
+| Piece               | Value                                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------------ |
+| Source repository   | `https://github.com/josada972-droid/GainWell` (private, branch `main`)                           |
+| Production Supabase | `GainWell Production` — project ID `utlzbbwjusjwlermamfr`, region `eu-west-3` (Paris), free plan |
+| Database            | 6 migrations applied, schema verified identical to the local one, 0 application rows             |
+| Vercel              | not connected yet (Stage 7D)                                                                     |
+| Domain              | none chosen yet                                                                                  |
+
+Verification details and the remaining dashboard steps are recorded in §12.
 
 > Two rules that keep production safe:
 >
@@ -350,3 +353,83 @@ target production.
   SMTP (§3).
 - **A preview deployment shows member features broken**: expected if Supabase
   variables are intentionally unset for Preview (§7).
+
+## 12. Provisioning record (Stage 7C)
+
+Verified on 2026-11-20 against the live project. No credentials appear here.
+
+| Item             | Value                                                                |
+| ---------------- | -------------------------------------------------------------------- |
+| Project name     | `GainWell Production`                                                |
+| Project ID / ref | `utlzbbwjusjwlermamfr`                                               |
+| Region           | `eu-west-3` (Paris)                                                  |
+| Plan             | Free                                                                 |
+| Database engine  | Postgres 17                                                          |
+| Dedicated        | Yes - created for GainWell; the pre-existing project was not touched |
+
+**Migrations** - all six applied in order through `npx supabase db push`:
+`0001 profiles`, `0002 nutrition_profiles`, `0003 meal_tracking`,
+`0004 stage4_security_hardening`, `0005 recipes_progress`,
+`0006 truncate_hardening`. `npx supabase migration list --linked` shows every
+version with matching local and remote entries.
+
+**Verification performed**
+
+- Schema parity: the full `public` DDL of production was dumped and compared
+  line by line with the verified local database - 722 lines each, 0
+  differences (tables, constraints, indexes, RLS flags, 22 policies, column
+  grants, 10 triggers, 7 functions all with a pinned empty `search_path`, and
+  default privileges).
+- Data: every `public` table reports 0 rows. No local rows, test users or
+  fixtures were imported; `auth.users` has no test accounts.
+- Anonymous API probes (publishable key, no session) - all denied:
+  - `GET /profiles` returns `200 []` (grant exists, RLS returns nothing);
+  - `GET /weight_entries`, `/recipe_favorites`, `/off_products_cache`,
+    `/off_search_cache`, `/off_rate_limit` return `401 42501 permission denied`;
+  - `POST /profiles` returns `401 new row violates row-level security policy`;
+  - `POST /meals`, `/nutrition_profiles`, `/recipe_favorites` return `401 42501`;
+  - `rpc/off_rate_limit_take` and `rpc/delete_meal_entry` return
+    `401 permission denied for function`.
+- `TRUNCATE` is not granted to `anon` or `authenticated` on any table, so
+  migration `0006` is effective on production.
+- Default privileges for the `postgres` owner grant future tables
+  `SELECT, INSERT, UPDATE, DELETE, MAINTAIN` only - no `TRUNCATE`,
+  `REFERENCES` or `TRIGGER`. Row access is still gated by RLS, not grants.
+- Auth (`npx supabase config diff`): email confirmation is ON in production,
+  signup ON, email provider ON, the redirect allowlist is EMPTY, and Site URL
+  is still the platform default. Nothing was pushed from the local config.
+
+**Local vs production**
+
+| Concern    | Local                               | Production                                                      |
+| ---------- | ----------------------------------- | --------------------------------------------------------------- |
+| CLI target | `npx supabase start / stop / reset` | `--linked` commands target `utlzbbwjusjwlermamfr`               |
+| Env file   | `.env.local`                        | `.env.production.local` (gitignored) until Vercel env is set up |
+| Link state | not linked                          | `supabase/.temp/project-ref` (gitignored, machine-local)        |
+
+- The CLI link lives in `supabase/.temp/`, which is gitignored: a fresh clone
+  is unlinked until `npx supabase link` runs again.
+- `.env.production.local` holds the production URL, publishable key and secret
+  key for Stage 7D. Confirm it stays ignored with
+  `git check-ignore .env.production.local`.
+- The production database password is deliberately not stored anywhere; the
+  CLI connects with short-lived roles. Reset it in the dashboard
+  (Project Settings -> Database) if direct `psql` access is ever needed.
+
+**Still to configure by hand (needs the Vercel URL)**
+
+1. Authentication -> URL Configuration: set Site URL to the deployment origin
+   and add `<origin>/auth/confirm` (keep `http://localhost:3000/auth/confirm`
+   for local work).
+2. Authentication -> Emails: point the confirmation and recovery templates at
+   the token-hash links in section 3, copying the markup from
+   `supabase/templates/*.html`.
+3. Authentication -> Emails -> SMTP: only when real signup volume matters
+   (requires a verified domain).
+4. Never run `supabase config push`: the local config disables email
+   confirmation and sets Site URL to `http://127.0.0.1:3000`, so pushing it
+   would weaken production.
+
+**Never run against this project**: `db reset`, seeding, importing local rows,
+the E2E suites, or cleanup scripts. The gated suites read `.env.local` values
+on purpose, so they cannot reach production by accident.
